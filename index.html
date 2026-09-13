@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison Eviève — a souvenir of a feeling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000;
+    --white: #FFFFFF;
+    --charcoal: #636363;
+    --cream: #F5F1EA;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--black);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  img { display: block; max-width: 100%; }
+
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  @media (min-width: 900px) {
+    .wrap { padding: 0 64px; }
+  }
+
+  /* Media placeholder — shows a solid tone until the real photo file loads,
+     so nothing breaks visually before images are wired to the live repo. */
+  .media {
+    position: relative;
+    overflow: hidden;
+    background: var(--charcoal);
+  }
+  .media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+  }
+  @media (min-width: 900px) { .nav-row { padding: 20px 64px; } }
+
+  .logo-mark {
+    height: 34px;
+    width: auto;
+  }
+  .logo-mark img { height: 100%; width: auto; }
+
+  nav.links {
+    display: none;
+    gap: 32px;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+  }
+  nav.links a {
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+  nav.links a:hover { border-color: var(--black); }
+
+  @media (min-width: 860px) {
+    nav.links { display: flex; align-items: center; }
+  }
+
+  .lang-switch {
+    display: flex;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--charcoal);
+  }
+  .lang-switch a { text-decoration: none; }
+  .lang-switch a.active { color: var(--black); font-weight: 600; }
+
+  .menu-toggle {
+    background: none;
+    border: none;
+    font-family: var(--sans);
+    font-size: 14px;
+    cursor: pointer;
+  }
+  @media (min-width: 860px) { .menu-toggle { display: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    height: 92vh;
+    min-height: 560px;
+  }
+  .hero-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 32px 72px;
+  }
+  @media (min-width: 900px) { .hero-inner { padding: 0 64px 96px; } }
+
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0) 80%);
+  }
+
+  .hero-content {
+    position: relative;
+    color: var(--white);
+    max-width: 640px;
+  }
+
+  .hero-content h1 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.15rem;
+    margin-top: 20px;
+    opacity: 0.92;
+  }
+
+  /* ---------- Section basics ---------- */
+  section { padding: 120px 0; }
+  .section-label {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.9rem, 3.6vw, 2.9rem);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+  .lede {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 620px;
+    margin-top: 22px;
+    color: #1a1a1a;
+  }
+  .body-copy {
+    max-width: 560px;
+    margin-top: 22px;
+    color: #2b2b2b;
+  }
+  .body-copy p + p { margin-top: 16px; }
+
+  /* toile divider */
+  .toile-divider {
+    height: 64px;
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    opacity: 0.9;
+  }
+
+  /* ---------- About ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .about-grid { grid-template-columns: 0.85fr 1fr; gap: 72px; }
+  }
+  .about-media {
+    aspect-ratio: 4 / 5;
+    width: 100%;
+  }
+  @media (min-width: 900px) {
+    .about-media { transform: translateY(28px); }
+  }
+
+  /* ---------- Subscriptions ---------- */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 56px;
+    border-top: 1px solid var(--black);
+  }
+  @media (min-width: 860px) {
+    .tier-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .tier {
+    border-bottom: 1px solid var(--black);
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  @media (min-width: 860px) {
+    .tier { border-right: 1px solid var(--black); border-bottom: 1px solid var(--black); }
+    .tier:last-child { border-right: none; }
+  }
+  .tier-name {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+  .tier-price {
+    font-family: var(--serif);
+    font-size: 2.6rem;
+    font-weight: 300;
+    margin-top: 14px;
+  }
+  .tier-price span {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--charcoal);
+  }
+  .tier-desc {
+    margin-top: 18px;
+    color: #2b2b2b;
+    font-size: 0.95rem;
+    flex-grow: 1;
+  }
+  .tier-cta {
+    margin-top: 28px;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 13px 0;
+    border-top: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
+    text-align: center;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .tier-cta:hover { background: var(--black); color: var(--white); }
+
+  /* ---------- Art teaser ---------- */
+  .art-teaser {
+    position: relative;
+    height: 70vh;
+    min-height: 460px;
+  }
+  .art-teaser-content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 32px;
+    color: var(--white);
+  }
+  @media (min-width: 900px) { .art-teaser-content { padding: 0 64px; } }
+  .art-teaser h2 { color: var(--white); max-width: 560px; }
+  .art-teaser .lede { color: rgba(255,255,255,0.88); }
+  .art-cta {
+    margin-top: 32px;
+    display: inline-block;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid var(--white);
+    padding-bottom: 4px;
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq-list { margin-top: 48px; max-width: 720px; }
+  .faq-item { border-bottom: 1px solid rgba(0,0,0,0.15); }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 22px 0;
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: "+";
+    font-family: var(--sans);
+    font-size: 1.2rem;
+    color: var(--charcoal);
+    margin-left: 20px;
+  }
+  .faq-item[open] summary::after { content: "–"; }
+  .faq-item p {
+    padding-bottom: 24px;
+    max-width: 620px;
+    color: #2b2b2b;
+  }
+
+  /* ---------- Contact ---------- */
+  .contact { text-align: center; }
+  .contact .lede { margin-left: auto; margin-right: auto; }
+  .contact-email {
+    display: inline-block;
+    margin-top: 32px;
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-style: italic;
+    text-decoration: none;
+    border-bottom: 1px solid var(--black);
+  }
+  .social-row {
+    margin-top: 40px;
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    font-size: 14px;
+  }
+  .social-row a { text-decoration: none; color: var(--charcoal); }
+  .social-row a:hover { color: var(--black); }
+
+  /* ---------- Footer ---------- */
+  footer { background: var(--black); color: var(--cream); padding: 56px 0 32px; }
+  .footer-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  @media (min-width: 700px) {
+    .footer-grid { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+  }
+  .footer-tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    max-width: 320px;
+    opacity: 0.9;
+  }
+  .footer-links { display: flex; gap: 40px; flex-wrap: wrap; }
+  .footer-col { font-size: 14px; }
+  .footer-col h4 {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: rgba(245,241,234,0.55);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .footer-col a {
+    display: block;
+    text-decoration: none;
+    color: var(--cream);
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+  .footer-col a:hover { opacity: 1; text-decoration: underline; }
+  .footer-bottom {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(245,241,234,0.15);
+    font-size: 12.5px;
+    color: rgba(245,241,234,0.55);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-row">
+    <a href="/en/" class="logo-mark">
+      <img src="images/maisonevieve_logo_meditation_art.png" alt="Maison Eviève">
+    </a>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#subscriptions">Subscriptions</a>
+      <a href="#art">Art</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+      <a href="/en/art/">Shop</a>
+      <a href="/en/blog/">Journal</a>
+    </nav>
+    <div style="display:flex; align-items:center; gap:20px;">
+      <div class="lang-switch">
+        <a href="/en/" class="active">EN</a>
+        <span>/</span>
+        <a href="/fr/">FR</a>
+      </div>
+      <button class="menu-toggle">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- Intro / Hero -->
+  <section class="hero media" style="padding:0;">
+    <img src="images/art_galler_frame_meditation.png" alt="A framed artwork from the Mesdames collection">
+    <div class="hero-scrim"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <h1>A quiet place to keep your calm.</h1>
+        <p class="hero-tagline">a souvenir of a feeling</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="media about-media">
+          <img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Framed art piece, souvenir of a feeling">
+        </div>
+        <div>
+          <p class="section-label">About</p>
+          <h2>Written first as letters to my father, out at sea.</h2>
+          <div class="body-copy">
+            <p>Maison Eviève began the way most quiet things do — with a habit. I used to write to my father while he was away, folding whatever I was feeling into an envelope so it had somewhere to go. That instinct never left. It just grew up.</p>
+            <p>I trained as a makeup artist before I became anything else, and I carried that same attention — to detail, to the small ritual of getting ready for the day ahead — into a different kind of practice. I left Greece for Paris, and here, Maison Eviève became a place where meditation and art hold hands: a small, limited collection of art, a letter you can hold, and a magazine built slowly, on purpose, the old way.</p>
+            <p>Everything here is meant to be a souvenir — not of a place, but of a feeling worth keeping.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toile-divider" style="background-image:url('images/toile_de_jouy_maison_evieve.png');"></div>
+
+  <!-- Subscriptions -->
+  <section id="subscriptions">
+    <div class="wrap">
+      <p class="section-label">Subscriptions</p>
+      <h2>Three ways to keep a little more calm in your days.</h2>
+      <p class="lede">Every tier is built around the same idea — that a small, recurring moment of quiet is worth more than one big escape.</p>
+
+      <div class="tier-grid">
+        <div class="tier">
+          <div class="tier-name">Digital</div>
+          <div class="tier-price">€11 <span>/ month</span></div>
+          <p class="tier-desc">Behind-the-scenes notes, a monthly video and audio piece, and the digital edition of the quarterly magazine, "(meditating) On Art" — for slow-living reading, wherever you are.</p>
+          <a href="#" class="tier-cta">Subscribe</a>
+        </div>
+        <div class="tier">
+          <div class="tier-name">Letter &amp; Magazine</div>
+          <div class="tier-price">€22 <span>/ month</span></div>
+          <p class="tier-desc">A monthly letter and postcard through your actual letterbox, plus the printed quarterly magazine, "(meditating) On Art" — delivered to your door.</p>
+          <a href="#" class="tier-cta">Subscribe</a>
+        </div>
+        <div class="tier">
+          <div class="tier-name">Both</div>
+          <div class="tier-price">€27 <span>/ month</span></div>
+          <p class="tier-desc">Everything, together — the letters, the printed magazine, and the full digital layer. The complete Maison Eviève experience, in your inbox and your mailbox.</p>
+          <a href="#" class="tier-cta">Subscribe</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Art teaser -->
+  <section id="art" class="art-teaser media">
+    <img src="images/art_galler_frame_meditation.png" alt="A piece from the Mesdames collection">
+    <div class="hero-scrim" style="background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.1) 100%);"></div>
+    <div class="art-teaser-content">
+      <p class="section-label" style="color: rgba(255,255,255,0.7);">Available Art</p>
+      <h2>Mesdames — six women, kept to seven pieces.</h2>
+      <p class="lede">A small, limited collection in ink and soft pastel, connected to Greece and France. Once a piece is gone, it doesn't come back.</p>
+      <a href="/en/art/" class="art-cta">View the collection</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <p class="section-label">FAQ</p>
+      <h2>A few things people usually ask.</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>What actually arrives in the post?</summary>
+          <p>Depending on your tier, you'll receive a typed letter with a few handwritten lines and small sketches, a postcard, and — quarterly — a printed copy of "(meditating) On Art," our bilingual English/French magazine.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is the magazine really in two languages?</summary>
+          <p>Yes — every issue of "(meditating) On Art" is written and printed in both English and French, side by side.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I cancel my subscription?</summary>
+          <p>Yes, any time — subscriptions are billed monthly with no long lock-in, and you're welcome to pause or stop whenever it no longer fits your life.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Are the art pieces original or prints?</summary>
+          <p>Pieces from the Mesdames collection are signed and numbered prints of the original ink and pastel work, kept to a small edition size.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Where are you based, and where do you ship?</summary>
+          <p>Maison Eviève is based in Paris. Letters and art ship internationally — postage is calculated to keep each letter light and simple to send.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <p class="section-label">Contact</p>
+      <h2>Say hello.</h2>
+      <p class="lede">The easiest way to reach me directly is by email — I read and answer everything myself.</p>
+      <a href="mailto:hello@maisonevieve.com" class="contact-email">hello@maisonevieve.com</a>
+      <div class="social-row">
+        <a href="#">Instagram</a>
+        <a href="#">Pinterest</a>
+        <a href="#">Substack</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <img src="images/maisonevieve_logo_meditation_art.png" alt="Maison Eviève" style="height:28px; width:auto; filter: invert(1); margin-bottom:16px;">
+        <p class="footer-tagline">a souvenir of a feeling</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="/en/art/">Available Art</a>
+          <a href="/en/blog/">Journal</a>
+          <a href="/en/links/">Find us</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="/en/terms/">Terms</a>
+          <a href="/en/privacy/">Privacy</a>
+        </div>
+        <div class="footer-col">
+          <h4>Language</h4>
+          <a href="/en/">English</a>
+          <a href="/fr/">Français</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Maison Eviève, Paris</span>
+      <span>Handwritten aesthetic, typed with care</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
