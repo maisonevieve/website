@@ -12,17 +12,19 @@
     --black: #000000;
     --white: #FFFFFF;
     --charcoal: #636363;
-    --paper: #FAF8F5;
+    --grey: #F0EFEC;
     --serif: 'Fraunces', serif;
     --sans: 'Inter', sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { background: var(--paper); color: var(--black); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  body { background: var(--white); color: var(--black); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
   img { display: block; max-width: 100%; }
   .wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
   @media (min-width: 900px) { .wrap { padding: 0 64px; } }
+  .bg-white { background: var(--white); }
+  .bg-grey { background: var(--grey); }
   .media { position: relative; overflow: hidden; background: var(--charcoal); }
   .media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
@@ -30,7 +32,7 @@
   .btn:hover { background: rgba(0,0,0,0.6); color: var(--white); }
   .btn-subscribe { border-left: none; border-right: none; border-top: 2px solid var(--black); border-bottom: 2px solid var(--black); width: 100%; text-align: center; padding: 13px 0; }
 
-  header { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 1px solid rgba(0,0,0,0.1); }
+  header { position: sticky; top: 0; z-index: 50; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.1); }
   .nav-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 20px 32px; }
   @media (min-width: 900px) { .nav-row { padding: 20px 64px; } }
   nav.links { display: none; gap: 28px; font-size: 14px; justify-self: start; }
@@ -46,52 +48,64 @@
   .menu-toggle { background: none; border: none; font-family: var(--sans); font-size: 14px; cursor: pointer; }
   @media (min-width: 860px) { .menu-toggle { display: none; } }
 
-  .hero-scroll { position: relative; }
-  .hero-scroll .wrap { display: grid; grid-template-columns: 1fr; gap: 0; }
-  @media (min-width: 960px) { .hero-scroll .wrap { grid-template-columns: 1fr 1fr; gap: 48px; } }
+  /* ---------- Hero ---------- */
+  .hero-scroll { position: relative; overflow: visible; }
+  .hero-scroll .wrap { display: grid; grid-template-columns: 1fr; gap: 0; overflow: visible; }
+  @media (min-width: 960px) { .hero-scroll .wrap { grid-template-columns: 1fr 1.15fr; gap: 24px; overflow: visible; } }
   .hero-intro { padding: 72px 0 40px; }
   .hero-intro .eyebrow-line { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.05; }
   .hero-intro .big-word { font-family: var(--serif); font-size: clamp(4rem, 14vw, 9rem); font-weight: 600; line-height: 0.85; letter-spacing: -0.01em; }
   .hero-intro p { max-width: 480px; margin-top: 28px; font-size: 1.05rem; color: #2b2b2b; }
   .gallery-tags { display: flex; flex-direction: column; }
-  .gallery-tag { min-height: 68vh; display: flex; flex-direction: column; justify-content: center; padding: 40px 0; opacity: 0.35; transition: opacity 0.4s ease; }
+  .gallery-tag { min-height: 95vh; display: flex; flex-direction: column; justify-content: center; padding: 40px 0; opacity: 0.3; transition: opacity 0.9s ease; }
   .gallery-tag.active { opacity: 1; }
   .gallery-tag .tag-label { font-family: var(--sans); font-size: 13px; color: var(--charcoal); margin-bottom: 10px; }
   .gallery-tag h3 { font-family: var(--serif); font-weight: 500; font-size: 1.6rem; }
   .gallery-tag .tag-italic { font-family: var(--serif); font-style: italic; margin-top: 10px; font-size: 1.05rem; }
   .gallery-tag p { margin-top: 14px; max-width: 420px; color: #2b2b2b; }
   .gallery-tag a.tag-link { display: inline-block; margin-top: 18px; font-size: 14px; border-bottom: 1px solid var(--black); text-decoration: none; padding-bottom: 3px; }
-  .frame-column { position: relative; }
-  .frame-sticky { position: sticky; top: 24px; height: 90vh; display: flex; align-items: flex-start; justify-content: center; padding-top: 24px; }
-  .frame-stage { position: relative; width: 100%; max-width: 560px; aspect-ratio: 4 / 5; }
-  .frame-stage > img.frame-art { position: absolute; top: 14%; left: 13%; right: 13%; bottom: 16%; width: 74%; height: 70%; object-fit: cover; opacity: 0; transition: opacity 0.6s ease; z-index: 1; }
+  .frame-column { position: relative; overflow: visible; margin-left: -16px; }
+  .frame-sticky { position: sticky; top: 32px; height: 92vh; display: flex; align-items: flex-start; justify-content: center; padding-top: 16px; overflow: visible; }
+  .frame-stage { position: relative; width: 100%; max-width: 780px; aspect-ratio: 4 / 5; overflow: visible; }
+  .frame-stage > img.frame-art { position: absolute; top: 13%; left: 12.5%; right: 12.5%; bottom: 15%; width: 75%; height: 72%; object-fit: cover; opacity: 0; transition: opacity 1.1s ease; z-index: 1; }
   .frame-stage > img.frame-art.active { opacity: 1; }
   .frame-stage > img.frame-shell { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 2; pointer-events: none; }
-  .placeholder-note { position: absolute; bottom: 8px; left: 0; right: 0; text-align: center; font-size: 11px; color: var(--charcoal); z-index: 3; }
 
+  /* ---------- Section basics ---------- */
   section { padding: 110px 0; }
   .section-label { font-family: var(--sans); font-size: 13px; color: var(--charcoal); margin-bottom: 18px; }
   h2 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.9rem, 3.6vw, 2.9rem); letter-spacing: -0.01em; line-height: 1.15; }
   .lede { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; line-height: 1.5; max-width: 620px; margin-top: 22px; color: #1a1a1a; }
 
-  .masonry { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 140px; gap: 16px; margin-top: 48px; }
-  @media (max-width: 760px) { .masonry { grid-template-columns: repeat(2, 1fr); } }
-  .masonry .cell { position: relative; overflow: hidden; background: var(--charcoal); }
-  .masonry .cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .masonry .cell.text { background: transparent; display: flex; align-items: center; font-family: var(--serif); font-size: 1.05rem; line-height: 1.5; color: #2b2b2b; padding: 8px; }
-  .masonry .span-2 { grid-column: span 2; }
-  .masonry .span-2-row { grid-row: span 2; }
+  /* ---------- About: full-width slideshow + text ---------- */
+  #about { padding: 0 0 110px; }
+  .about-slideshow { position: relative; width: 100%; height: 78vh; min-height: 460px; overflow: hidden; }
+  .about-slideshow .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
+  .about-slideshow .slide.active { opacity: 1; }
+  .about-slideshow .slide img { width: 100%; height: 100%; object-fit: cover; }
+  .about-slideshow .slide-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; text-align: center; padding: 32px; }
+  .about-slideshow .slide-overlay h2 { color: var(--white); font-weight: 400; }
+  .about-slideshow .slide-overlay p { color: var(--white); font-family: var(--serif); font-style: italic; margin-top: 14px; font-size: 1.1rem; }
+  .slide-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.5rem; font-family: var(--serif); cursor: pointer; padding: 12px 20px; z-index: 5; }
+  .slide-arrow.prev { left: 8px; }
+  .slide-arrow.next { right: 8px; }
+  .about-text { padding-top: 72px; max-width: 720px; margin: 0 auto; }
+  .about-text p { color: #2b2b2b; margin-top: 20px; }
+  .about-text p:first-child { margin-top: 0; }
 
+  /* ---------- Subscriptions ---------- */
   .tier-grid { display: grid; grid-template-columns: 1fr; gap: 0; margin-top: 56px; border-top: 1px solid var(--black); }
   @media (min-width: 860px) { .tier-grid { grid-template-columns: repeat(3, 1fr); } }
-  .tier { border-bottom: 1px solid var(--black); padding: 40px 32px; display: flex; flex-direction: column; }
+  .tier { border-bottom: 1px solid var(--black); padding: 40px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; }
   @media (min-width: 860px) { .tier { border-right: 1px solid var(--black); } .tier:last-child { border-right: none; } }
+  .tier-image { width: 200px; height: 200px; object-fit: cover; margin-bottom: 24px; }
   .tier-name { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; }
   .tier-price { font-family: var(--serif); font-size: 2.6rem; font-weight: 300; margin-top: 14px; }
   .tier-price span { font-family: var(--sans); font-size: 0.85rem; color: var(--charcoal); }
   .tier-desc { margin-top: 18px; color: #2b2b2b; font-size: 0.95rem; flex-grow: 1; }
   .tier .btn-subscribe { margin-top: 28px; }
 
+  /* ---------- Art grid ---------- */
   .art-grid { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 56px; }
   @media (min-width: 760px) { .art-grid { grid-template-columns: repeat(3, 1fr); } }
   .art-card .media { aspect-ratio: 3/4; }
@@ -100,6 +114,7 @@
   .art-card a.view-link { display: inline-block; margin-top: 12px; font-size: 13px; border-bottom: 1px solid var(--black); text-decoration: none; }
   .art-browse-row { text-align: center; margin-top: 56px; }
 
+  /* ---------- FAQ ---------- */
   .faq-list { margin-top: 48px; max-width: 720px; }
   .faq-item { border-bottom: 1px solid rgba(0,0,0,0.15); }
   .faq-item summary { list-style: none; cursor: pointer; padding: 22px 0; font-family: var(--serif); font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; }
@@ -108,6 +123,7 @@
   .faq-item[open] summary::after { content: "–"; }
   .faq-item p { padding-bottom: 24px; max-width: 620px; color: #2b2b2b; }
 
+  /* ---------- Contact ---------- */
   .contact { text-align: center; }
   .contact .lede { margin-left: auto; margin-right: auto; }
   .contact-email { display: inline-block; margin-top: 32px; font-family: var(--serif); font-size: 1.6rem; font-style: italic; text-decoration: none; border-bottom: 1px solid var(--black); }
@@ -115,16 +131,17 @@
   .social-row a { text-decoration: none; color: var(--charcoal); }
   .social-row a:hover { color: var(--black); }
 
-  footer { background: var(--black); color: var(--paper); padding: 64px 0 32px; }
+  /* ---------- Footer ---------- */
+  footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
   .footer-grid { display: flex; flex-direction: column; gap: 32px; }
   @media (min-width: 700px) { .footer-grid { flex-direction: row; justify-content: space-between; align-items: flex-start; } }
   .footer-tagline { font-family: var(--serif); font-style: italic; font-size: 1.1rem; max-width: 320px; opacity: 0.9; margin-top: 16px; }
   .footer-links { display: flex; gap: 40px; flex-wrap: wrap; }
   .footer-col { font-size: 14px; }
-  .footer-col h4 { font-family: var(--sans); font-size: 13px; color: rgba(250,248,245,0.55); font-weight: 500; margin-bottom: 12px; }
-  .footer-col a { display: block; text-decoration: none; color: var(--paper); margin-bottom: 8px; opacity: 0.9; }
+  .footer-col h4 { font-family: var(--sans); font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 500; margin-bottom: 12px; }
+  .footer-col a { display: block; text-decoration: none; color: var(--white); margin-bottom: 8px; opacity: 0.9; }
   .footer-col a:hover { opacity: 1; text-decoration: underline; }
-  .footer-bottom { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(250,248,245,0.15); font-size: 12.5px; color: rgba(250,248,245,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer-bottom { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 </style>
 </head>
 <body>
@@ -151,7 +168,7 @@
 
 <main>
 
-  <section id="home" class="hero-scroll">
+  <section id="home" class="hero-scroll bg-white">
     <div class="wrap">
       <div>
         <div class="hero-intro">
@@ -177,9 +194,9 @@
           </div>
           <div class="gallery-tag" data-stage="3">
             <div class="tag-label">Available Art</div>
-            <h3>Mesdames — six women, kept to seven pieces</h3>
-            <p class="tag-italic">Once a piece is gone, it doesn't come back</p>
-            <p>A small, limited collection in ink and soft pastel, connected to Greece and France — each piece a quiet, museum-aesthetic moment to add to your own collection.</p>
+            <h3>A small, ever-changing collection</h3>
+            <p class="tag-italic">Original works and limited, signed prints</p>
+            <p>Each piece merges art and meditation and comes with its own meditation letter — a quiet, museum-aesthetic moment, and a genuine collectable to add to your own collection.</p>
             <a href="#art" class="tag-link">Browse the collection</a>
           </div>
         </div>
@@ -188,35 +205,46 @@
       <div class="frame-column">
         <div class="frame-sticky">
           <div class="frame-stage">
-            <img class="frame-art active" data-stage="1" src="images/toile_de_jouy_maison_evieve.png" alt="Placeholder artwork 1 — replace with a real piece">
-            <img class="frame-art" data-stage="2" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder artwork 2 — replace with a real piece">
-            <img class="frame-art" data-stage="3" src="images/art_galler_frame_meditation.png" alt="Placeholder artwork 3 — replace with a real piece">
-            <img class="frame-shell" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Frame">
-            <div class="placeholder-note">Placeholder artwork — swap in your 3 real pieces here</div>
+            <!-- frame-art layers are placeholders standing in for your 3 real pieces; frame-shell is the pinned gold frame photo -->
+            <img class="frame-art active" data-stage="1" src="images/toile_de_jouy_maison_evieve.png" alt="">
+            <img class="frame-art" data-stage="2" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="">
+            <img class="frame-art" data-stage="3" src="images/art_galler_frame_meditation.png" alt="">
+            <img class="frame-shell" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Gold frame">
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="about">
-    <div class="wrap">
-      <p class="section-label">About</p>
-      <h2>Written first as letters to my father, out at sea.</h2>
-      <p class="lede">Maison Eviève began the way most quiet things do — with a habit. That instinct never left. It just grew up into a place where meditation and art hold hands.</p>
+  <!-- About: full-width magazine-style slideshow, then full text -->
+  <section id="about" class="bg-grey">
+    <div class="about-slideshow">
+      <div class="slide active"><img src="images/mesdames_art_collection_meditation.jpg" alt=""></div>
+      <div class="slide"><img src="images/meditating_on_art_in_paris.jpg" alt=""></div>
+      <div class="slide"><img src="images/letter_subscription_maison_evieve.jpg" alt=""></div>
+      <div class="slide"><img src="images/flowers_artwork_maison_evieve.jpg" alt=""></div>
+      <div class="slide"><img src="images/art_meditation_mail_club.jpg" alt=""></div>
+      <div class="slide-overlay">
+        <div>
+          <h2>Art as a Ritual</h2>
+          <p>a souvenir of a feeling</p>
+        </div>
+      </div>
+      <button class="slide-arrow prev" aria-label="Previous image">&#8249;</button>
+      <button class="slide-arrow next" aria-label="Next image">&#8250;</button>
+    </div>
 
-      <div class="masonry">
-        <div class="cell span-2-row"><img src="images/art_galler_frame_meditation.png" alt="Placeholder — studio or process photo"></div>
-        <div class="cell text">I trained as a makeup artist before I became anything else, and carried that same attention to detail into a different kind of practice.</div>
-        <div class="cell"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder — art detail photo"></div>
-        <div class="cell text span-2">I left Greece for Paris, and here, Maison Eviève became a place for rituals of art — a small, limited collection, a letter you can hold, a magazine built slowly, on purpose.</div>
-        <div class="cell span-2"><img src="images/toile_de_jouy_maison_evieve.png" alt="Placeholder — brand texture"></div>
-        <div class="cell text">Everything here is meant to be a souvenir — not of a place, but of a feeling worth keeping.</div>
+    <div class="wrap">
+      <div class="about-text">
+        <p>The power within us needs no tools or accessories to be accessed. However, humans have always used rituals and spiritual items as symbols of their connection to deities, higher selves, and their bond with others. Objects that bear special meaning and purpose become reminders and symbols, and that is why at Maison Eviève, Evi creates art as a ritual. It initiates, connects deeply to the piece, and makes it a part of one's personal practice.</p>
+        <p>Evi Michailidou, the artist behind Maison Eviève, creates meditative art using mixed media: pastels, paint, thread, plaster, words, poetry. She finds inspiration in exploring the self and one's place in the world. Using gestural painting and abstract strokes, or detailed inking and embroidery, she expresses a fusion of elements often in the same piece.</p>
+        <p>After 12 years of experience as a makeup artist and further study in yoga, Evi learned to remove herself from her art and focus on the person experiencing it. This approach is evident in her work at Maison Eviève, whether creating silk scarves, meditation letters, art prints, or a meditative art retreat.</p>
+        <p>At Maison Eviève, we believe our creations are more than just objects — they are reminders to pause, reflect, and connect. Through our retreats and art, we offer moments of stillness in a fast-moving world. We create art collections and gift shop items with you in mind. You that don't need an escape from your life. You need one more calming moment to keep not needing an escape. Welcome to Maison Eviève, where we interpret art as a souvenir of a feeling.</p>
       </div>
     </div>
   </section>
 
-  <section id="subscriptions">
+  <section id="subscriptions" class="bg-white">
     <div class="wrap">
       <p class="section-label">Subscriptions</p>
       <h2>Three ways to keep a little more calm in your days.</h2>
@@ -224,18 +252,21 @@
 
       <div class="tier-grid">
         <div class="tier">
+          <img class="tier-image" src="images/letter_subscription_maison_evieve.jpg" alt="">
           <div class="tier-name">Digital</div>
           <div class="tier-price">€11 <span>/ month</span></div>
           <p class="tier-desc">Behind-the-scenes notes, a monthly video and audio piece, and the digital edition of the quarterly magazine, "(meditating) On Art" — for slow-living reading, wherever you are.</p>
           <a href="#" class="btn btn-subscribe">Subscribe</a>
         </div>
         <div class="tier">
+          <img class="tier-image" src="images/meditating_on_art_in_paris.jpg" alt="">
           <div class="tier-name">Letter &amp; Magazine</div>
           <div class="tier-price">€22 <span>/ month</span></div>
           <p class="tier-desc">A monthly letter and postcard through your actual letterbox, plus the printed quarterly magazine, "(meditating) On Art" — delivered to your door.</p>
           <a href="#" class="btn btn-subscribe">Subscribe</a>
         </div>
         <div class="tier">
+          <img class="tier-image" src="images/flowers_artwork_maison_evieve.jpg" alt="">
           <div class="tier-name">Both</div>
           <div class="tier-price">€27 <span>/ month</span></div>
           <p class="tier-desc">Everything, together — the letters, the printed magazine, and the full digital layer. The complete Maison Eviève experience, in your inbox and your mailbox.</p>
@@ -245,29 +276,29 @@
     </div>
   </section>
 
-  <section id="art">
+  <section id="art" class="bg-white">
     <div class="wrap">
       <p class="section-label">Available Art</p>
-      <h2>Mesdames — six women, kept to seven pieces.</h2>
-      <p class="lede">A small, limited collection in ink and soft pastel, connected to Greece and France. Once a piece is gone, it doesn't come back.</p>
+      <h2>Where art and meditation become one piece.</h2>
+      <p class="lede">Every piece merges art and a meditative practice, and arrives with its own meditation letter. Each is either an original work or a limited print, signed and numbered — a genuine collectable, not a reproduction you'll see everywhere.</p>
 
       <div class="art-grid">
         <div class="art-card">
           <div class="media"><img src="images/art_galler_frame_meditation.png" alt="Placeholder — art piece 1"></div>
-          <h4>Placeholder piece 1</h4>
-          <div class="price">Price TBD</div>
+          <h4>Original work</h4>
+          <div class="price">Signed original — price on request</div>
           <a href="#" class="view-link">View piece</a>
         </div>
         <div class="art-card">
           <div class="media"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder — art piece 2"></div>
-          <h4>Placeholder piece 2</h4>
-          <div class="price">Price TBD</div>
+          <h4>Limited print</h4>
+          <div class="price">Signed &amp; numbered — small edition</div>
           <a href="#" class="view-link">View piece</a>
         </div>
         <div class="art-card">
           <div class="media"><img src="images/toile_de_jouy_maison_evieve.png" alt="Placeholder — art piece 3"></div>
-          <h4>Placeholder piece 3</h4>
-          <div class="price">Price TBD</div>
+          <h4>Limited print</h4>
+          <div class="price">Signed &amp; numbered — small edition</div>
           <a href="#" class="view-link">View piece</a>
         </div>
       </div>
@@ -278,7 +309,7 @@
     </div>
   </section>
 
-  <section id="faq">
+  <section id="faq" class="bg-grey">
     <div class="wrap">
       <p class="section-label">FAQ</p>
       <h2>A few things people usually ask.</h2>
@@ -286,6 +317,14 @@
         <details class="faq-item">
           <summary>What actually arrives in the post?</summary>
           <p>Depending on your tier, you'll receive a typed letter with a few handwritten lines and small sketches, a postcard, and — quarterly — a printed copy of "(meditating) On Art," our bilingual English/French magazine.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does every piece of art really come with a meditation letter?</summary>
+          <p>Yes — each piece is meant to be a ritual, not just an object. It arrives with its own meditation letter, so the art becomes part of your personal practice from the moment it reaches you.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Are the art pieces original or prints?</summary>
+          <p>Both exist in the collection: some pieces are signed originals, others are limited prints, signed and numbered in a small edition. Either way, each is a genuine collectable — once a piece or an edition is gone, it doesn't come back.</p>
         </details>
         <details class="faq-item">
           <summary>Is the magazine really in two languages?</summary>
@@ -296,8 +335,8 @@
           <p>Yes, any time — subscriptions are billed monthly with no long lock-in, and you're welcome to pause or stop whenever it no longer fits your life.</p>
         </details>
         <details class="faq-item">
-          <summary>Are the art pieces original or prints?</summary>
-          <p>Pieces from the Mesdames collection are signed and numbered prints of the original ink and pastel work, kept to a small edition size.</p>
+          <summary>What makes this different from just buying art online?</summary>
+          <p>Maison Eviève treats art as a souvenir of a feeling, not decoration. Every piece, letter, and issue is built around a slow, museum-aesthetic moment of stillness — a ritual you keep coming back to, not a one-time purchase.</p>
         </details>
         <details class="faq-item">
           <summary>Where are you based, and where do you ship?</summary>
@@ -307,7 +346,7 @@
     </div>
   </section>
 
-  <section id="contact" class="contact">
+  <section id="contact" class="contact bg-white">
     <div class="wrap">
       <p class="section-label">Contact</p>
       <h2>Say hello.</h2>
@@ -360,17 +399,31 @@
   (function () {
     var tags = document.querySelectorAll('.gallery-tag');
     var arts = document.querySelectorAll('.frame-art');
-    if (!tags.length) return;
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var stage = entry.target.getAttribute('data-stage');
-          tags.forEach(function (t) { t.classList.toggle('active', t === entry.target); });
-          arts.forEach(function (a) { a.classList.toggle('active', a.getAttribute('data-stage') === stage); });
-        }
-      });
-    }, { threshold: 0.55 });
-    tags.forEach(function (t) { observer.observe(t); });
+    if (tags.length) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var stage = entry.target.getAttribute('data-stage');
+            tags.forEach(function (t) { t.classList.toggle('active', t === entry.target); });
+            arts.forEach(function (a) { a.classList.toggle('active', a.getAttribute('data-stage') === stage); });
+          }
+        });
+      }, { threshold: 0.5 });
+      tags.forEach(function (t) { observer.observe(t); });
+    }
+  })();
+
+  (function () {
+    var slides = document.querySelectorAll('.about-slideshow .slide');
+    if (!slides.length) return;
+    var current = 0;
+    function show(i) {
+      slides[current].classList.remove('active');
+      current = (i + slides.length) % slides.length;
+      slides[current].classList.add('active');
+    }
+    document.querySelector('.slide-arrow.prev').addEventListener('click', function () { show(current - 1); });
+    document.querySelector('.slide-arrow.next').addEventListener('click', function () { show(current + 1); });
   })();
 </script>
 
