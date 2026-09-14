@@ -69,15 +69,19 @@
   .gallery-tag a.tag-link { display: inline-block; margin-top: 18px; font-size: 14px; border-bottom: 1px solid var(--black); text-decoration: none; padding-bottom: 3px; }
   .frame-column { position: relative; overflow: visible; }
   .frame-sticky { position: sticky; top: 24px; height: 94vh; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px; overflow: visible; }
-  .frame-stage { position: relative; width: 100%; max-width: 960px; aspect-ratio: 4 / 5; overflow: visible; }
-  /* window bounds shared between the artwork layer and the frame-shell's cutout */
-  .frame-stage > img.frame-art { position: absolute; top: 13%; left: 12.5%; right: 12.5%; bottom: 15%; width: 75%; height: 72%; object-fit: cover; opacity: 0; transition: opacity 1.3s ease; z-index: 1; }
-  .frame-stage > img.frame-art.active { opacity: 1; }
+  .frame-stage { position: relative; width: 100%; max-width: 960px; overflow: visible; }
+  /* frame-shell sits in normal flow at its natural aspect ratio -- nothing crops or letterboxes it, shadow included */
   .frame-stage > img.frame-shell {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 2; pointer-events: none;
-    /* cuts a transparent hole matching the window bounds above, so the artwork layer shows through the frame's opening */
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 12.5% 13%, 12.5% 85%, 87.5% 85%, 87.5% 13%, 12.5% 13%);
+    position: relative; width: 100%; height: auto; display: block; z-index: 2; pointer-events: none;
+    /* SVG mask cuts a real transparent hole matching the window rect below, so artwork underneath shows through */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Crect width='100' height='100' fill='white'/%3E%3Crect x='20' y='20' width='60' height='55' fill='black'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Crect width='100' height='100' fill='white'/%3E%3Crect x='20' y='20' width='60' height='55' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   }
+  /* artwork window, sized smaller/tighter to stay safely inside the frame's true opening */
+  .frame-stage > img.frame-art { position: absolute; top: 20%; left: 20%; width: 60%; height: 55%; object-fit: cover; opacity: 0; transition: opacity 1.3s ease; z-index: 1; }
+  .frame-stage > img.frame-art.active { opacity: 1; }
 
   /* ---------- Section basics ---------- */
   section { padding: 110px 0; }
@@ -93,7 +97,7 @@
   .about-slideshow .slide img { width: 100%; height: 100%; object-fit: cover; }
   .about-slideshow .slide-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.25); display: flex; flex-direction: column; justify-content: flex-end; padding: 64px 48px; }
   .mag-lead { color: var(--white); font-family: var(--serif); font-weight: 500; font-size: clamp(1.8rem, 4vw, 3.2rem); line-height: 1.15; max-width: 720px; }
-  .mag-body { color: rgba(255,255,255,0.92); font-family: var(--sans); font-size: 1rem; max-width: 560px; margin-top: 18px; }
+  .mag-body { color: rgba(255,255,255,0.92); font-family: var(--sans); font-size: 1.05rem; max-width: 640px; margin-top: 18px; line-height: 1.6; }
   .slide-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.5rem; font-family: var(--serif); cursor: pointer; padding: 12px 20px; z-index: 5; }
   .slide-arrow.prev { left: 8px; }
   .slide-arrow.next { right: 8px; }
@@ -234,35 +238,34 @@
       <div class="slide">
         <img src="images/meditating_on_art_in_paris.jpg" alt="">
         <div class="slide-overlay">
-          <p class="mag-lead">Objects that bear special meaning become reminders.</p>
-          <p class="mag-body">That is why at Maison Eviève, Evi creates art as a ritual — it initiates, connects deeply to the piece, and makes it part of one's personal practice.</p>
+          <p class="mag-lead">The power within us needs no tools or accessories to be accessed.</p>
+          <p class="mag-body">However, humans have always used rituals and spiritual items as symbols of their connection to deities, higher selves, and their bond with others. Objects that bear special meaning and purpose become reminders and symbols, and that is why at Maison Eviève, Evi creates art as a ritual. It initiates, connects deeply to the piece, and makes it a part of one's personal practice.</p>
         </div>
       </div>
       <div class="slide">
         <img src="images/letter_subscription_maison_evieve.jpg" alt="">
         <div class="slide-overlay">
-          <p class="mag-lead">Pastels, paint, thread, plaster, words, poetry.</p>
-          <p class="mag-body">Evi Michailidou creates meditative art in mixed media, exploring the self and one's place in the world — gestural painting and abstract strokes, or detailed inking and embroidery, often fused in the same piece.</p>
+          <p class="mag-lead">Evi Michailidou creates meditative art using mixed media.</p>
+          <p class="mag-body">Pastels, paint, thread, plaster, words, poetry. She finds inspiration in exploring the self and one's place in the world. Using gestural painting and abstract strokes, or detailed inking and embroidery, she expresses a fusion of elements often in the same piece.</p>
         </div>
       </div>
       <div class="slide">
         <img src="images/flowers_artwork_maison_evieve.jpg" alt="">
         <div class="slide-overlay">
           <p class="mag-lead">12 years as a makeup artist, then further study in yoga.</p>
-          <p class="mag-body">Evi learned to remove herself from her art and focus on the person experiencing it — evident whether she's creating silk scarves, meditation letters, art prints, or a meditative art retreat.</p>
+          <p class="mag-body">Evi learned to remove herself from her art and focus on the person experiencing it. This approach is evident in her work at Maison Eviève, whether creating silk scarves, meditation letters, art prints, or a meditative art retreat.</p>
         </div>
       </div>
       <div class="slide">
         <img src="images/art_meditation_mail_club.jpg" alt="">
         <div class="slide-overlay">
-          <p class="mag-lead">You don't need an escape from your life.</p>
-          <p class="mag-body">You need one more calming moment to keep not needing an escape. Welcome to Maison Eviève, where we interpret art as a souvenir of a feeling.</p>
+          <p class="mag-lead">Our creations are more than just objects.</p>
+          <p class="mag-body">They are reminders to pause, reflect, and connect. Through our retreats and art, we offer moments of stillness in a fast-moving world. We create art collections and gift shop items with you in mind — for those who don't need an escape from their life, just one more calming moment to keep not needing one. Welcome to Maison Eviève, where we interpret art as a souvenir of a feeling.</p>
         </div>
       </div>
       <button class="slide-arrow prev" aria-label="Previous image">&#8249;</button>
       <button class="slide-arrow next" aria-label="Next image">&#8250;</button>
     </div>
-    <p class="sr-only">The power within us needs no tools or accessories to be accessed. However, humans have always used rituals and spiritual items as symbols of their connection to deities, higher selves, and their bond with others. Objects that bear special meaning and purpose become reminders and symbols, and that is why at Maison Eviève, Evi creates art as a ritual. It initiates, connects deeply to the piece, and makes it a part of one's personal practice. Evi Michailidou, the artist behind Maison Eviève, creates meditative art using mixed media: pastels, paint, thread, plaster, words, poetry. She finds inspiration in exploring the self and one's place in the world. Using gestural painting and abstract strokes, or detailed inking and embroidery, she expresses a fusion of elements often in the same piece. After 12 years of experience as a makeup artist and further study in yoga, Evi learned to remove herself from her art and focus on the person experiencing it. This approach is evident in her work at Maison Eviève, whether creating silk scarves, meditation letters, art prints, or a meditative art retreat. At Maison Eviève, we believe our creations are more than just objects — they are reminders to pause, reflect, and connect. Through our retreats and art, we offer moments of stillness in a fast-moving world. We create art collections and gift shop items with you in mind. You that don't need an escape from your life. You need one more calming moment to keep not needing an escape. Welcome to Maison Eviève, where we interpret art as a souvenir of a feeling.</p>
   </section>
 
   <section id="subscriptions" class="bg-cream">
