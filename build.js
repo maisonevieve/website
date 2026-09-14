@@ -318,9 +318,16 @@ ${urlEntries}
 
   // ---- Copy shared asset folders straight through ----
   for (const folder of ASSETS) {
-    const src = path.join(SOURCE, folder);
+    // Look in the repo root first (where your images/videos/audio/pdfs folders
+    // already live), then fall back to source/ if you've moved them there instead.
+    const rootSrc = path.join(__dirname, folder);
+    const sourceSrc = path.join(SOURCE, folder);
+    const src = fs.existsSync(rootSrc) ? rootSrc : sourceSrc;
     if (fs.existsSync(src)) {
       fs.cpSync(src, path.join(DIST, folder), { recursive: true });
+      console.log(`Copied ${folder}/ from ${src === rootSrc ? 'repo root' : 'source/'}`);
+    } else {
+      console.warn(`WARNING: no ${folder}/ folder found at repo root or in source/ -- ${folder} will be missing from the site.`);
     }
   }
 
