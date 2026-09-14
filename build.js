@@ -12,11 +12,11 @@ const { parseBody } = require('./parse-body');
 // ---------------------------------------------------------------------------
 // CONFIG -- fill these in with your real values (see the README for how to find them)
 // ---------------------------------------------------------------------------
-const SHEET_ID = '1otOxLv7_o5mE9Bz7jAnGhPP4BW5p-s0z';
+const SHEET_ID = 'REPLACE_WITH_YOUR_SHEET_ID';
 const TAB_GIDS = {
-  blog: '33486819',
-  digitalPosts: '344425927',
-  art: '2144480433',
+  blog: 'REPLACE_WITH_BLOG_TAB_GID',
+  digitalPosts: 'REPLACE_WITH_DIGITALPOSTS_TAB_GID',
+  art: 'REPLACE_WITH_ART_TAB_GID',
 };
 const SITE_URL = 'https://maisonevieve.com'; // update if still on the workers.dev address
 // ---------------------------------------------------------------------------
@@ -248,11 +248,13 @@ async function main() {
 
       let html = fs.readFileSync(srcPath, 'utf-8');
 
-      // Fix shared-asset paths to be root-relative, now that pages live under /en/ or /fr/
-      html = html.replace(/(src|data-pdf-src)="images\//g, '$1="/images/');
-      html = html.replace(/(src|data-pdf-src)="videos\//g, '$1="/videos/');
-      html = html.replace(/(src|data-pdf-src)="audio\//g, '$1="/audio/');
-      html = html.replace(/(src|data-pdf-src)="pdfs\//g, '$1="/pdfs/');
+      // Fix shared-asset paths to be root-relative, now that pages live under /en/ or /fr/.
+      // Covers both HTML attributes (src=, data-pdf-src=) and CSS references
+      // (background-image: url(...)), quoted or not, single or double quotes.
+      for (const folder of ['images', 'videos', 'audio', 'pdfs']) {
+        html = html.replace(new RegExp(`(src|data-pdf-src)="${folder}/`, 'g'), `$1="/${folder}/`);
+        html = html.replace(new RegExp(`url\\((['"]?)${folder}/`, 'g'), `url($1/${folder}/`);
+      }
 
       // Inject latest-3 art cards
       if (html.includes('ART_CARDS:latest:START')) {
