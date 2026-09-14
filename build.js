@@ -12,11 +12,11 @@ const { parseBody } = require('./parse-body');
 // ---------------------------------------------------------------------------
 // CONFIG -- fill these in with your real values (see the README for how to find them)
 // ---------------------------------------------------------------------------
-const SHEET_ID = '1otOxLv7_o5mE9Bz7jAnGhPP4BW5p-s0z';
+const SHEET_ID = 'REPLACE_WITH_YOUR_SHEET_ID';
 const TAB_GIDS = {
-  blog: '33486819',
-  digitalPosts: '344425927',
-  art: '2144480433',
+  blog: 'REPLACE_WITH_BLOG_TAB_GID',
+  digitalPosts: 'REPLACE_WITH_DIGITALPOSTS_TAB_GID',
+  art: 'REPLACE_WITH_ART_TAB_GID',
 };
 const SITE_URL = 'https://maisonevieve.com'; // update if still on the workers.dev address
 // ---------------------------------------------------------------------------
@@ -102,6 +102,7 @@ async function main() {
     for (const lang of ['en', 'fr']) {
       const row = langs[lang];
       if (!row) continue;
+      if (!row.slug) { console.warn(`Skipping Blog row with no slug (post_id: ${postId}, lang: ${lang})`); continue; }
       const bodyHtml = parseBody(row.body);
       const html = fillTemplate(blogTemplate, {
         LANG: lang,
@@ -129,6 +130,7 @@ async function main() {
     for (const lang of ['en', 'fr']) {
       const row = langs[lang];
       if (!row) continue;
+      if (!row.slug) { console.warn(`Skipping DigitalPosts row with no slug (post_id: ${postId}, lang: ${lang})`); continue; }
       const bodyHtml = parseBody(row.body);
       const gatedBadge = (row.gated || '').toLowerCase() === 'yes' ? '<div class="gated-badge">Members</div>' : '';
       const quoteBlock = row.quote ? `<p class="post-quote">"${row.quote}"</p>` : '';
@@ -158,6 +160,7 @@ async function main() {
     for (const lang of ['en', 'fr']) {
       const row = langs[lang];
       if (!row) continue;
+      if (!row.slug) { console.warn(`Skipping Art row with no slug (post_id: ${postId}, lang: ${lang})`); continue; }
 
       const images = (row.images || '').split(',').map(s => s.trim()).filter(Boolean);
       const video = (row.video || '').trim();
