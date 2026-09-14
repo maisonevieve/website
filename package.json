@@ -1,0 +1,9 @@
+{
+  "name": "maison-evieve-build",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build script: reads the Master Sheet and generates the bilingual Maison Evieve site into /dist",
+  "scripts": {
+    "build": "node build.js"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "name": "maison-evieve-website",
-  "compatibility_date": "2026-09-13",
+  "compatibility_date": "2026-09-14",
   "assets": {
-    "directory": "."
+    "directory": "dist"
   }
 }
