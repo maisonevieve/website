@@ -115,6 +115,12 @@
   .mag-lead { color: var(--white); font-family: var(--serif); font-weight: 500; font-size: clamp(1.8rem, 4vw, 3.2rem); line-height: 1.15; max-width: 720px; }
   .mag-body { color: rgba(255,255,255,0.92); font-family: var(--sans); font-size: 1.05rem; max-width: 640px; margin-top: 18px; line-height: 1.6; }
   .mag-hint { color: rgba(255,255,255,0.75); font-family: var(--serif); font-style: italic; font-size: 0.9rem; margin-top: 16px; }
+
+  /* First slide only: bigger, top-left instead of bottom-anchored, for easier reading at a glance */
+  .about-slideshow .slide:first-child .slide-overlay { justify-content: flex-start; }
+  .about-slideshow .slide:first-child .mag-lead { font-size: clamp(2.6rem, 6.5vw, 4.6rem); }
+  .about-slideshow .slide:first-child .mag-body { font-size: 1.3rem; max-width: 520px; }
+  .about-slideshow .slide:first-child .mag-hint { font-size: 1rem; }
   .slide-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.5rem; font-family: var(--serif); cursor: pointer; padding: 12px 20px; z-index: 5; }
   .slide-arrow.prev { left: 8px; }
   .slide-arrow.next { right: 8px; }
