@@ -23,7 +23,12 @@ const SITE_URL = 'https://maisonevieve.com'; // update if still on the workers.d
 
 const DIST = path.join(__dirname, 'dist');
 const SOURCE = path.join(__dirname, 'source'); // your existing static pages live here
-const ASSETS = ['images', 'videos', 'audio', 'pdfs']; // shared, not language-specific
+const ASSETS = {
+  images: ['images'],
+  videos: ['videos', 'video'],
+  audio: ['audio', 'audios'],
+  pdfs: ['pdfs', 'pdf'],
+}; // shared, not language-specific -- checks a couple of likely folder-name spellings
 
 function csvUrl(gid) {
   return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
@@ -317,17 +322,21 @@ ${urlEntries}
   writeFile('robots.txt', `User-agent: *\nDisallow: /en/members/\nDisallow: /fr/members/\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 
   // ---- Copy shared asset folders straight through ----
-  for (const folder of ASSETS) {
-    // Look in the repo root first (where your images/videos/audio/pdfs folders
-    // already live), then fall back to source/ if you've moved them there instead.
-    const rootSrc = path.join(__dirname, folder);
-    const sourceSrc = path.join(SOURCE, folder);
-    const src = fs.existsSync(rootSrc) ? rootSrc : sourceSrc;
-    if (fs.existsSync(src)) {
-      fs.cpSync(src, path.join(DIST, folder), { recursive: true });
-      console.log(`Copied ${folder}/ from ${src === rootSrc ? 'repo root' : 'source/'}`);
-    } else {
-      console.warn(`WARNING: no ${folder}/ folder found at repo root or in source/ -- ${folder} will be missing from the site.`);
+  for (const [outputName, candidates] of Object.entries(ASSETS)) {
+    let found = false;
+    for (const folderName of candidates) {
+      const rootSrc = path.join(__dirname, folderName);
+      const sourceSrc = path.join(SOURCE, folderName);
+      const src = fs.existsSync(rootSrc) ? rootSrc : (fs.existsSync(sourceSrc) ? sourceSrc : null);
+      if (src) {
+        fs.cpSync(src, path.join(DIST, outputName), { recursive: true });
+        console.log(`Copied ${outputName}/ from "${folderName}/" (${src.includes(SOURCE) ? 'source/' : 'repo root'})`);
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      console.warn(`WARNING: no folder found for "${outputName}" (tried: ${candidates.join(', ')}) -- ${outputName} will be missing from the site.`);
     }
   }
 
