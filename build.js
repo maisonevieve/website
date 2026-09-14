@@ -12,11 +12,11 @@ const { parseBody } = require('./parse-body');
 // ---------------------------------------------------------------------------
 // CONFIG -- fill these in with your real values (see the README for how to find them)
 // ---------------------------------------------------------------------------
-const SHEET_ID = 'REPLACE_WITH_YOUR_SHEET_ID';
+const SHEET_ID = '1otOxLv7_o5mE9Bz7jAnGhPP4BW5p-s0z';
 const TAB_GIDS = {
-  blog: 'REPLACE_WITH_BLOG_TAB_GID',
-  digitalPosts: 'REPLACE_WITH_DIGITALPOSTS_TAB_GID',
-  art: 'REPLACE_WITH_ART_TAB_GID',
+  blog: '33486819',
+  digitalPosts: '344425927',
+  art: '2144480433',
 };
 const SITE_URL = 'https://maisonevieve.com'; // update if still on the workers.dev address
 // ---------------------------------------------------------------------------
