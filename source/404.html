@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found — Maison Eviève</title>
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000; --white: #FFFFFF; --charcoal: #636363;
+    --grey: #F0EFEC; --cream: #F5F1EA;
+    --serif: 'Fraunces', serif; --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--grey); color: var(--black); font-family: var(--sans);
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 48px 32px; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+
+  .frame-illustration { width: 180px; height: auto; margin: 0 auto 40px; transform: rotate(-4deg); }
+  .frame-illustration path, .frame-illustration rect { stroke: var(--black); }
+
+  .not-found-label { font-family: var(--sans); font-size: 13px; color: var(--charcoal); letter-spacing: 0.02em; margin-bottom: 18px; }
+  h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; max-width: 640px; margin: 0 auto; }
+  .lede { font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: #2b2b2b; margin-top: 20px; max-width: 480px; }
+
+  .btn { display: inline-block; margin-top: 40px; font-family: var(--serif); text-transform: capitalize; font-size: 15px; background: transparent; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease; }
+  .btn:hover { background: rgba(0,0,0,0.6); color: var(--white); }
+
+  .quick-links { margin-top: 32px; display: flex; gap: 24px; font-size: 14px; }
+  .quick-links a { text-decoration: none; border-bottom: 1px solid transparent; }
+  .quick-links a:hover { border-color: var(--black); }
+  .opt-in-line { margin-top: 48px; font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--charcoal); }
+  .opt-in-line a { text-decoration: underline; color: var(--black); }
+</style>
+</head>
+<body>
+
+  <svg class="frame-illustration" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="10" width="180" height="220" stroke-width="3"/>
+    <rect x="28" y="28" width="144" height="184" stroke-width="1.5"/>
+    <path d="M60 150 Q100 90 140 150" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="70" cy="100" r="3" fill="var(--black)"/>
+  </svg>
+
+  <p class="not-found-label">404</p>
+  <h1>Even the most careful curator misplaces a piece sometimes.</h1>
+  <p class="lede">The page you're looking for seems to have wandered off — let's help it find its way back.</p>
+
+  <a href="index.html" class="btn">Return Home</a>
+
+  <div class="quick-links">
+    <a href="art.html">Available Art</a>
+    <a href="index.html#subscriptions">Subscriptions</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+
+  <p class="opt-in-line">Or, while you're here — <a href="index.html#subscriptions">let a little more calm find you</a>.</p>
+
+
+<!-- Cookie notice: small, equal-weight accept/reject, matches CNIL requirements -->
+<div id="cookieNotice" class="cookie-notice">
+  <p>We use only the cookies necessary for signups and checkout to work. <a href="legal.html#cookies">Learn more</a>.</p>
+  <div class="cookie-notice-actions">
+    <button id="cookieReject" class="cookie-btn">Reject</button>
+    <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accept</button>
+  </div>
+</div>
+<style>
+  .cookie-notice {
+    position: fixed; left: 20px; bottom: 20px; z-index: 90;
+    max-width: 300px; background: #FAF8F5; border: 1px solid rgba(0,0,0,0.15);
+    padding: 16px 18px; font-family: 'Inter', sans-serif; font-size: 12.5px; line-height: 1.5; color: #2b2b2b;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: none;
+  }
+  .cookie-notice.visible { display: block; }
+  .cookie-notice a { color: #000; text-decoration: underline; }
+  .cookie-notice-actions { display: flex; gap: 10px; margin-top: 12px; }
+  .cookie-btn {
+    flex: 1; font-family: 'Fraunces', serif; font-size: 12.5px; padding: 7px 0;
+    background: transparent; border: 1px solid #000; color: #000; cursor: pointer;
+  }
+  .cookie-btn-accept { background: #000; color: #fff; }
+  @media (max-width: 520px) { .cookie-notice { left: 12px; right: 12px; bottom: 12px; max-width: none; } }
+</style>
+<script>
+  (function () {
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    }
+    function setCookie(name, value) {
+      document.cookie = name + '=' + value + '; max-age=31536000; path=/';
+    }
+    var existing = getCookie('cookie_consent');
+    var notice = document.getElementById('cookieNotice');
+    if (!existing) {
+      notice.classList.add('visible');
+    }
+    document.getElementById('cookieAccept').addEventListener('click', function () {
+      setCookie('cookie_consent', 'accepted');
+      notice.classList.remove('visible');
+      // If analytics/marketing scripts are ever added, load them here, gated behind consent.
+    });
+    document.getElementById('cookieReject').addEventListener('click', function () {
+      setCookie('cookie_consent', 'rejected');
+      notice.classList.remove('visible');
+    });
+  })();
+</script>
+
+<!-- Editorial-style signup popup: click-to-open tab, gentle exit-intent pulse only -->
+<iframe name="ml_hidden_iframe" style="display:none;"></iframe>
+
+<button id="signupTab" class="signup-tab" aria-label="Open The First Letter signup">
+  <svg viewBox="0 0 26 20" xmlns="http://www.w3.org/2000/svg" width="24" height="18">
+    <path d="M2 4 C1.8 2.3 3 1.6 4.6 1.8 L21.2 1.5 C22.8 1.6 23.2 2.6 23.1 4.2 L22.8 15.4 C22.9 16.9 21.7 17.5 20.1 17.3 L4.3 17.5 C2.7 17.4 2 16.5 2.1 15 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 4.2 C7.5 8.6 10.3 10.9 13 11.1 C15.6 10.8 18.7 8.4 22.2 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<div id="signupOverlay" class="signup-overlay"></div>
+<div id="signupPopup" class="signup-popup">
+  <button id="signupPopupClose" class="signup-popup-close" aria-label="Close">&times;</button>
+  <div class="signup-popup-media">
+    <img src="images/art-meditation-letter-experience.jpg" alt="">
+    <div class="signup-popup-scrim"></div>
+    <div class="signup-popup-content">
+      <div class="popup-masthead">The First Letter</div>
+
+      <div class="popup-coverlines">
+        <p class="coverline-main">A Sensory Meditation on Receiving a Letter</p>
+        <p class="coverline-kicker">Plus, Inside</p>
+        <p class="coverline-sub">A Sample Issue of the Magazine — Written &amp; Read Aloud</p>
+      </div>
+
+      <div class="popup-bottom">
+        <!-- Submits to a hidden iframe so the page never navigates away -->
+        <form id="signupPopupForm" class="signup-popup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
+          <input type="email" name="fields[email]" placeholder="Your email" required>
+          <button type="submit">Send it to me</button>
+        </form>
+        <p class="signup-popup-confirm" id="signupPopupConfirm">Thank you — check your inbox shortly.</p>
+
+        <p class="signup-popup-privacy">We respect your privacy. Unsubscribe anytime.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .signup-tab {
+    position: fixed; top: 45vh; right: 0; z-index: 96;
+    width: 52px; height: 52px; border-radius: 50% 0 0 50%;
+    background: var(--white, #fff); color: #000;
+    border: 1px solid rgba(0,0,0,0.2); border-right: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: -2px 2px 10px rgba(0,0,0,0.08);
+    opacity: 0; transform: translateX(16px); transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .signup-tab.visible { opacity: 1; transform: translateX(0); }
+  .signup-tab.pulse { animation: signupTabPulse 1.6s ease-in-out 2; }
+  @keyframes signupTabPulse {
+    0%, 100% { box-shadow: -2px 2px 10px rgba(0,0,0,0.08); }
+    50% { box-shadow: -2px 2px 10px rgba(0,0,0,0.08), 0 0 0 8px rgba(0,0,0,0.06); }
+  }
+
+  .signup-popup {
+    position: fixed; top: calc(45vh - 40px); right: 24px; z-index: 95;
+    width: 320px; max-width: calc(100vw - 32px);
+    opacity: 0; visibility: hidden; transform: translateY(-12px) scale(0.96);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.3, 1), visibility 0.4s;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .signup-popup.visible { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+  .signup-overlay {
+    position: fixed; inset: 0; z-index: 94; background: rgba(0,0,0,0.17);
+    opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s;
+  }
+  .signup-overlay.visible { opacity: 1; visibility: visible; }
+  .signup-popup-close {
+    position: absolute; top: 10px; right: 10px; z-index: 3;
+    background: rgba(0,0,0,0.35); color: #fff; border: none; border-radius: 50%;
+    width: 26px; height: 26px; font-size: 16px; line-height: 1; cursor: pointer;
+  }
+  .signup-popup-media { position: relative; width: 100%; aspect-ratio: 3/4; overflow: hidden; }
+  .signup-popup-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .signup-popup-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75) 20%, rgba(0,0,0,0.25) 65%, rgba(0,0,0,0.1) 100%); }
+  .signup-popup-content { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: 40px 20px 18px; color: #fff; text-align: center; }
+  .popup-masthead { font-family: 'Fraunces', serif; font-weight: 600; font-size: 2.75rem; letter-spacing: -0.01em; line-height: 0.92; text-transform: uppercase; text-shadow: 0 2px 14px rgba(0,0,0,0.4); }
+  .popup-coverlines { margin-top: 8px; }
+  .coverline-main { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: 1.15rem; line-height: 1.3; }
+  .coverline-kicker { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; margin-top: 14px; }
+  .coverline-sub { font-family: 'Inter', sans-serif; font-size: 12px; line-height: 1.4; opacity: 0.92; margin-top: 3px; }
+  .popup-bottom { margin-top: 10px; }
+  .signup-popup-form { display: flex; flex-direction: column; gap: 8px; margin-top: 0; text-align: left; }
+  .signup-popup-form input {
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.55);
+    color: #fff; padding: 9px 12px; font-family: 'Inter', sans-serif; font-size: 13px;
+  }
+  .signup-popup-form input::placeholder { color: rgba(255,255,255,0.7); }
+  .signup-popup-form button {
+    background: #fff; color: #000; border: none; padding: 9px 12px;
+    font-family: 'Fraunces', serif; font-size: 13px; cursor: pointer;
+  }
+  .signup-popup-confirm { display: none; font-size: 12.5px; margin-top: 12px; }
+  .signup-popup-confirm.visible { display: block; }
+  .signup-popup-privacy { font-size: 10.5px; opacity: 0.65; margin-top: 12px; }
+  @media (max-width: 700px) { .signup-popup { left: 16px; right: 16px; width: auto; top: auto; bottom: 80px; } }
+  @media (min-width: 701px) {
+    .signup-popup { width: 440px; right: 64px; top: 16vh; }
+    .signup-popup-media { aspect-ratio: 3/3.6; }
+    .popup-masthead { font-size: 3.6rem; }
+    .coverline-main { font-size: 1.4rem; }
+    .coverline-kicker { font-size: 11.5px; margin-top: 20px; }
+    .coverline-sub { font-size: 13.5px; }
+    .signup-popup-content { padding: 52px 32px 26px; }
+    .signup-popup-form input, .signup-popup-form button { padding: 12px 14px; font-size: 14px; }
+  }
+</style>
+<script>
+  (function () {
+    var tab = document.getElementById('signupTab');
+    var popup = document.getElementById('signupPopup');
+    var closeBtn = document.getElementById('signupPopupClose');
+    var form = document.getElementById('signupPopupForm');
+    var confirmMsg = document.getElementById('signupPopupConfirm');
+
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    }
+    function setCookie(name, value, days) {
+      document.cookie = name + '=' + value + '; max-age=' + (days * 86400) + '; path=/';
+    }
+
+    // Tab fades in quietly a couple seconds after load -- not a jump-scare, just becomes available
+    setTimeout(function () { tab.classList.add('visible'); }, 1800);
+
+    // If they already subscribed, hide the tab entirely rather than keep inviting them
+    if (getCookie('signup_completed')) {
+      tab.style.display = 'none';
+    }
+
+    var overlay = document.getElementById('signupOverlay');
+    function openPopup() { popup.classList.add('visible'); overlay.classList.add('visible'); }
+    function closePopup() { popup.classList.remove('visible'); overlay.classList.remove('visible'); }
+
+    tab.addEventListener('click', function () {
+      popup.classList.contains('visible') ? closePopup() : openPopup();
+    });
+    closeBtn.addEventListener('click', closePopup);
+    overlay.addEventListener('click', closePopup);
+
+    // Gentle exit-intent: pulses the tab instead of forcing the popup open
+    document.addEventListener('mouseleave', function (e) {
+      if (e.clientY <= 0 && tab.classList.contains('visible') && !popup.classList.contains('visible')) {
+        tab.classList.add('pulse');
+        setTimeout(function () { tab.classList.remove('pulse'); }, 3200);
+      }
+    });
+
+    form.addEventListener('submit', function () {
+      setTimeout(function () {
+        form.style.display = 'none';
+        confirmMsg.classList.add('visible');
+        setCookie('signup_completed', '1', 365);
+      }, 600);
+    });
+  })();
+</script>
+</body>
+</html>
