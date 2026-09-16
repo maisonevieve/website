@@ -70,7 +70,7 @@
   /* ---------- Hero ---------- */
   .hero-scroll { position: relative; overflow: visible; }
   .hero-scroll .wrap { display: grid; grid-template-columns: 1fr; gap: 0; overflow: visible; }
-  @media (min-width: 960px) { .hero-scroll .wrap { grid-template-columns: 0.85fr 1.4fr; gap: 16px; overflow: visible; } }
+  @media (min-width: 960px) { .hero-scroll .wrap { grid-template-columns: 0.7fr 1.7fr; gap: 8px; overflow: visible; } }
   .hero-intro { padding: 112px 0 40px; }
   .hero-intro .eyebrow-line { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.05; }
   .hero-intro .big-word { font-family: var(--serif); font-size: clamp(4rem, 14vw, 9rem); font-weight: 600; line-height: 0.85; letter-spacing: -0.01em; }
@@ -85,7 +85,7 @@
   .gallery-tag a.tag-link { display: inline-block; margin-top: 18px; font-size: 14px; border-bottom: 1px solid var(--black); text-decoration: none; padding-bottom: 3px; }
   .frame-column { position: relative; overflow: visible; }
   .frame-sticky { position: sticky; top: 112px; height: 88vh; display: flex; align-items: flex-start; justify-content: center; padding-top: 8px; overflow: visible; }
-  .frame-stage { position: relative; width: 100%; max-width: 1180px; overflow: visible; }
+  .frame-stage { position: relative; width: 100%; max-width: 1500px; overflow: visible; }
   /* frame-shell sits in normal flow at its natural aspect ratio -- nothing crops or letterboxes it, shadow included */
   .frame-stage > img.frame-shell {
     position: relative; width: 100%; height: auto; display: block; z-index: 2; pointer-events: none;
@@ -793,6 +793,17 @@
     // If they already subscribed, hide the tab entirely rather than keep inviting them
     if (getCookie('signup_completed')) {
       tab.style.display = 'none';
+    }
+
+    // Auto-open once, after a delay -- but never for someone who's already
+    // subscribed, and never more than once per day even across other pages.
+    if (!getCookie('signup_completed') && !getCookie('signup_auto_shown')) {
+      setTimeout(function () {
+        setCookie('signup_auto_shown', '1', 1);
+        if (!popup.classList.contains('visible')) {
+          openPopup();
+        }
+      }, 20000);
     }
 
     var overlay = document.getElementById('signupOverlay');
