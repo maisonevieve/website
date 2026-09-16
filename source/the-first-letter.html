@@ -89,6 +89,15 @@
   .pdf-nav-row { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 16px 0; }
   .pdf-nav-row button { background: transparent; border: none; font-family: var(--serif); font-size: 1.6rem; cursor: pointer; color: var(--black); }
   .pdf-nav-row span { font-size: 13px; color: var(--charcoal); }
+  .pdf-fullscreen-btn { font-size: 1.1rem !important; }
+  .embed-pdf-flipbook:fullscreen,
+  .embed-pdf-flipbook:-webkit-full-screen { background: var(--black); display: flex; flex-direction: column; justify-content: center; }
+  .embed-pdf-flipbook:fullscreen .pdf-spread,
+  .embed-pdf-flipbook:-webkit-full-screen .pdf-spread { flex: 1; }
+  .embed-pdf-flipbook:fullscreen .pdf-nav-row button,
+  .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row button { color: var(--white); }
+  .embed-pdf-flipbook:fullscreen .pdf-nav-row span,
+  .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row span { color: var(--grey); }
   .pdf-loading { text-align: center; padding: 60px 20px; color: var(--charcoal); font-size: 14px; }
 
   footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
@@ -167,7 +176,7 @@
 
   <h3>(meditating) On Art Magazine</h3>
 
-  <div class="embed-pdf-flipbook" data-pdf-src="/pdfs/Living-space.pdf"><div class="pdf-spread"></div><div class="pdf-nav-row"><button class="pdf-prev" aria-label="Previous">&#8249;</button><span class="pdf-page-indicator">Loading…</span><button class="pdf-next" aria-label="Next">&#8250;</button></div></div>
+  <div class="embed-pdf-flipbook" data-pdf-src="/pdfs/Living-space.pdf"><div class="pdf-spread"></div><div class="pdf-nav-row"><button class="pdf-prev" aria-label="Previous">&#8249;</button><span class="pdf-page-indicator">Loading…</span><button class="pdf-next" aria-label="Next">&#8250;</button><button class="pdf-fullscreen-btn" aria-label="Fullscreen">&#9974;</button></div></div>
 </div>
 
 <footer>
@@ -252,6 +261,7 @@
     var indicator = container.querySelector('.pdf-page-indicator');
     var prevBtn = container.querySelector('.pdf-prev');
     var nextBtn = container.querySelector('.pdf-next');
+    var fullscreenBtn = container.querySelector('.pdf-fullscreen-btn');
 
     var pdfDoc, views, currentView = 0;
 
@@ -280,6 +290,9 @@
 
     async function renderView(viewIndex) {
       var pageNumbers = views[viewIndex];
+      // Hold the current height while we clear and rebuild, so the page never
+      // momentarily collapses -- that collapse is what was causing the scroll jump.
+      spread.style.minHeight = spread.offsetHeight + 'px';
       spread.innerHTML = '';
 
       try {
@@ -355,11 +368,33 @@
     }
 
     prevBtn.addEventListener('click', function () {
+      prevBtn.blur();
       if (currentView > 0) { currentView--; renderView(currentView); }
     });
     nextBtn.addEventListener('click', function () {
+      nextBtn.blur();
       if (currentView < views.length - 1) { currentView++; renderView(currentView); }
     });
+
+    if (fullscreenBtn) {
+      var requestFs = container.requestFullscreen || container.webkitRequestFullscreen;
+      var exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+      var fsElement = function () { return document.fullscreenElement || document.webkitFullscreenElement; };
+      if (requestFs) {
+        fullscreenBtn.addEventListener('click', function () {
+          fullscreenBtn.blur();
+          if (fsElement() === container) {
+            exitFs.call(document);
+          } else {
+            requestFs.call(container);
+          }
+        });
+        document.addEventListener('fullscreenchange', function () { if (fsElement() === container) renderView(currentView); });
+        document.addEventListener('webkitfullscreenchange', function () { if (fsElement() === container) renderView(currentView); });
+      } else {
+        fullscreenBtn.style.display = 'none'; // not supported on this browser -- hide rather than show a broken button
+      }
+    }
 
     renderView(currentView);
   }
