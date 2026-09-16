@@ -172,7 +172,12 @@
     var prevBtn = container.querySelector('.pdf-prev');
     var nextBtn = container.querySelector('.pdf-next');
     var pdfDoc, views, currentView = 0;
-    try { pdfDoc = await pdfjsLib.getDocument(src).promise; }
+    try { pdfDoc = await pdfjsLib.getDocument({
+        url: src,
+        disableStream: true,
+        disableAutoFetch: true,
+        disableRange: true,
+      }).promise; }
     catch (e) { spread.innerHTML = '<p class="pdf-loading">Could not load PDF</p>'; return; }
     views = buildViews(pdfDoc.numPages);
     async function renderView(idx) {
