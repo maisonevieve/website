@@ -32,7 +32,18 @@ function inlineFormat(text) {
 }
 
 function renderEmbed(kind, arg) {
-  arg = arg.trim();
+  if (kind === 'signup') {
+    return `<div class="embed-signup">
+    <p class="embed-signup-headline">Get The First Letter</p>
+    <p class="embed-signup-sub">A sensory meditation on receiving a letter, plus a sample issue of the magazine.</p>
+    <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
+      <input type="email" name="fields[email]" placeholder="Your email" required>
+      <button type="submit">Send it to me</button>
+    </form>
+    <p class="embed-signup-confirm">Thank you — check your inbox shortly.</p>
+  </div>`;
+  }
+  arg = (arg || '').trim();
   if (kind === 'video') {
     return `<div class="embed-video"><video controls poster=""><source src="/videos/${escapeAttr(arg)}" type="video/mp4"></video></div>`;
   }
@@ -58,6 +69,18 @@ function renderEmbed(kind, arg) {
   if (kind === 'pdf-flipbook') {
     return `<div class="embed-pdf-flipbook" data-pdf-src="/pdfs/${escapeAttr(arg)}"><div class="pdf-spread"></div><div class="pdf-nav-row"><button class="pdf-prev" aria-label="Previous">&#8249;</button><span class="pdf-page-indicator">Loading…</span><button class="pdf-next" aria-label="Next">&#8250;</button></div></div>`;
   }
+  if (kind === 'signup') {
+    // Optional custom headline: [signup: Your custom text here] -- falls back to a
+    // sensible default if left blank: [signup]
+    const headline = arg || 'Enjoying this? Get "The First Letter," free.';
+    return `<div class="embed-signup">
+    <p class="embed-signup-title">${headline}</p>
+    <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe_inline">
+      <input type="email" name="fields[email]" placeholder="Your email" required>
+      <button type="submit">Sign up</button>
+    </form>
+  </div>`;
+  }
   return '';
 }
 
@@ -65,7 +88,7 @@ function parseBody(raw) {
   if (!raw) return '';
   const blocks = raw.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
   const html = blocks.map(block => {
-    const embedMatch = block.match(/^\[(video|audio|youtube|flipbook|pdf-flipbook):\s*(.+)\]$/i);
+    const embedMatch = block.match(/^\[(video|audio|youtube|flipbook|pdf-flipbook|signup)(?:\s*:\s*(.*))?\]$/i);
     if (embedMatch) {
       return renderEmbed(embedMatch[1].toLowerCase(), embedMatch[2]);
     }
