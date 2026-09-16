@@ -17,8 +17,15 @@ function escapeAttr(str) {
 }
 
 function inlineFormat(text) {
-  // Order matters: links before bold/italic so URLs with underscores etc. aren't mangled
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  // Order matters: links before bold/italic so URLs with underscores etc. aren't mangled.
+  // A link starting with http:// or https:// is treated as external and opens in a new
+  // tab; anything else (a relative path to another page on this site) opens in the same tab.
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
+    const isExternal = /^https?:\/\//i.test(url.trim());
+    return isExternal
+      ? `<a href="${url}" target="_blank" rel="noopener">${label}</a>`
+      : `<a href="${url}">${label}</a>`;
+  });
   text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
   return text;
