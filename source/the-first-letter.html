@@ -247,6 +247,12 @@
 
     var pdfDoc, views, currentView = 0;
 
+    var timeoutMs = 15000;
+    var timedOut = false;
+    var timeoutId = setTimeout(function () {
+      timedOut = true;
+      spread.innerHTML = '<p class="pdf-loading">This PDF is taking too long to load. It may be too large, or something on the server is blocking it.</p>';
+    }, timeoutMs);
     try {
       pdfDoc = await pdfjsLib.getDocument({
         url: src,
@@ -254,8 +260,11 @@
         disableAutoFetch: true,
         disableRange: true,
       }).promise;
+      clearTimeout(timeoutId);
+      if (timedOut) return; // the timeout message already showed; don't overwrite it
     } catch (err) {
-      spread.innerHTML = '<p class="pdf-loading">Could not load PDF: ' + src + '</p>';
+      clearTimeout(timeoutId);
+      if (!timedOut) spread.innerHTML = '<p class="pdf-loading">Could not load PDF: ' + (err && err.message ? err.message : src) + '</p>';
       return;
     }
 
@@ -264,6 +273,8 @@
     async function renderView(viewIndex) {
       var pageNumbers = views[viewIndex];
       spread.innerHTML = '';
+
+      try {
 
       // A single page (cover/back cover) is shown at the same physical size as one
       // half of a two-page spread, so pages don't visually resize as you flip through.
@@ -330,6 +341,9 @@
       indicator.textContent = pageNumbers.length === 1
         ? 'Page ' + pageNumbers[0] + ' of ' + pdfDoc.numPages
         : 'Pages ' + pageNumbers[0] + '–' + pageNumbers[1] + ' of ' + pdfDoc.numPages;
+      } catch (err) {
+        indicator.textContent = 'Could not display this page: ' + (err && err.message ? err.message : err);
+      }
     }
 
     prevBtn.addEventListener('click', function () {
