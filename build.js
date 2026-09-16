@@ -239,12 +239,11 @@ async function main() {
   // ---- Card HTML for listings (latest 3, and full catalogue) ----
   function artCardHtml(row, featuredImgOverride) {
     const img = featuredImgOverride || row.featured || (row.images || '').split(',')[0].trim();
-    const label = (row.type || '').toLowerCase() === 'original' ? 'Original work' : 'Limited print';
-    const priceLabel = (row.type || '').toLowerCase() === 'original' ? 'Signed original' : 'Signed & numbered';
+    const priceText = row.price ? `€${row.price}` : 'Price upon inquiry';
     return `<div class="art-card">
           <div class="media"><a href="${row._href}"><img src="/images/${img}" alt="${row.title}"></a></div>
           <h4>${row.title}</h4>
-          <div class="price">${priceLabel}</div>
+          <div class="price">${priceText}</div>
           <a href="${row._href}" class="view-link">View piece</a>
         </div>`;
   }
