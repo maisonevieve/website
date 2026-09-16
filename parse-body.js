@@ -82,7 +82,7 @@ function renderEmbed(kind, arg) {
     return `<div class="embed-flipbook">\n    ${slides}\n    <button class="flipbook-arrow prev" aria-label="Previous">&#8249;</button>\n    <button class="flipbook-arrow next" aria-label="Next">&#8250;</button>\n  </div>`;
   }
   if (kind === 'pdf-flipbook') {
-    return `<div class="embed-pdf-flipbook" data-pdf-src="/pdfs/${escapeAttr(arg)}"><div class="pdf-spread"></div><div class="pdf-nav-row"><button class="pdf-prev" aria-label="Previous">&#8249;</button><span class="pdf-page-indicator">Loading…</span><button class="pdf-next" aria-label="Next">&#8250;</button></div></div>`;
+    return `<div class="embed-pdf-flipbook" data-pdf-src="/pdfs/${escapeAttr(arg)}"><div class="pdf-spread"></div><div class="pdf-nav-row"><button class="pdf-prev" aria-label="Previous">&#8249;</button><span class="pdf-page-indicator">Loading…</span><button class="pdf-next" aria-label="Next">&#8250;</button><button class="pdf-fullscreen-btn" aria-label="Fullscreen">&#9974;</button></div></div>`;
   }
   if (kind === 'signup') {
     // Optional custom headline: [signup: Your custom text here] -- falls back to a
