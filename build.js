@@ -273,7 +273,7 @@ async function main() {
       // Covers both HTML attributes (src=, data-pdf-src=) and CSS references
       // (background-image: url(...)), quoted or not, single or double quotes.
       for (const folder of ['images', 'videos', 'audio', 'pdfs']) {
-        html = html.replace(new RegExp(`(src|data-pdf-src|href)="${folder}/`, 'g'), `$1="/${folder}/`);
+        html = html.replace(new RegExp(`(src|data-pdf-src|href|poster)="${folder}/`, 'g'), `$1="/${folder}/`);
         html = html.replace(new RegExp(`url\\((['"]?)${folder}/`, 'g'), `url($1/${folder}/`);
       }
 
