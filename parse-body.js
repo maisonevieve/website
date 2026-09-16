@@ -21,7 +21,14 @@ function inlineFormat(text) {
   // A link starting with http:// or https:// is treated as external and opens in a new
   // tab; anything else (a relative path to another page on this site) opens in the same tab.
   text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
-    const isExternal = /^https?:\/\//i.test(url.trim());
+    const trimmed = url.trim();
+    // Treat it as internal (same tab) either if it's a relative path, OR if it's a full
+    // URL that happens to point at one of this site's own domains -- so typing either
+    // "/en/blog/post.html" or the full "https://maisonevieve.com/en/blog/post.html"
+    // both behave correctly, rather than needing to remember which form to use.
+    const ownDomains = ['maisonevieve.com', 'website.maisonevieve.workers.dev'];
+    const isOwnDomain = ownDomains.some(domain => trimmed.includes(domain));
+    const isExternal = /^https?:\/\//i.test(trimmed) && !isOwnDomain;
     return isExternal
       ? `<a href="${url}" target="_blank" rel="noopener">${label}</a>`
       : `<a href="${url}">${label}</a>`;
@@ -48,7 +55,10 @@ function renderEmbed(kind, arg) {
     return `<div class="embed-video"><video controls poster=""><source src="/videos/${escapeAttr(arg)}" type="video/mp4"></video></div>`;
   }
   if (kind === 'audio') {
-    return `<div class="embed-audio"><p>Audio</p><audio controls><source src="/audio/${escapeAttr(arg)}" type="audio/mpeg"></audio></div>`;
+    const audioMimeTypes = { mp3: 'audio/mpeg', m4a: 'audio/mp4', wav: 'audio/wav', ogg: 'audio/ogg' };
+    const ext = (arg.split('.').pop() || '').toLowerCase();
+    const mimeType = audioMimeTypes[ext] || 'audio/mpeg';
+    return `<div class="embed-audio"><p>Audio</p><audio controls><source src="/audio/${escapeAttr(arg)}" type="${mimeType}"></audio></div>`;
   }
   if (kind === 'youtube') {
     return `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${escapeAttr(arg)}" title="Video" allowfullscreen></iframe></div>`;
