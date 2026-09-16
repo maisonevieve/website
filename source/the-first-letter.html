@@ -309,16 +309,25 @@
         var scale = singlePageWidth / unscaledViewport.width;
         var viewport = page.getViewport({ scale: scale });
 
+        // Render at the screen's actual pixel density (devicePixelRatio), not just its
+        // logical size, so text stays sharp on Retina-style displays like an iPad's --
+        // the canvas gets more real pixels to draw into, then CSS scales it back down
+        // to the same on-screen size.
+        var dpr = window.devicePixelRatio || 1;
+        var renderViewport = page.getViewport({ scale: scale * dpr });
+
         var pageWrap = document.createElement('div');
         pageWrap.className = 'pdf-page-wrap';
         pageWrap.style.width = viewport.width + 'px';
         var canvas = document.createElement('canvas');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
+        canvas.width = renderViewport.width;
+        canvas.height = renderViewport.height;
+        canvas.style.width = viewport.width + 'px';
+        canvas.style.height = viewport.height + 'px';
         pageWrap.appendChild(canvas);
         spread.appendChild(pageWrap);
 
-        await page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
+        await page.render({ canvasContext: canvas.getContext('2d'), viewport: renderViewport }).promise;
 
         var annotations = await page.getAnnotations();
         for (var i = 0; i < annotations.length; i++) {
@@ -389,8 +398,8 @@
             requestFs.call(container);
           }
         });
-        document.addEventListener('fullscreenchange', function () { if (fsElement() === container) renderView(currentView); });
-        document.addEventListener('webkitfullscreenchange', function () { if (fsElement() === container) renderView(currentView); });
+        document.addEventListener('fullscreenchange', function () { spread.style.minHeight = ''; renderView(currentView); });
+        document.addEventListener('webkitfullscreenchange', function () { spread.style.minHeight = ''; renderView(currentView); });
       } else {
         fullscreenBtn.style.display = 'none'; // not supported on this browser -- hide rather than show a broken button
       }
