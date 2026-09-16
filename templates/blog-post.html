@@ -162,8 +162,16 @@
   })();
 </script>
 <script type="module">
-  import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.min.mjs';
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.worker.min.mjs';
+  let pdfjsLib;
+  try {
+    pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.worker.min.mjs';
+  } catch (err) {
+    document.querySelectorAll('.pdf-page-indicator').forEach(function (el) {
+      el.textContent = 'Could not load the PDF viewer library: ' + (err && err.message ? err.message : err);
+    });
+  }
+  if (pdfjsLib) {
   function buildViews(n) { var v=[[1]],i=2; while(i<=n){ if(i===n){v.push([i]);i++;} else {v.push([i,i+1]);i+=2;} } return v; }
   async function initPdfFlipbook(container) {
     var src = container.getAttribute('data-pdf-src');
@@ -227,6 +235,7 @@
     renderView(currentView);
   }
   document.querySelectorAll('.embed-pdf-flipbook').forEach(initPdfFlipbook);
+  }
 </script>
 <script>
   document.querySelectorAll('.embed-signup-form').forEach(function (form) {
