@@ -69,6 +69,12 @@
   .embed-audio { margin: 40px 0; padding: 20px; background: var(--grey); }
   .embed-audio audio { width: 100%; }
   .embed-audio p { font-size: 13px; color: var(--charcoal); margin-bottom: 10px; }
+  .embed-signup { margin: 40px 0; padding: 32px; background: var(--grey); text-align: center; }
+  .embed-signup-title { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 18px; }
+  .embed-signup-form { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+  .embed-signup-form input { flex: 1; padding: 11px 14px; border: 1px solid var(--charcoal); font-family: var(--sans); font-size: 14px; }
+  .embed-signup-form button { background: var(--black); color: var(--white); border: none; padding: 11px 20px; font-family: var(--serif); font-size: 14px; cursor: pointer; }
+  @media (max-width: 480px) { .embed-signup-form { flex-direction: column; } }
   .embed-flipbook { position: relative; width: 100%; aspect-ratio: 4/3; overflow: hidden; background: var(--charcoal); margin: 40px 0; }
   .embed-flipbook .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
   .embed-flipbook .slide.active { opacity: 1; }
@@ -93,6 +99,7 @@
 </head>
 <body>
 <div id="scrollSentinel" style="position:absolute; top:0; height:1px; width:1px;"></div>
+<iframe name="ml_hidden_iframe" style="display:none;"></iframe>
 
 {{HEADER}}
 
@@ -211,6 +218,16 @@
     renderView(currentView);
   }
   document.querySelectorAll('.embed-pdf-flipbook').forEach(initPdfFlipbook);
+</script>
+<script>
+  document.querySelectorAll('.embed-signup-form').forEach(function (form) {
+    form.addEventListener('submit', function () {
+      setTimeout(function () {
+        form.classList.add('submitted');
+        form.nextElementSibling.classList.add('visible');
+      }, 600);
+    });
+  });
 </script>
 </body>
 </html>
