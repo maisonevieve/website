@@ -87,6 +87,11 @@
   .pdf-nav-row { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 16px 0; }
   .pdf-nav-row button { background: transparent; border: none; font-family: var(--serif); font-size: 1.6rem; cursor: pointer; color: var(--black); }
   .pdf-nav-row span { font-size: 13px; color: var(--charcoal); }
+  .pdf-fullscreen-btn { font-size: 1.1rem !important; }
+  .embed-pdf-flipbook:fullscreen, .embed-pdf-flipbook:-webkit-full-screen { background: var(--black); display: flex; flex-direction: column; justify-content: center; }
+  .embed-pdf-flipbook:fullscreen .pdf-spread, .embed-pdf-flipbook:-webkit-full-screen .pdf-spread { flex: 1; }
+  .embed-pdf-flipbook:fullscreen .pdf-nav-row button, .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row button { color: var(--white); }
+  .embed-pdf-flipbook:fullscreen .pdf-nav-row span, .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row span { color: var(--grey); }
 
   footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
   .footer-wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
@@ -164,8 +169,8 @@
 <script type="module">
   let pdfjsLib;
   try {
-    pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.min.mjs');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.worker.min.mjs';
+    pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
   } catch (err) {
     document.querySelectorAll('.pdf-page-indicator').forEach(function (el) {
       el.textContent = 'Could not load the PDF viewer library: ' + (err && err.message ? err.message : err);
@@ -179,6 +184,7 @@
     var indicator = container.querySelector('.pdf-page-indicator');
     var prevBtn = container.querySelector('.pdf-prev');
     var nextBtn = container.querySelector('.pdf-next');
+    var fullscreenBtn = container.querySelector('.pdf-fullscreen-btn');
     var pdfDoc, views, currentView = 0;
     var timedOut = false;
     var timeoutId = setTimeout(function () { timedOut = true; spread.innerHTML = '<p class="pdf-loading">This PDF is taking too long to load.</p>'; }, 15000);
@@ -191,7 +197,7 @@
     catch (e) { clearTimeout(timeoutId); if (!timedOut) spread.innerHTML = '<p class="pdf-loading">Could not load PDF: ' + (e && e.message ? e.message : e) + '</p>'; return; }
     views = buildViews(pdfDoc.numPages);
     async function renderView(idx) {
-      var nums = views[idx]; spread.innerHTML = '';
+      var nums = views[idx]; spread.style.minHeight = spread.offsetHeight + 'px'; spread.innerHTML = '';
       try {
       var singleW = spread.clientWidth / 2;
       for (var p = 0; p < nums.length; p++) {
@@ -230,8 +236,23 @@
         indicator.textContent = 'Could not display this page: ' + (err && err.message ? err.message : err);
       }
     }
-    prevBtn.addEventListener('click', function () { if (currentView>0){currentView--;renderView(currentView);} });
-    nextBtn.addEventListener('click', function () { if (currentView<views.length-1){currentView++;renderView(currentView);} });
+    prevBtn.addEventListener('click', function () { prevBtn.blur(); if (currentView>0){currentView--;renderView(currentView);} });
+    nextBtn.addEventListener('click', function () { nextBtn.blur(); if (currentView<views.length-1){currentView++;renderView(currentView);} });
+    if (fullscreenBtn) {
+      var requestFs = container.requestFullscreen || container.webkitRequestFullscreen;
+      var exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+      var fsElement = function () { return document.fullscreenElement || document.webkitFullscreenElement; };
+      if (requestFs) {
+        fullscreenBtn.addEventListener('click', function () {
+          fullscreenBtn.blur();
+          if (fsElement() === container) { exitFs.call(document); } else { requestFs.call(container); }
+        });
+        document.addEventListener('fullscreenchange', function () { if (fsElement() === container) renderView(currentView); });
+        document.addEventListener('webkitfullscreenchange', function () { if (fsElement() === container) renderView(currentView); });
+      } else {
+        fullscreenBtn.style.display = 'none';
+      }
+    }
     renderView(currentView);
   }
   document.querySelectorAll('.embed-pdf-flipbook').forEach(initPdfFlipbook);
