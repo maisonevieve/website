@@ -248,7 +248,12 @@
     var pdfDoc, views, currentView = 0;
 
     try {
-      pdfDoc = await pdfjsLib.getDocument(src).promise;
+      pdfDoc = await pdfjsLib.getDocument({
+        url: src,
+        disableStream: true,
+        disableAutoFetch: true,
+        disableRange: true,
+      }).promise;
     } catch (err) {
       spread.innerHTML = '<p class="pdf-loading">Could not load PDF: ' + src + '</p>';
       return;
