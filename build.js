@@ -78,10 +78,32 @@ function groupByPostId(rows) {
   return groups;
 }
 
+// Sheet dates are typed as DD/MM/YYYY (the natural way to write a date in France) --
+// parsed explicitly here rather than relying on new Date(), which assumes the
+// American MM/DD/YYYY order and silently misreads or rejects DD/MM/YYYY dates.
+// Used for BOTH display formatting and date sorting, so the two can never disagree.
+function parseSheetDate(dateStr) {
+  if (!dateStr) return null;
+  const slashMatch = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (slashMatch) {
+    const [, day, month, year] = slashMatch;
+    return new Date(Number(year), Number(month) - 1, Number(day));
+  }
+  const d = new Date(dateStr); // handles YYYY-MM-DD and other unambiguous formats
+  return isNaN(d) ? null : d;
+}
+
+function heroImageBlock(row) {
+  if (!row.image) {
+    console.warn(`No image set for "${row.title}" (slug: ${row.slug}) -- showing a plain placeholder block instead of a broken image.`);
+    return '<div class="post-hero-image"></div>';
+  }
+  return `<div class="post-hero-image">\n  <img src="/images/${row.image}" alt="${row.title}">\n</div>`;
+}
+
 function formatDate(dateStr, lang) {
-  if (!dateStr) return '';
-  const d = new Date(dateStr);
-  if (isNaN(d)) return dateStr;
+  const d = parseSheetDate(dateStr);
+  if (!d) return dateStr || '';
   return d.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
@@ -113,7 +135,7 @@ async function main() {
         LANG: lang,
         TITLE: row.title,
         DATE: formatDate(row.date, lang),
-        IMAGE: row.image,
+        POST_HERO_IMAGE: heroImageBlock(row),
         BODY_HTML: bodyHtml,
         HEADER: readPartial('header.html'),
         FOOTER: readPartial('footer-minimal.html'),
@@ -143,7 +165,7 @@ async function main() {
         LANG: lang,
         TITLE: row.title,
         DATE: formatDate(row.date, lang),
-        IMAGE: row.image,
+        POST_HERO_IMAGE: heroImageBlock(row),
         BODY_HTML: bodyHtml,
         GATED_BADGE: gatedBadge,
         QUOTE_BLOCK: quoteBlock,
@@ -284,10 +306,10 @@ async function main() {
     const distBlogPath = path.join(DIST, lang, 'blog.html');
     if (!fs.existsSync(distBlogPath)) continue;
     let html = fs.readFileSync(distBlogPath, 'utf-8');
-    const posts = blogIndexByLang[lang].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const posts = blogIndexByLang[lang].sort((a, b) => (parseSheetDate(b.date) || 0) - (parseSheetDate(a.date) || 0));
     const cardsHtml = posts.map(row => `<div class="post-card">
       <a href="/${lang}/blog/${row.slug}.html" class="card-link">
-        <div class="media"><img src="/images/${row.image}" alt="${row.title}"></div>
+        <div class="media">${row.image ? `<img src="/images/${row.image}" alt="${row.title}">` : ''}</div>
         <p class="post-date">${formatDate(row.date, lang)}</p>
         <h2>${row.title}</h2>
         <p class="excerpt">${row.excerpt}</p>
