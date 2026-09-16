@@ -55,10 +55,15 @@ function renderEmbed(kind, arg) {
     return `<div class="embed-video"><video controls poster=""><source src="/videos/${escapeAttr(arg)}" type="video/mp4"></video></div>`;
   }
   if (kind === 'audio') {
+    // [audio: file.mp3] -> no label shown. [audio: file.mp3 | My Title] -> shows "My Title".
+    const parts = arg.split('|').map(s => s.trim());
+    const filename = parts[0];
+    const label = parts[1];
     const audioMimeTypes = { mp3: 'audio/mpeg', m4a: 'audio/mp4', wav: 'audio/wav', ogg: 'audio/ogg' };
-    const ext = (arg.split('.').pop() || '').toLowerCase();
+    const ext = (filename.split('.').pop() || '').toLowerCase();
     const mimeType = audioMimeTypes[ext] || 'audio/mpeg';
-    return `<div class="embed-audio"><p>Audio</p><audio controls><source src="/audio/${escapeAttr(arg)}" type="${mimeType}"></audio></div>`;
+    const labelHtml = label ? `<p>${label}</p>` : '';
+    return `<div class="embed-audio">${labelHtml}<audio controls><source src="/audio/${escapeAttr(filename)}" type="${mimeType}"></audio></div>`;
   }
   if (kind === 'youtube') {
     return `<div class="embed-youtube"><iframe src="https://www.youtube.com/embed/${escapeAttr(arg)}" title="Video" allowfullscreen></iframe></div>`;
