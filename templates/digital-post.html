@@ -174,16 +174,19 @@
     var prevBtn = container.querySelector('.pdf-prev');
     var nextBtn = container.querySelector('.pdf-next');
     var pdfDoc, views, currentView = 0;
+    var timedOut = false;
+    var timeoutId = setTimeout(function () { timedOut = true; spread.innerHTML = '<p class="pdf-loading">This PDF is taking too long to load.</p>'; }, 15000);
     try { pdfDoc = await pdfjsLib.getDocument({
         url: src,
         disableStream: true,
         disableAutoFetch: true,
         disableRange: true,
-      }).promise; }
-    catch (e) { spread.innerHTML = '<p class="pdf-loading">Could not load PDF</p>'; return; }
+      }).promise; clearTimeout(timeoutId); if (timedOut) return; }
+    catch (e) { clearTimeout(timeoutId); if (!timedOut) spread.innerHTML = '<p class="pdf-loading">Could not load PDF: ' + (e && e.message ? e.message : e) + '</p>'; return; }
     views = buildViews(pdfDoc.numPages);
     async function renderView(idx) {
       var nums = views[idx]; spread.innerHTML = '';
+      try {
       var singleW = spread.clientWidth / 2;
       for (var p = 0; p < nums.length; p++) {
         var page = await pdfDoc.getPage(nums[p]);
@@ -217,6 +220,9 @@
         });
       }
       indicator.textContent = nums.length === 1 ? ('Page ' + nums[0] + ' of ' + pdfDoc.numPages) : ('Pages ' + nums[0] + '\u2013' + nums[1] + ' of ' + pdfDoc.numPages);
+      } catch (err) {
+        indicator.textContent = 'Could not display this page: ' + (err && err.message ? err.message : err);
+      }
     }
     prevBtn.addEventListener('click', function () { if (currentView>0){currentView--;renderView(currentView);} });
     nextBtn.addEventListener('click', function () { if (currentView<views.length-1){currentView++;renderView(currentView);} });
