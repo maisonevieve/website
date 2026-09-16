@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Maison Eviève</title>
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000; --white: #FFFFFF; --charcoal: #636363;
+    --grey: #F0EFEC; --cream: #F5F1EA;
+    --serif: 'Fraunces', serif; --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--white); color: var(--black); font-family: var(--sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img, video { display: block; max-width: 100%; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 32px; }
+
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.1); }
+  .nav-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 16px 32px; max-width: 1240px; margin: 0 auto; }
+  @media (min-width: 900px) { .nav-row { padding: 16px 64px; } }
+  nav.links { display: none; gap: 28px; font-size: 14px; justify-self: start; }
+  nav.links a { text-decoration: none; }
+  @media (min-width: 860px) { nav.links { display: flex; align-items: center; } }
+  .logo-mark { width: 200px; height: 42px; justify-self: center; }
+  .logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+  .header-right { display: flex; align-items: center; gap: 20px; justify-self: end; }
+  .lang-switch { display: flex; gap: 6px; font-size: 13px; color: var(--charcoal); }
+  .lang-switch a { text-decoration: none; }
+  .lang-switch a.active { color: var(--black); font-weight: 600; }
+  .menu-toggle { background: none; border: none; cursor: pointer; width: 26px; height: 18px; position: relative; padding: 0; }
+  .menu-toggle span { position: absolute; left: 0; width: 100%; height: 2px; background: var(--black); }
+  .menu-toggle span:nth-child(1) { top: 0; } .menu-toggle span:nth-child(2) { top: 8px; } .menu-toggle span:nth-child(3) { top: 16px; }
+  @media (min-width: 860px) { .menu-toggle { display: none; } }
+  .mobile-nav { display: none; flex-direction: column; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.1); padding: 8px 32px 28px; position: absolute; top: 100%; left: 0; right: 0; z-index: 49; }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a { font-family: var(--serif); font-size: 1.1rem; padding: 14px 0; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.08); color: var(--black); }
+  @media (min-width: 860px) { .mobile-nav { display: none !important; } }
+
+  .back-row { padding: 112px 0 0; }
+  .back-link { text-decoration: none; font-size: 14px; color: var(--charcoal); }
+  .back-link:hover { color: var(--black); }
+
+  .post-header { text-align: center; padding: 32px 0 40px; }
+  .post-date { font-size: 13px; color: var(--charcoal); }
+  .post-header h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 5vw, 3rem); margin-top: 12px; line-height: 1.2; }
+
+  .post-hero-image { width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--charcoal); margin-bottom: 48px; }
+  .post-hero-image img { width: 100%; height: 100%; object-fit: cover; }
+
+  .post-body { padding-bottom: 120px; }
+  .post-body p { color: #2b2b2b; margin-bottom: 22px; font-size: 1.05rem; }
+  .post-body h3 { font-family: var(--serif); font-weight: 500; font-size: 1.4rem; margin: 40px 0 16px; }
+  .post-body strong { font-weight: 600; }
+  .post-body em { font-style: italic; }
+  .post-body a { text-decoration: underline; }
+
+  .embed-youtube { position: relative; width: 100%; aspect-ratio: 16/9; margin: 40px 0; background: var(--charcoal); }
+  .embed-youtube iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .embed-video { margin: 40px 0; }
+  .embed-video video { width: 100%; }
+  .embed-audio { margin: 40px 0; padding: 20px; background: var(--grey); }
+  .embed-audio audio { width: 100%; }
+  .embed-audio p { font-size: 13px; color: var(--charcoal); margin-bottom: 10px; }
+  .embed-signup { margin: 40px 0; padding: 32px; background: var(--grey); text-align: center; }
+  .embed-signup-title { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 18px; }
+  .embed-signup-form { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+  .embed-signup-form input { flex: 1; padding: 11px 14px; border: 1px solid var(--charcoal); font-family: var(--sans); font-size: 14px; }
+  .embed-signup-form button { background: var(--black); color: var(--white); border: none; padding: 11px 20px; font-family: var(--serif); font-size: 14px; cursor: pointer; }
+  @media (max-width: 480px) { .embed-signup-form { flex-direction: column; } }
+  .embed-flipbook { position: relative; width: 100%; aspect-ratio: 4/3; overflow: hidden; background: var(--charcoal); margin: 40px 0; }
+  .embed-flipbook .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
+  .embed-flipbook .slide.active { opacity: 1; }
+  .embed-flipbook .slide img, .embed-flipbook .slide video { width: 100%; height: 100%; object-fit: cover; }
+  .flipbook-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.2rem; font-family: var(--serif); cursor: pointer; padding: 10px 16px; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+  .flipbook-arrow.prev { left: 4px; } .flipbook-arrow.next { right: 4px; }
+  .embed-pdf-flipbook { position: relative; width: 100%; margin: 40px 0; background: var(--grey); }
+  .pdf-spread { display: flex; justify-content: center; align-items: flex-start; }
+  .pdf-page-wrap { position: relative; line-height: 0; }
+  .pdf-page-wrap canvas { display: block; width: 100%; height: auto; }
+  .pdf-link-overlay { position: absolute; display: block; }
+  .pdf-link-overlay:hover { outline: 1px solid rgba(0,0,0,0.25); }
+  .pdf-nav-row { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 16px 0; }
+  .pdf-nav-row button { background: transparent; border: none; font-family: var(--serif); font-size: 1.6rem; cursor: pointer; color: var(--black); }
+  .pdf-nav-row span { font-size: 13px; color: var(--charcoal); }
+  .pdf-fullscreen-btn { font-size: 1.1rem !important; }
+  .embed-pdf-flipbook:fullscreen, .embed-pdf-flipbook:-webkit-full-screen { background: var(--black); display: flex; flex-direction: column; justify-content: center; }
+  .embed-pdf-flipbook:fullscreen .pdf-spread, .embed-pdf-flipbook:-webkit-full-screen .pdf-spread { flex: 1; }
+  .embed-pdf-flipbook:fullscreen .pdf-nav-row button, .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row button { color: var(--white); }
+  .embed-pdf-flipbook:fullscreen .pdf-nav-row span, .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row span { color: var(--grey); }
+
+  footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
+  .footer-wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+  @media (min-width: 900px) { .footer-wrap { padding: 0 64px; } }
+  .footer-bottom { font-size: 12.5px; color: rgba(255,255,255,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+<div id="scrollSentinel" style="position:absolute; top:0; height:1px; width:1px;"></div>
+<iframe name="ml_hidden_iframe" style="display:none;"></iframe>
+
+{{HEADER}}
+
+<div class="wrap back-row">
+  <a href="/{{LANG}}/blog.html" class="back-link">&#8592; Back to the Journal</a>
+</div>
+
+<div class="post-header">
+  <p class="post-date">{{DATE}}</p>
+  <h1>{{TITLE}}</h1>
+</div>
+
+{{POST_HERO_IMAGE}}
+
+<div class="wrap post-body">
+  {{BODY_HTML}}
+</div>
+
+{{FOOTER}}
+
+<script>
+  (function () {
+    var header = document.querySelector('header');
+    var sentinel = document.getElementById('scrollSentinel');
+    if (sentinel) {
+      var observer = new IntersectionObserver(function (entries) {
+        header.classList.toggle('scrolled', !entries[0].isIntersecting);
+      }, { threshold: 0 });
+      observer.observe(sentinel);
+    }
+    var toggle = document.getElementById('menuToggle');
+    var mobileNav = document.getElementById('mobileNav');
+    if (toggle && mobileNav) {
+      toggle.addEventListener('click', function () {
+        toggle.classList.toggle('open');
+        mobileNav.classList.toggle('open');
+      });
+    }
+  })();
+  (function () {
+    var slides = document.querySelectorAll('.embed-flipbook .slide');
+    var current = 0;
+    if (slides.length) {
+      function syncVideos() {
+        slides.forEach(function (s, i) {
+          var v = s.querySelector('video');
+          if (!v) return;
+          if (i === current) { v.currentTime = 0; v.play(); } else { v.pause(); }
+        });
+      }
+      function show(i) {
+        slides[current].classList.remove('active');
+        current = (i + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        syncVideos();
+      }
+      var prevBtn = document.querySelector('.flipbook-arrow.prev');
+      var nextBtn = document.querySelector('.flipbook-arrow.next');
+      if (prevBtn) prevBtn.addEventListener('click', function () { show(current - 1); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { show(current + 1); });
+      syncVideos();
+    }
+  })();
+</script>
+<script type="module">
+  let pdfjsLib;
+  try {
+    pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+  } catch (err) {
+    document.querySelectorAll('.pdf-page-indicator').forEach(function (el) {
+      el.textContent = 'Could not load the PDF viewer library: ' + (err && err.message ? err.message : err);
+    });
+  }
+  if (pdfjsLib) {
+  function buildViews(n) { var v=[[1]],i=2; while(i<=n){ if(i===n){v.push([i]);i++;} else {v.push([i,i+1]);i+=2;} } return v; }
+  async function initPdfFlipbook(container) {
+    var src = container.getAttribute('data-pdf-src');
+    var spread = container.querySelector('.pdf-spread');
+    var indicator = container.querySelector('.pdf-page-indicator');
+    var prevBtn = container.querySelector('.pdf-prev');
+    var nextBtn = container.querySelector('.pdf-next');
+    var fullscreenBtn = container.querySelector('.pdf-fullscreen-btn');
+    var pdfDoc, views, currentView = 0;
+    var timedOut = false;
+    var timeoutId = setTimeout(function () { timedOut = true; spread.innerHTML = '<p class="pdf-loading">This PDF is taking too long to load.</p>'; }, 15000);
+    try { pdfDoc = await pdfjsLib.getDocument({
+        url: src,
+        disableStream: true,
+        disableAutoFetch: true,
+        disableRange: true,
+      }).promise; clearTimeout(timeoutId); if (timedOut) return; }
+    catch (e) { clearTimeout(timeoutId); if (!timedOut) spread.innerHTML = '<p class="pdf-loading">Could not load PDF: ' + (e && e.message ? e.message : e) + '</p>'; return; }
+    views = buildViews(pdfDoc.numPages);
+    async function renderView(idx) {
+      var nums = views[idx]; spread.style.minHeight = spread.offsetHeight + 'px'; spread.innerHTML = '';
+      try {
+      var singleW = spread.clientWidth / 2;
+      for (var p = 0; p < nums.length; p++) {
+        var page = await pdfDoc.getPage(nums[p]);
+        var unscaled = page.getViewport({ scale: 1 });
+        var scale = singleW / unscaled.width;
+        var viewport = page.getViewport({ scale: scale });
+        var wrap = document.createElement('div'); wrap.className = 'pdf-page-wrap'; wrap.style.width = viewport.width + 'px';
+        var canvas = document.createElement('canvas'); canvas.width = viewport.width; canvas.height = viewport.height;
+        wrap.appendChild(canvas); spread.appendChild(wrap);
+        await page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
+        var anns = await page.getAnnotations();
+        anns.forEach(function (ann) {
+          if (ann.subtype !== 'Link') return;
+          var r = viewport.convertToViewportRectangle(ann.rect);
+          var x = Math.min(r[0], r[2]), y = Math.min(r[1], r[3]), w = Math.abs(r[2]-r[0]), h = Math.abs(r[3]-r[1]);
+          var a = document.createElement('a'); a.className = 'pdf-link-overlay';
+          a.style.left = x+'px'; a.style.top = y+'px'; a.style.width = w+'px'; a.style.height = h+'px';
+          if (ann.url) { a.href = ann.url; a.target = '_blank'; a.rel = 'noopener'; }
+          else if (ann.dest) {
+            a.href = '#';
+            a.addEventListener('click', async function (e) {
+              e.preventDefault();
+              var dest = typeof ann.dest === 'string' ? await pdfDoc.getDestination(ann.dest) : ann.dest;
+              var pageIndex = await pdfDoc.getPageIndex(dest[0]);
+              var target = pageIndex + 1;
+              var tv = views.findIndex(function (v) { return v.indexOf(target) !== -1; });
+              if (tv !== -1) { currentView = tv; renderView(currentView); }
+            });
+          }
+          wrap.appendChild(a);
+        });
+      }
+      indicator.textContent = nums.length === 1 ? ('Page ' + nums[0] + ' of ' + pdfDoc.numPages) : ('Pages ' + nums[0] + '\u2013' + nums[1] + ' of ' + pdfDoc.numPages);
+      } catch (err) {
+        indicator.textContent = 'Could not display this page: ' + (err && err.message ? err.message : err);
+      }
+    }
+    prevBtn.addEventListener('click', function () { prevBtn.blur(); if (currentView>0){currentView--;renderView(currentView);} });
+    nextBtn.addEventListener('click', function () { nextBtn.blur(); if (currentView<views.length-1){currentView++;renderView(currentView);} });
+    if (fullscreenBtn) {
+      var requestFs = container.requestFullscreen || container.webkitRequestFullscreen;
+      var exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+      var fsElement = function () { return document.fullscreenElement || document.webkitFullscreenElement; };
+      if (requestFs) {
+        fullscreenBtn.addEventListener('click', function () {
+          fullscreenBtn.blur();
+          if (fsElement() === container) { exitFs.call(document); } else { requestFs.call(container); }
+        });
+        document.addEventListener('fullscreenchange', function () { if (fsElement() === container) renderView(currentView); });
+        document.addEventListener('webkitfullscreenchange', function () { if (fsElement() === container) renderView(currentView); });
+      } else {
+        fullscreenBtn.style.display = 'none';
+      }
+    }
+    renderView(currentView);
+  }
+  document.querySelectorAll('.embed-pdf-flipbook').forEach(initPdfFlipbook);
+  }
+</script>
+<script>
+  document.querySelectorAll('.embed-signup-form').forEach(function (form) {
+    form.addEventListener('submit', function () {
+      setTimeout(function () {
+        form.classList.add('submitted');
+        form.nextElementSibling.classList.add('visible');
+      }, 600);
+    });
+  });
+</script>
+</body>
+</html>
