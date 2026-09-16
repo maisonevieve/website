@@ -217,8 +217,16 @@
 
 <!-- PDF flipbook: renders real PDF pages as a book -- cover alone, then two-page spreads, back cover alone -->
 <script type="module">
-  import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.min.mjs';
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.worker.min.mjs';
+  let pdfjsLib;
+  try {
+    pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.worker.min.mjs';
+  } catch (err) {
+    document.querySelectorAll('.pdf-page-indicator').forEach(function (el) {
+      el.textContent = 'Could not load the PDF viewer library: ' + (err && err.message ? err.message : err);
+    });
+  }
+  if (pdfjsLib) {
 
   // Builds the book's page groupings: [1], [2,3], [4,5], ... , [N]
   // Page 1 (front cover) and the final page (back cover) each stand alone;
@@ -357,6 +365,7 @@
   }
 
   document.querySelectorAll('.embed-pdf-flipbook').forEach(initPdfFlipbook);
+  }
 </script>
 
 
