@@ -166,8 +166,8 @@
 <script type="module">
   let pdfjsLib;
   try {
-    pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.min.mjs');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/6.3.289/pdf.worker.min.mjs';
+    pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
   } catch (err) {
     document.querySelectorAll('.pdf-page-indicator').forEach(function (el) {
       el.textContent = 'Could not load the PDF viewer library: ' + (err && err.message ? err.message : err);
