@@ -187,6 +187,18 @@
   .footer-col a { display: block; text-decoration: none; color: var(--white); margin-bottom: 8px; opacity: 0.9; }
   .footer-col a:hover { opacity: 1; text-decoration: underline; }
   .footer-bottom { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  .magazine-section { padding: 100px 0; }
+  .magazine-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .magazine-statement { font-family: var(--serif); font-size: 1.65rem; line-height: 1.5; font-weight: 400; margin: 20px 0 32px; }
+  .magazine-image img { width: 100%; height: 580px; object-fit: cover; display: block; }
+  .magazine-learn-more { font-family: var(--serif); text-decoration: underline; text-underline-offset: 4px; }
+  @media (max-width: 860px) {
+    .magazine-grid { grid-template-columns: 1fr; gap: 32px; }
+    .magazine-image { order: -1; }
+    .magazine-image img { height: 360px; }
+    .magazine-statement { font-size: 1.35rem; }
+  }
 </style>
 </head>
 <body>
@@ -213,7 +225,7 @@
   <div class="mobile-nav" id="mobileNav">
     <a href="index.html#home">Home</a>
     <a href="index.html#about">About</a>
-    <a href="index.html#subscriptions">Magazine</a>
+    <a href="index.html#magazine">Magazine</a>
     <a href="art.html">Art</a>
   </div>
 </header>
@@ -309,6 +321,19 @@
       </div>
       <button class="slide-arrow prev" aria-label="Previous image">&#8249;</button>
       <button class="slide-arrow next" aria-label="Next image">&#8250;</button>
+    </div>
+  </section>
+
+  <section id="magazine" class="bg-white magazine-section">
+    <div class="wrap magazine-grid">
+      <div class="magazine-text">
+        <p class="section-label">Magazine</p>
+        <p class="magazine-statement">As the seasons change, the monthly mail club grows to a bilingual magazine about paintings, music, places, and rituals worth slowing down for. Art interpreted as a souvenir of a feeling. A guide-meditation next to an aria. A recipe as a ritual, a page just for you to write on.</p>
+        <a href="blog/meditating-on-art-magazine.html" class="magazine-learn-more">Learn more</a>
+      </div>
+      <div class="magazine-image">
+        <img src="images/meditating_on_art_welcome_cover.jpg" alt="&quot;(meditating) On Art&quot; magazine">
+      </div>
     </div>
   </section>
 
