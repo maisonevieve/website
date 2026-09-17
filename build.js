@@ -222,8 +222,9 @@ async function main() {
 
       const isOriginal = (row.type || '').toLowerCase() === 'original';
       const isSubscription = (row.type || '').toLowerCase() === 'subscription';
-      const typeLabel = isSubscription ? 'Subscription' : (isOriginal ? 'Original Work' : 'Limited Print — Signed & Numbered');
-      const editionLine = (!isOriginal && !isSubscription && row.edition_size)
+      const isNumberedEdition = !isOriginal && !isSubscription && row.edition_size;
+      const typeLabel = isSubscription ? 'Subscription' : (isOriginal ? 'Original Work' : (isNumberedEdition ? 'Limited Print — Signed & Numbered' : 'Hand-Finished — Signed'));
+      const editionLine = isNumberedEdition
         ? `<p class="edition-line">Edition of ${row.edition_size} — ${row.edition_remaining} remaining</p>` : '';
       const mediumRow = (isOriginal && row.medium) ? `<tr><td>Medium</td><td>${row.medium}</td></tr>` : '';
       const sizeRow = (!isSubscription && row.size) ? `<tr><td>Size</td><td>${row.size}</td></tr>` : '';
