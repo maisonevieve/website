@@ -139,8 +139,8 @@
   .tier-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
   .tier-slide.active { opacity: 1; }
   .tier-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .tier-slide-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.17); display: flex; align-items: flex-end; padding: 22px; }
-  .tier-slide-overlay h4 { color: var(--white); font-family: var(--serif); font-weight: 400; font-size: 1.05rem; line-height: 1.4; text-align: left; margin: 0; }
+  .tier-slide-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.17); display: flex; align-items: flex-end; justify-content: center; padding: 22px; }
+  .tier-slide-overlay h4 { color: var(--white); font-family: var(--serif); font-weight: 400; font-size: 1.25rem; line-height: 1.4; text-align: center; margin: 0; }
   .tier-carousel-dots { position: absolute; top: 14px; left: 0; right: 0; display: flex; justify-content: center; gap: 7px; z-index: 2; }
   .tier-carousel-dots button { width: 6px; height: 6px; border-radius: 50%; border: none; background: rgba(255,255,255,0.5); padding: 0; cursor: pointer; }
   .tier-carousel-dots button.active { background: var(--white); }
@@ -351,16 +351,16 @@
           <div class="tier-name">Digital</div>
           <div class="tier-carousel">
             <div class="tier-slide active">
-              <img src="images/subscription-icon-digital.svg" alt="">
-              <div class="tier-slide-overlay"><h4>Behind-the-scenes notes, a monthly video and audio piece, and the digital edition of the quarterly magazine, "(meditating) On Art" — for slow-living reading, wherever you are.</h4></div>
+              <img src="images/slow-life-aesthetic-maison-evieve.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Art &amp; Meditation: Online content reminding you to live offline</h4></div>
             </div>
             <div class="tier-slide">
-              <img src="images/subscription-icon-digital.svg" alt="">
-              <div class="tier-slide-overlay"><h4>[Placeholder — slide 2: swap this image and line for a real one whenever ready.]</h4></div>
+              <img src="images/abstract_art_jardins_de_tuileries.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Everything you've known and love in a digital subscription: magazine flip-through, video, audio, photo stories, behind the scenes — without the rush.</h4></div>
             </div>
             <div class="tier-slide">
-              <img src="images/subscription-icon-digital.svg" alt="">
-              <div class="tier-slide-overlay"><h4>[Placeholder — slide 3: swap this image and line for a real one whenever ready.]</h4></div>
+              <img src="images/french-market-basket.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Slow living even through a screen is possible. Join and find out.</h4></div>
             </div>
             <div class="tier-carousel-dots">
               <button class="active" aria-label="Slide 1"></button>
@@ -375,16 +375,16 @@
           <div class="tier-name">Letter &amp; Magazine</div>
           <div class="tier-carousel">
             <div class="tier-slide active">
-              <img src="images/subscription-icon-letter-magazine.svg" alt="">
-              <div class="tier-slide-overlay"><h4>A monthly letter and postcard through your actual letterbox, plus the printed quarterly magazine, "(meditating) On Art" — delivered to your door.</h4></div>
+              <img src="images/letters-in-transparent-bag-aesthetic.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>A retreat you can flip through. Every season a full magazine, every month a letter and a postcard.</h4></div>
             </div>
             <div class="tier-slide">
-              <img src="images/subscription-icon-letter-magazine.svg" alt="">
-              <div class="tier-slide-overlay"><h4>[Placeholder — slide 2: swap this image and line for a real one whenever ready.]</h4></div>
+              <img src="images/mailbox-letter-paris.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Remember the joy of receiving. Every month, know that someone has thought of you…</h4></div>
             </div>
             <div class="tier-slide">
-              <img src="images/subscription-icon-letter-magazine.svg" alt="">
-              <div class="tier-slide-overlay"><h4>[Placeholder — slide 3: swap this image and line for a real one whenever ready.]</h4></div>
+              <img src="images/meditating_on_art_welcome_cover.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>As the seasons change, "(meditating) On Art" magazine finds you with practices, art, and real correspondence.</h4></div>
             </div>
             <div class="tier-carousel-dots">
               <button class="active" aria-label="Slide 1"></button>
@@ -399,16 +399,16 @@
           <div class="tier-name">Both</div>
           <div class="tier-carousel">
             <div class="tier-slide active">
-              <img src="images/subscription-icon-both.svg" alt="">
-              <div class="tier-slide-overlay"><h4>Everything, together — the letters, the printed magazine, and the full digital layer. The complete Maison Eviève experience, in your inbox and your mailbox.</h4></div>
+              <img src="images/letters-flower-shadow.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Your inbox doesn't have to be jealous of your mailbox</h4></div>
             </div>
             <div class="tier-slide">
-              <img src="images/subscription-icon-both.svg" alt="">
-              <div class="tier-slide-overlay"><h4>[Placeholder — slide 2: swap this image and line for a real one whenever ready.]</h4></div>
+              <img src="images/letter-wax-seal-aesthetic.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Remember the joy of receiving. Every month, know that someone has thought of you…</h4></div>
             </div>
             <div class="tier-slide">
-              <img src="images/subscription-icon-both.svg" alt="">
-              <div class="tier-slide-overlay"><h4>[Placeholder — slide 3: swap this image and line for a real one whenever ready.]</h4></div>
+              <img src="images/baguette-book-cafe.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>As the seasons change, "(meditating) On Art" magazine finds you with practices, art, and real correspondence.</h4></div>
             </div>
             <div class="tier-carousel-dots">
               <button class="active" aria-label="Slide 1"></button>
@@ -634,6 +634,19 @@
         dot.addEventListener('click', function (e) { e.stopPropagation(); show(i); });
       });
       carousel.addEventListener('click', function () { show(current + 1); });
+      // Swipe support for mobile -- a horizontal drag advances or goes back;
+      // small movements (under 30px) are ignored so an ordinary tap still works.
+      var touchStartX = null;
+      carousel.addEventListener('touchstart', function (e) { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+      carousel.addEventListener('touchend', function (e) {
+        if (touchStartX === null) return;
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 30) {
+          e.preventDefault(); // a real swipe -- stop the browser from also firing a synthetic click
+          show(dx < 0 ? current + 1 : current - 1);
+        }
+        touchStartX = null;
+      });
     });
   })();
 
