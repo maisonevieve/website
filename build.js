@@ -316,6 +316,17 @@ async function main() {
           `<!-- ART_CARDS:latest:START -->\n        ${cardsHtml}\n        <!-- ART_CARDS:latest:END -->`
         );
       }
+      // Inject the "Browse the collection" carousel: the rest of the available
+      // pieces, newest first, skipping the same 3 already shown in "Available Now"
+      // just above it on this page -- so nothing repeats between the two sections.
+      if (html.includes('ART_CARDS:carousel:START')) {
+        const rest = availableArt[lang].slice(0, -3).reverse().slice(0, 10);
+        const carouselHtml = rest.map(r => artCardHtml(r)).join('\n        ');
+        html = html.replace(
+          /<!-- ART_CARDS:carousel:START -->[\s\S]*?<!-- ART_CARDS:carousel:END -->/,
+          `<!-- ART_CARDS:carousel:START -->\n        ${carouselHtml}\n        <!-- ART_CARDS:carousel:END -->`
+        );
+      }
       // Inject full catalogue
       if (html.includes('ART_CARDS:all:START')) {
         const all = availableArt[lang];
