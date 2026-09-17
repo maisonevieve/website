@@ -25,7 +25,7 @@ const DIST = path.join(__dirname, 'dist');
 const SOURCE = path.join(__dirname, 'source'); // your existing static pages live here
 const ASSETS = {
   images: ['images'],
-  videos: ['videos', 'video'],
+  videos: [], // intentionally unused -- video files live inside images/ instead
   audio: ['audio', 'audios'],
   pdfs: ['pdfs', 'pdf'],
 }; // shared, not language-specific -- checks a couple of likely folder-name spellings
@@ -202,10 +202,12 @@ async function main() {
       const dots = galleryFiles.map((_, i) => `<span${i === 0 ? ' class="active"' : ''}></span>`).join('');
 
       const isOriginal = (row.type || '').toLowerCase() === 'original';
-      const typeLabel = isOriginal ? 'Original Work' : 'Limited Print — Signed & Numbered';
-      const editionLine = (!isOriginal && row.edition_size)
+      const isSubscription = (row.type || '').toLowerCase() === 'subscription';
+      const typeLabel = isSubscription ? 'Subscription' : (isOriginal ? 'Original Work' : 'Limited Print — Signed & Numbered');
+      const editionLine = (!isOriginal && !isSubscription && row.edition_size)
         ? `<p class="edition-line">Edition of ${row.edition_size} — ${row.edition_remaining} remaining</p>` : '';
       const mediumRow = (isOriginal && row.medium) ? `<tr><td>Medium</td><td>${row.medium}</td></tr>` : '';
+      const purchaseLabel = isSubscription ? 'Subscribe' : 'Purchase';
 
       const html = fillTemplate(productTemplate, {
         LANG: lang,
@@ -218,6 +220,7 @@ async function main() {
         MATERIAL: row.material,
         MEDIUM_ROW: mediumRow,
         STRIPE_LINK: row.stripe_link,
+        PURCHASE_LABEL: purchaseLabel,
         GALLERY_SLIDES: slides,
         GALLERY_DOTS: dots,
         HEADER: readPartial('header.html'),
@@ -346,6 +349,7 @@ ${urlEntries}
 
   // ---- Copy shared asset folders straight through ----
   for (const [outputName, candidates] of Object.entries(ASSETS)) {
+    if (candidates.length === 0) continue; // intentionally unused, nothing to look for or warn about
     let found = false;
     for (const folderName of candidates) {
       const rootSrc = path.join(__dirname, folderName);
