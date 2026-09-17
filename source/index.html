@@ -116,11 +116,12 @@
   .mag-body { color: rgba(255,255,255,0.92); font-family: var(--sans); font-size: 1.05rem; max-width: 640px; margin-top: 18px; line-height: 1.6; }
   .mag-hint { color: rgba(255,255,255,0.75); font-family: var(--serif); font-style: italic; font-size: 0.9rem; margin-top: 16px; }
   .mag-h3 { color: var(--white); font-family: var(--serif); font-weight: 400; font-size: clamp(1.15rem, 2.2vw, 1.5rem); line-height: 1.5; max-width: 560px; margin-top: 18px; }
-  .slide-overlay-split { flex-direction: row; align-items: flex-end; gap: 56px; }
+  .slide-overlay-split { flex-direction: column; align-items: flex-start; gap: 28px; }
+  .slide-overlay-split .slide-columns { display: flex; flex-direction: row; gap: 56px; width: 100%; }
   .slide-overlay-split .slide-col { flex: 1; }
-  .slide-overlay-split .slide-col:last-child .mag-body { max-width: 480px; }
+  .slide-overlay-split .slide-col:first-child .mag-body { max-width: 480px; }
   @media (max-width: 860px) {
-    .slide-overlay-split { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .slide-overlay-split .slide-columns { flex-direction: column; gap: 20px; }
   }
 
   /* First slide only: bigger, top-left instead of bottom-anchored, for easier reading at a glance */
@@ -293,14 +294,16 @@
       <div class="slide active">
         <img src="images/tuileries-detail.jpg" alt="">
         <div class="slide-overlay slide-overlay-split">
-          <div class="slide-col">
-            <p class="mag-lead">Art as a souvenir of a feeling</p>
-            <h3 class="mag-h3">The power within us needs no tools or accessories to be accessed. However, humans have always used rituals and spiritual items as symbols of their connection to deities, higher selves, and their bond with others.</h3>
-            <p class="mag-hint">Keep going for the story &#8594;</p>
+          <div class="slide-columns">
+            <div class="slide-col">
+              <p class="mag-body">Objects that bear special meaning and purpose become reminders and symbols, and that is why at Maison Eviève, Evi creates art as a ritual. It initiates, connects deeply to the piece, and makes it a part of one's personal practice.</p>
+            </div>
+            <div class="slide-col">
+              <p class="mag-lead">Art as a souvenir of a feeling</p>
+              <h3 class="mag-h3">The power within us needs no tools or accessories to be accessed. However, humans have always used rituals and spiritual items as symbols of their connection to deities, higher selves, and their bond with others.</h3>
+            </div>
           </div>
-          <div class="slide-col">
-            <p class="mag-body">Objects that bear special meaning and purpose become reminders and symbols, and that is why at Maison Eviève, Evi creates art as a ritual. It initiates, connects deeply to the piece, and makes it a part of one's personal practice.</p>
-          </div>
+          <p class="mag-hint">Keep going for the story &#8594;</p>
         </div>
       </div>
       <div class="slide">
