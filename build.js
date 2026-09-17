@@ -207,7 +207,11 @@ async function main() {
       const editionLine = (!isOriginal && !isSubscription && row.edition_size)
         ? `<p class="edition-line">Edition of ${row.edition_size} — ${row.edition_remaining} remaining</p>` : '';
       const mediumRow = (isOriginal && row.medium) ? `<tr><td>Medium</td><td>${row.medium}</td></tr>` : '';
+      const sizeRow = (!isSubscription && row.size) ? `<tr><td>Size</td><td>${row.size}</td></tr>` : '';
+      const materialRow = (!isSubscription && row.material) ? `<tr><td>Material</td><td>${row.material}</td></tr>` : '';
+      const unframedNote = isSubscription ? '' : '<p class="unframed-note">This piece comes unframed.</p>';
       const purchaseLabel = isSubscription ? 'Subscribe' : 'Purchase';
+      const priceSuffix = isSubscription ? ' <span class="price-suffix">per month</span>' : '';
 
       const html = fillTemplate(productTemplate, {
         LANG: lang,
@@ -216,9 +220,11 @@ async function main() {
         EDITION_LINE: editionLine,
         DESCRIPTION: row.description,
         PRICE: row.price,
-        SIZE: row.size,
-        MATERIAL: row.material,
+        PRICE_SUFFIX: priceSuffix,
+        SIZE_ROW: sizeRow,
+        MATERIAL_ROW: materialRow,
         MEDIUM_ROW: mediumRow,
+        UNFRAMED_NOTE: unframedNote,
         STRIPE_LINK: row.stripe_link,
         PURCHASE_LABEL: purchaseLabel,
         GALLERY_SLIDES: slides,
@@ -242,7 +248,8 @@ async function main() {
   // ---- Card HTML for listings (latest 3, and full catalogue) ----
   function artCardHtml(row, featuredImgOverride) {
     const img = featuredImgOverride || row.featured || (row.images || '').split(',')[0].trim();
-    const priceText = row.price ? `€${row.price}` : 'Price upon inquiry';
+    const isSubscription = (row.type || '').toLowerCase() === 'subscription';
+    const priceText = row.price ? `€${row.price}${isSubscription ? ' / mo' : ''}` : 'Price upon inquiry';
     return `<div class="art-card">
           <div class="media"><a href="${row._href}"><img src="/images/${img}" alt="${row.title}"></a></div>
           <h4>${row.title}</h4>
