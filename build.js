@@ -45,8 +45,27 @@ function readPartial(name) {
   return fs.readFileSync(path.join(__dirname, 'partials', name), 'utf-8');
 }
 
+// The header partial contains its own {{LANG}} placeholders (so its nav links point
+// at the right language). Resolving those here, before the partial is handed to the
+// outer page's fillTemplate call, avoids depending on token-processing order -- the
+// outer call just inserts this already-finished string, nothing left to substitute.
+function readHeaderPartial(lang) {
+  return readPartial('header.html').split('{{LANG}}').join(lang);
+}
+
 function readTemplate(name) {
   return fs.readFileSync(path.join(__dirname, 'templates', name), 'utf-8');
+}
+
+// Splits plain text on blank lines into separate <p> tags -- for fields like the
+// product description that aren't run through the full body/shortcode parser.
+function toParagraphs(text) {
+  return (text || '')
+    .split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(Boolean)
+    .map(p => `<p>${p}</p>`)
+    .join('\n');
 }
 
 function fillTemplate(tpl, tokens) {
@@ -137,7 +156,7 @@ async function main() {
         DATE: formatDate(row.date, lang),
         POST_HERO_IMAGE: heroImageBlock(row),
         BODY_HTML: bodyHtml,
-        HEADER: readPartial('header.html'),
+        HEADER: readHeaderPartial(lang),
         FOOTER: readPartial('footer-minimal.html'),
       });
       const relPath = `${lang}/blog/${row.slug}.html`;
@@ -169,7 +188,7 @@ async function main() {
         BODY_HTML: bodyHtml,
         GATED_BADGE: gatedBadge,
         QUOTE_BLOCK: quoteBlock,
-        HEADER: readPartial('header.html'),
+        HEADER: readHeaderPartial(lang),
         FOOTER: readPartial('footer-minimal.html'),
       });
       writeFile(`${lang}/members/${row.slug}.html`, html);
@@ -218,7 +237,7 @@ async function main() {
         TITLE: row.title,
         TYPE_LABEL: typeLabel,
         EDITION_LINE: editionLine,
-        DESCRIPTION: row.description,
+        DESCRIPTION: toParagraphs(row.description),
         PRICE: row.price,
         PRICE_SUFFIX: priceSuffix,
         SIZE_ROW: sizeRow,
@@ -229,7 +248,7 @@ async function main() {
         PURCHASE_LABEL: purchaseLabel,
         GALLERY_SLIDES: slides,
         GALLERY_DOTS: dots,
-        HEADER: readPartial('header.html'),
+        HEADER: readHeaderPartial(lang),
         FOOTER: readPartial('footer-minimal.html'),
       });
       const relPath = `${lang}/art/${row.slug}.html`;
