@@ -81,13 +81,14 @@
   .embed-signup-confirm { display: none; font-family: var(--serif); font-style: italic; color: var(--charcoal); font-size: 0.95rem; margin-top: 8px; }
   .embed-signup-confirm.visible { display: block; }
   @media (max-width: 480px) { .embed-signup-form { max-width: 300px; } }
-  .embed-flipbook { position: relative; width: 100%; aspect-ratio: 4/3; overflow: hidden; background: var(--charcoal); margin: 40px 0; }
+  .embed-flipbook { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); aspect-ratio: 4/5; overflow: hidden; background: var(--charcoal); margin-top: 40px; margin-bottom: 40px; }
+  @media (min-width: 760px) { .embed-flipbook { aspect-ratio: 16/9; } }
   .embed-flipbook .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
   .embed-flipbook .slide.active { opacity: 1; }
   .embed-flipbook .slide img, .embed-flipbook .slide video { width: 100%; height: 100%; object-fit: cover; }
   .flipbook-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.2rem; font-family: var(--serif); cursor: pointer; padding: 10px 16px; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
   .flipbook-arrow.prev { left: 4px; } .flipbook-arrow.next { right: 4px; }
-  .embed-pdf-flipbook { position: relative; width: 100%; margin: 40px 0; background: var(--grey); }
+  .embed-pdf-flipbook { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: 40px; margin-bottom: 40px; background: var(--grey); }
   .pdf-spread { display: flex; justify-content: center; align-items: flex-start; }
   .pdf-page-wrap { position: relative; line-height: 0; }
   .pdf-page-wrap canvas { display: block; width: 100%; height: auto; }
