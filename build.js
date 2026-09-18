@@ -296,10 +296,10 @@ async function main() {
 
   for (const lang of ['en', 'fr']) {
     for (const page of staticPages) {
-      const srcPath = path.join(SOURCE, page);
+      // English pages live in source/ directly. French pages live in source/fr/,
+      // translated one at a time -- skip quietly for any page not yet translated.
+      const srcPath = lang === 'fr' ? path.join(SOURCE, 'fr', page) : path.join(SOURCE, page);
       if (!fs.existsSync(srcPath)) continue;
-      // French static marketing pages don't exist yet -- skip rather than fake a translation
-      if (lang === 'fr') continue;
 
       let html = fs.readFileSync(srcPath, 'utf-8');
 
@@ -364,8 +364,9 @@ async function main() {
     fs.writeFileSync(distBlogPath, html, 'utf-8');
   }
 
-  // ---- Root redirect: sends "/" to the visitor's language, defaulting to English
-  // (French static pages don't exist yet, so this stays /en/ until they do) ----
+  // ---- Root redirect: sends "/" to English by default. (French pages are being
+  // added one at a time -- this stays /en/ regardless, so visitors don't land on
+  // a French page that isn't ready yet; revisit this once the French site is complete.) ----
   writeFile('index.html', `<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><script>
   window.location.replace('/en/');
