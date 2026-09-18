@@ -69,12 +69,18 @@
   .embed-audio { margin: 40px 0; padding: 20px; background: var(--grey); }
   .embed-audio audio { width: 100%; }
   .embed-audio p { font-size: 13px; color: var(--charcoal); margin-bottom: 10px; }
-  .embed-signup { margin: 40px 0; padding: 32px; background: var(--grey); text-align: center; }
-  .embed-signup-title { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 18px; }
-  .embed-signup-form { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
-  .embed-signup-form input { flex: 1; padding: 11px 14px; border: 1px solid var(--charcoal); font-family: var(--sans); font-size: 14px; }
-  .embed-signup-form button { background: var(--black); color: var(--white); border: none; padding: 11px 20px; font-family: var(--serif); font-size: 14px; cursor: pointer; }
-  @media (max-width: 480px) { .embed-signup-form { flex-direction: column; } }
+  .embed-signup { margin: 56px 0; padding: 44px 0; border-top: 1px solid var(--black); border-bottom: 1px solid var(--black); text-align: center; }
+  .embed-signup-title { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.5rem; line-height: 1.4; margin: 0 auto 28px; max-width: 480px; }
+  .embed-signup-form { display: flex; max-width: 380px; margin: 0 auto; border-bottom: 2px solid var(--black); }
+  .embed-signup-form input { flex: 1; padding: 10px 4px; border: none; background: transparent; font-family: var(--serif); font-size: 15px; color: var(--black); }
+  .embed-signup-form input::placeholder { color: var(--charcoal); font-style: italic; }
+  .embed-signup-form input:focus { outline: none; }
+  .embed-signup-form button { background: transparent; color: var(--black); border: none; padding: 10px 4px 10px 16px; font-family: var(--serif); font-size: 14px; text-transform: capitalize; cursor: pointer; transition: opacity 0.2s ease; white-space: nowrap; }
+  .embed-signup-form button:hover { opacity: 0.55; }
+  .embed-signup-form.submitted { display: none; }
+  .embed-signup-confirm { display: none; font-family: var(--serif); font-style: italic; color: var(--charcoal); font-size: 0.95rem; margin-top: 8px; }
+  .embed-signup-confirm.visible { display: block; }
+  @media (max-width: 480px) { .embed-signup-form { max-width: 300px; } }
   .embed-flipbook { position: relative; width: 100%; aspect-ratio: 4/3; overflow: hidden; background: var(--charcoal); margin: 40px 0; }
   .embed-flipbook .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
   .embed-flipbook .slide.active { opacity: 1; }
