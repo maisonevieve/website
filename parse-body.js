@@ -40,19 +40,21 @@ function inlineFormat(text) {
 
 function renderEmbed(kind, arg) {
   if (kind === 'signup') {
+    // Optional custom headline: [signup: Your custom text here] -- falls back to a
+    // sensible default if left blank: [signup]
+    const headline = arg || 'Get "The First Letter," free.';
     return `<div class="embed-signup">
-    <p class="embed-signup-headline">Get The First Letter</p>
-    <p class="embed-signup-sub">A sensory meditation on receiving a letter, plus a sample issue of the magazine.</p>
+    <p class="embed-signup-title">${headline}</p>
     <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
       <input type="email" name="fields[email]" placeholder="Your email" required>
-      <button type="submit">Send it to me</button>
+      <button type="submit">Sign up</button>
     </form>
     <p class="embed-signup-confirm">Thank you — check your inbox shortly.</p>
   </div>`;
   }
   arg = (arg || '').trim();
   if (kind === 'video') {
-    return `<div class="embed-video"><video controls poster=""><source src="/videos/${escapeAttr(arg)}" type="video/mp4"></video></div>`;
+    return `<div class="embed-video"><video controls poster=""><source src="/images/${escapeAttr(arg)}" type="video/mp4"></video></div>`;
   }
   if (kind === 'audio') {
     // [audio: file.mp3] -> no label shown. [audio: file.mp3 | My Title] -> shows "My Title".
@@ -72,29 +74,16 @@ function renderEmbed(kind, arg) {
     const files = arg.split(',').map(s => s.trim()).filter(Boolean);
     const slides = files.map((f, i) => {
       const isVideo = /\.(mp4|mov|webm)$/i.test(f);
-      const folder = isVideo ? 'videos' : 'images';
       const active = i === 0 ? ' active' : '';
       if (isVideo) {
-        return `<div class="slide${active}"><video muted loop playsinline><source src="/${folder}/${escapeAttr(f)}" type="video/mp4"></video></div>`;
+        return `<div class="slide${active}"><video muted loop playsinline><source src="/images/${escapeAttr(f)}" type="video/mp4"></video></div>`;
       }
-      return `<div class="slide${active}"><img src="/${folder}/${escapeAttr(f)}" alt=""></div>`;
+      return `<div class="slide${active}"><img src="/images/${escapeAttr(f)}" alt=""></div>`;
     }).join('\n    ');
     return `<div class="embed-flipbook">\n    ${slides}\n    <button class="flipbook-arrow prev" aria-label="Previous">&#8249;</button>\n    <button class="flipbook-arrow next" aria-label="Next">&#8250;</button>\n  </div>`;
   }
   if (kind === 'pdf-flipbook') {
     return `<div class="embed-pdf-flipbook" data-pdf-src="/pdfs/${escapeAttr(arg)}"><div class="pdf-spread"></div><div class="pdf-nav-row"><button class="pdf-prev" aria-label="Previous">&#8249;</button><span class="pdf-page-indicator">Loading…</span><button class="pdf-next" aria-label="Next">&#8250;</button><button class="pdf-fullscreen-btn" aria-label="Fullscreen">&#9974;</button></div></div>`;
-  }
-  if (kind === 'signup') {
-    // Optional custom headline: [signup: Your custom text here] -- falls back to a
-    // sensible default if left blank: [signup]
-    const headline = arg || 'Enjoying this? Get "The First Letter," free.';
-    return `<div class="embed-signup">
-    <p class="embed-signup-title">${headline}</p>
-    <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe_inline">
-      <input type="email" name="fields[email]" placeholder="Your email" required>
-      <button type="submit">Sign up</button>
-    </form>
-  </div>`;
   }
   return '';
 }
