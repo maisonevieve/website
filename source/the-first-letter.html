@@ -80,7 +80,7 @@
   .flipbook-arrow.next { right: 4px; }
 
   /* [pdf-flipbook: filename.pdf] embed -- real PDF pages rendered with working links */
-  .embed-pdf-flipbook { position: relative; width: 100%; margin: 40px 0; background: var(--grey); }
+  .embed-pdf-flipbook { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: 40px; margin-bottom: 40px; background: var(--grey); }
   .pdf-spread { display: flex; justify-content: center; align-items: flex-start; }
   .pdf-page-wrap { position: relative; line-height: 0; }
   .pdf-page-wrap canvas { display: block; width: 100%; height: auto; }
@@ -115,6 +115,7 @@
       <a href="index.html#home">Home</a>
       <a href="index.html#about">About</a>
       <a href="index.html#magazine">Magazine</a>
+      <a href="index.html#subscriptions">Subscriptions</a>
       <a href="art.html">Art</a>
     </nav>
     <a href="index.html" class="logo-mark">
