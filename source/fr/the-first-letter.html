@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Première Lettre — Maison Eviève</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000; --white: #FFFFFF; --charcoal: #636363;
+    --grey: #F0EFEC; --cream: #F5F1EA;
+    --serif: 'Fraunces', serif; --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--white); color: var(--black); font-family: var(--sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img, video { display: block; max-width: 100%; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 32px; }
+
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.1); }
+  .nav-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 16px 32px; max-width: 1240px; margin: 0 auto; }
+  @media (min-width: 900px) { .nav-row { padding: 16px 64px; } }
+  nav.links { display: none; gap: 28px; font-size: 14px; justify-self: start; }
+  nav.links a { text-decoration: none; }
+  @media (min-width: 860px) { nav.links { display: flex; align-items: center; } }
+  .logo-mark { width: 200px; height: 42px; justify-self: center; }
+  .logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+  .header-right { display: flex; align-items: center; gap: 20px; justify-self: end; }
+  .lang-switch { display: flex; gap: 6px; font-size: 13px; color: var(--charcoal); }
+  .lang-switch a { text-decoration: none; }
+  .lang-switch a.active { color: var(--black); font-weight: 600; }
+  .menu-toggle { background: none; border: none; cursor: pointer; width: 26px; height: 18px; position: relative; padding: 0; }
+  .menu-toggle span { position: absolute; left: 0; width: 100%; height: 2px; background: var(--black); }
+  .menu-toggle span:nth-child(1) { top: 0; } .menu-toggle span:nth-child(2) { top: 8px; } .menu-toggle span:nth-child(3) { top: 16px; }
+  @media (min-width: 860px) { .menu-toggle { display: none; } }
+
+  .post-header { padding: 112px 0 40px; text-align: center; }
+  .back-link { text-decoration: none; font-size: 14px; color: var(--charcoal); }
+  .back-link:hover { color: var(--black); }
+
+  .post-date { font-size: 13px; color: var(--charcoal); }
+  .gated-badge { display: inline-block; font-family: var(--sans); font-size: 11px; letter-spacing: 0.03em; color: var(--charcoal); border: 1px solid var(--charcoal); padding: 4px 10px; margin-bottom: 14px; }
+  .post-quote { font-family: var(--serif); font-style: italic; font-size: 1.5rem; text-align: center; max-width: 640px; margin: 0 auto 48px; line-height: 1.4; }
+  .post-header h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 5vw, 3rem); margin-top: 12px; line-height: 1.2; }
+
+  .post-hero-image { width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--charcoal); margin-bottom: 48px; }
+  .post-hero-image img { width: 100%; height: 100%; object-fit: cover; }
+
+  .post-body { padding-bottom: 120px; }
+  .post-body p { color: #2b2b2b; margin-bottom: 22px; font-size: 1.05rem; }
+  .post-body h3 { font-family: var(--serif); font-weight: 500; font-size: 1.4rem; margin: 40px 0 16px; }
+  .post-body strong { font-weight: 600; }
+  .post-body em { font-style: italic; }
+  .post-body a { text-decoration: underline; }
+
+  /* [youtube: VIDEO_ID] embed -- responsive 16:9, resizes on any screen */
+  .embed-youtube { position: relative; width: 100%; aspect-ratio: 16/9; margin: 40px 0; background: var(--charcoal); }
+  .embed-youtube iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  /* [video: ...] embed */
+  .embed-video { margin: 40px 0; }
+  .embed-video video { width: 100%; }
+
+  /* [audio: ...] embed */
+  .embed-audio { margin: 40px 0; padding: 20px; background: var(--grey); }
+  .embed-audio audio { width: 100%; }
+  .embed-audio p { font-size: 13px; color: var(--charcoal); margin-bottom: 10px; }
+
+  /* [flipbook: ...] embed -- reuses the same slideshow pattern as elsewhere on the site */
+  .embed-flipbook { position: relative; width: 100%; aspect-ratio: 4/3; overflow: hidden; background: var(--charcoal); margin: 40px 0; }
+  .embed-flipbook .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
+  .embed-flipbook .slide.active { opacity: 1; }
+  .embed-flipbook .slide img, .embed-flipbook .slide video { width: 100%; height: 100%; object-fit: cover; }
+  .flipbook-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.2rem; font-family: var(--serif); cursor: pointer; padding: 10px 16px; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+  .flipbook-arrow.prev { left: 4px; }
+  .flipbook-arrow.next { right: 4px; }
+
+  /* [pdf-flipbook: filename.pdf] embed -- real PDF pages rendered with working links */
+  .embed-pdf-flipbook { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: 40px; margin-bottom: 40px; background: var(--grey); }
+  .pdf-spread { display: flex; justify-content: center; align-items: flex-start; }
+  .pdf-page-wrap { position: relative; line-height: 0; }
+  .pdf-page-wrap canvas { display: block; width: 100%; height: auto; }
+  .pdf-link-overlay { position: absolute; display: block; }
+  .pdf-link-overlay:hover { outline: 1px solid rgba(0,0,0,0.25); }
+  .pdf-nav-row { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 16px 0; }
+  .pdf-nav-row button { background: transparent; border: none; font-family: var(--serif); font-size: 1.6rem; cursor: pointer; color: var(--black); }
+  .pdf-nav-row span { font-size: 13px; color: var(--charcoal); }
+  .pdf-fullscreen-btn { font-size: 1.1rem !important; }
+  .embed-pdf-flipbook:fullscreen,
+  .embed-pdf-flipbook:-webkit-full-screen { background: var(--black); display: flex; flex-direction: column; justify-content: center; }
+  .embed-pdf-flipbook:fullscreen .pdf-spread,
+  .embed-pdf-flipbook:-webkit-full-screen .pdf-spread { flex: 1; }
+  .embed-pdf-flipbook:fullscreen .pdf-nav-row button,
+  .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row button { color: var(--white); }
+  .embed-pdf-flipbook:fullscreen .pdf-nav-row span,
+  .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row span { color: var(--grey); }
+  .pdf-loading { text-align: center; padding: 60px 20px; color: var(--charcoal); font-size: 14px; }
+
+  footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
+  .footer-wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+  @media (min-width: 900px) { .footer-wrap { padding: 0 64px; } }
+  .footer-bottom { font-size: 12.5px; color: rgba(255,255,255,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+<div id="scrollSentinel" style="position:absolute; top:0; height:1px; width:1px;"></div>
+
+<header>
+  <div class="nav-row">
+    <nav class="links">
+      <a href="index.html#home">Accueil</a>
+      <a href="index.html#about">À propos</a>
+      <a href="index.html#magazine">Magazine</a>
+      <a href="index.html#subscriptions">Abonnements</a>
+      <a href="art.html">Art</a>
+    </nav>
+    <a href="index.html" class="logo-mark">
+      <img src="images/maisonevieve_logo_meditation_art.png" alt="Maison Eviève">
+    </a>
+    <div class="header-right">
+      <div class="lang-switch">
+        <a href="/en/">EN</a><span>/</span><a href="/fr/" class="active">FR</a>
+      </div>
+      <button class="menu-toggle" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="post-header">
+    <div class="gated-badge">Bienvenue</div>
+    <p class="post-date">Pour vous, de la part de Maison Eviève</p>
+    <h1>La Première Lettre</h1>
+  </div>
+</div>
+
+<div class="post-hero-image">
+  <img src="images/first-letter-peopny.jpg" alt="">
+</div>
+
+<p class="post-quote">« Avant qu'une lettre n'arrive dans votre boîte aux lettres, il y a un instant d'attente. Voici cet instant, imaginé. »</p>
+
+<div class="wrap post-body">
+  <p>Bienvenue, chère âme, et merci de nous avoir rejoints. Vous trouverez ci-dessous l'expérience de la lettre que je vous avais promise, en version audio et texte. Juste après, vous trouverez un numéro d'essai du magazine "(meditating) On Art". À tout de suite !</p>
+
+  <h3>L'expérience de la lettre</h3>
+
+  <div class="embed-audio"><audio controls><source src="/audio/Letter_Experience_en.m4a" type="audio/mp4"></audio></div>
+
+  <p>Chère âme,</p>
+
+  <p>Recevoir et envoyer des lettres a aujourd'hui une saveur romantique et nostalgique, bien loin de la nécessité et de l'incertitude d'autrefois. Dans cette lettre numérique, nous allons découvrir ce que l'on ressent en recevant une lettre. En le vivant dans votre esprit avant que cela ne se réalise. Avant de commencer une méditation sensorielle, installez-vous dans un endroit où vous pourrez ignorer les distractions. Prenez trois respirations profondes, en remplissant complètement votre ventre, et en expirant entièrement. Détendez votre visage, détendez votre nuque.</p>
+
+  <p>Je vous invite à imaginer une voix que vous trouvez très apaisante. Cela peut être celle d'une personne que vous connaissez, ou même d'une célébrité — choisissez simplement une voix, un rythme, et même un accent, qui vous apaisent, peut-être un peu fantaisistes. Essayez de lire la suite de cette lettre avec cette voix.</p>
+
+  <p>Imaginez recevoir une lettre. Elle vous a surpris dans votre boîte aux lettres, peut-être parmi des factures ou des prospectus publicitaires. Elle est dans une enveloppe colorée et porte votre nom. Vous la rapportez à l'intérieur, curieux, vous laissez tout le reste sur la table, et vous vous concentrez sur cette lettre mystérieuse. Elle semble un peu plus lourde, elle doit contenir plus d'une page. Vous l'ouvrez lentement.</p>
+
+  <p>Comme si la scène se déroulait au ralenti, écoutez le bruit de l'enveloppe qui se déchire, sentez la texture du papier entre vos doigts, sentez même le papier et ce qu'il contient.</p>
+
+  <p>Vous dépliez le papier et commencez à le lire. Pendant que vous lisez, vous imaginez le son d'un clavier tapant les mots que vous lisez. Et le stylo-plume griffonnant la partie manuscrite au dos de la page. Respirez lentement, comme si vous savouriez la lettre, le souffle...</p>
+
+  <p>Vous terminez la lecture de la lettre puis portez votre attention sur la carte postale qui l'accompagnait. Une œuvre d'art y est imprimée, et une invitation à la méditation figure au dos. Vous déciderez plus tard si vous la garderez, ou si vous l'enverrez à quelqu'un. Cela fait longtemps que vous n'avez pas envoyé de carte postale physique...</p>
+
+  <p>Vous gardez la lettre et la carte postale sur vos genoux, sentant leur poids à peine perceptible, et vous restez assis en silence. Vous pensez à ce que vous avez lu. À la façon dont cela vous a touché. Ressentez les sensations dans votre corps... Je vous imagine assis dans un fauteuil bordeaux, le soleil de l'après-midi baignant votre espace, et quelques fleurs séchées sur le rebord de votre fenêtre qui semblent sourire. Imaginez-vous ainsi vous aussi. Sentez la chaleur du soleil sur votre peau. Sentez le tissu velouté du fauteuil soutenant votre tête. Imaginez que votre vraie vie soit un rêve que vous faites lors d'une sieste d'après-midi dans ce fauteuil...</p>
+
+  <p>Et puis, respirez...</p>
+
+  <p>Laissez maintenant cette lettre s'en aller et revivez l'expérience dans votre esprit, par vous-même. Rester assis en silence, après toute pratique, est essentiel. Si vous le souhaitez, faites de cette expérience une réalité en vous abonnant à la Lettre de Méditation Artistique mensuelle. Quoi qu'il en soit, j'ai inclus un ensemble de papeterie à imprimer, avec une carte postale et une enveloppe. Peut-être pourriez-vous recréer cette expérience pour quelqu'un à qui cela ferait plaisir.</p>
+
+  <p>Prenez tout le temps dont vous avez besoin avec cette lettre, et retrouvons-nous à la prochaine.</p>
+
+  <p>Avec amour,<br>Evi</p>
+
+  <h3>Le magazine "(meditating) On Art"</h3>
+
+  <div class="embed-pdf-flipbook" data-pdf-src="/pdfs/Living-space.pdf"><div class="pdf-spread"></div><div class="pdf-nav-row"><button class="pdf-prev" aria-label="Précédent">&#8249;</button><span class="pdf-page-indicator">Chargement…</span><button class="pdf-next" aria-label="Suivant">&#8250;</button><button class="pdf-fullscreen-btn" aria-label="Plein écran">&#9974;</button></div></div>
+</div>
+
+<footer>
+  <div class="footer-wrap">
+    <div class="footer-bottom">
+      <span>© 2026 Maison Eviève, Paris</span>
+      <span>Esthétique manuscrite, composée avec soin</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var header = document.querySelector('header');
+    var sentinel = document.getElementById('scrollSentinel');
+    if (sentinel) {
+      var observer = new IntersectionObserver(function (entries) {
+        header.classList.toggle('scrolled', !entries[0].isIntersecting);
+      }, { threshold: 0 });
+      observer.observe(sentinel);
+    }
+  })();
+
+  (function () {
+    var slides = document.querySelectorAll('.embed-flipbook .slide');
+    if (!slides.length) return;
+    var current = 0;
+    function syncVideos() {
+      slides.forEach(function (slide, i) {
+        var video = slide.querySelector('video');
+        if (!video) return;
+        if (i === current) { video.currentTime = 0; video.play(); }
+        else { video.pause(); }
+      });
+    }
+    function show(i) {
+      slides[current].classList.remove('active');
+      current = (i + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      syncVideos();
+    }
+    document.querySelector('.flipbook-arrow.prev').addEventListener('click', function () { show(current - 1); });
+    document.querySelector('.flipbook-arrow.next').addEventListener('click', function () { show(current + 1); });
+    syncVideos();
+  })();
+</script>
+
+<!-- PDF flipbook: renders real PDF pages as a book -- cover alone, then two-page spreads, back cover alone -->
+<script type="module">
+  let pdfjsLib;
+  try {
+    pdfjsLib = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+  } catch (err) {
+    document.querySelectorAll('.pdf-page-indicator').forEach(function (el) {
+      el.textContent = 'Impossible de charger la bibliothèque de visualisation PDF : ' + (err && err.message ? err.message : err);
+    });
+  }
+  if (pdfjsLib) {
+
+  // Builds the book's page groupings: [1], [2,3], [4,5], ... , [N]
+  // Page 1 (front cover) and the final page (back cover) each stand alone;
+  // everything in between is paired into two-page spreads.
+  function buildViews(numPages) {
+    var views = [[1]];
+    var i = 2;
+    while (i <= numPages) {
+      if (i === numPages) {
+        views.push([i]); // only one page left -- back cover, shown alone
+        i++;
+      } else {
+        views.push([i, i + 1]); // a normal spread
+        i += 2;
+      }
+    }
+    return views;
+  }
+
+  async function initPdfFlipbook(container) {
+    var src = container.getAttribute('data-pdf-src');
+    var spread = container.querySelector('.pdf-spread');
+    var indicator = container.querySelector('.pdf-page-indicator');
+    var prevBtn = container.querySelector('.pdf-prev');
+    var nextBtn = container.querySelector('.pdf-next');
+    var fullscreenBtn = container.querySelector('.pdf-fullscreen-btn');
+
+    var pdfDoc, views, currentView = 0;
+
+    var timeoutMs = 15000;
+    var timedOut = false;
+    var timeoutId = setTimeout(function () {
+      timedOut = true;
+      spread.innerHTML = '<p class="pdf-loading">Le chargement de ce PDF prend trop de temps. Il est peut-être trop volumineux, ou quelque chose sur le serveur le bloque.</p>';
+    }, timeoutMs);
+    try {
+      pdfDoc = await pdfjsLib.getDocument({
+        url: src,
+        disableStream: true,
+        disableAutoFetch: true,
+        disableRange: true,
+      }).promise;
+      clearTimeout(timeoutId);
+      if (timedOut) return; // the timeout message already showed; don't overwrite it
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (!timedOut) spread.innerHTML = '<p class="pdf-loading">Impossible de charger le PDF : ' + (err && err.message ? err.message : src) + '</p>';
+      return;
+    }
+
+    views = buildViews(pdfDoc.numPages);
+
+    async function renderView(viewIndex, holdHeight) {
+      var pageNumbers = views[viewIndex];
+      // Hold the current height while we clear and rebuild, so the page never
+      // momentarily collapses -- that collapse is what was causing the scroll jump.
+      // Only do this for an ordinary page flip: after a fullscreen transition the
+      // container's own size has just changed, so locking in whatever height it
+      // happens to report at that instant would just recreate the same problem.
+      if (holdHeight !== false) {
+        spread.style.minHeight = spread.offsetHeight + 'px';
+      } else {
+        spread.style.minHeight = '';
+      }
+      spread.innerHTML = '';
+
+      try {
+
+      // A single page (cover/back cover) is shown at the same physical size as one
+      // half of a two-page spread, so pages don't visually resize as you flip through.
+      var singlePageWidth = spread.clientWidth / 2;
+
+      for (var p = 0; p < pageNumbers.length; p++) {
+        var pageNum = pageNumbers[p];
+        var page = await pdfDoc.getPage(pageNum);
+
+        var unscaledViewport = page.getViewport({ scale: 1 });
+        var scale = singlePageWidth / unscaledViewport.width;
+        var viewport = page.getViewport({ scale: scale });
+
+        // Render at the screen's actual pixel density (devicePixelRatio), not just its
+        // logical size, so text stays sharp on Retina-style displays like an iPad's --
+        // the canvas gets more real pixels to draw into, then CSS scales it back down
+        // to the same on-screen size.
+        var dpr = window.devicePixelRatio || 1;
+        var renderViewport = page.getViewport({ scale: scale * dpr });
+
+        var pageWrap = document.createElement('div');
+        pageWrap.className = 'pdf-page-wrap';
+        pageWrap.style.width = viewport.width + 'px';
+        var canvas = document.createElement('canvas');
+        canvas.width = renderViewport.width;
+        canvas.height = renderViewport.height;
+        canvas.style.width = viewport.width + 'px';
+        canvas.style.height = viewport.height + 'px';
+        pageWrap.appendChild(canvas);
+        spread.appendChild(pageWrap);
+
+        await page.render({ canvasContext: canvas.getContext('2d'), viewport: renderViewport }).promise;
+
+        var annotations = await page.getAnnotations();
+        for (var i = 0; i < annotations.length; i++) {
+          var ann = annotations[i];
+          if (ann.subtype !== 'Link') continue;
+
+          var rect = viewport.convertToViewportRectangle(ann.rect);
+          var x = Math.min(rect[0], rect[2]);
+          var y = Math.min(rect[1], rect[3]);
+          var w = Math.abs(rect[2] - rect[0]);
+          var h = Math.abs(rect[3] - rect[1]);
+
+          var linkEl = document.createElement('a');
+          linkEl.className = 'pdf-link-overlay';
+          linkEl.style.left = x + 'px';
+          linkEl.style.top = y + 'px';
+          linkEl.style.width = w + 'px';
+          linkEl.style.height = h + 'px';
+
+          if (ann.url) {
+            linkEl.href = ann.url;
+            linkEl.target = '_blank';
+            linkEl.rel = 'noopener';
+          } else if (ann.dest) {
+            linkEl.href = '#';
+            linkEl.addEventListener('click', (function (dest) {
+              return async function (e) {
+                e.preventDefault();
+                var explicitDest = typeof dest === 'string' ? await pdfDoc.getDestination(dest) : dest;
+                var pageIndex = await pdfDoc.getPageIndex(explicitDest[0]);
+                var targetPage = pageIndex + 1;
+                var targetView = views.findIndex(function (v) { return v.indexOf(targetPage) !== -1; });
+                if (targetView !== -1) { currentView = targetView; renderView(currentView); }
+              };
+            })(ann.dest));
+          }
+          pageWrap.appendChild(linkEl);
+        }
+      }
+
+      indicator.textContent = pageNumbers.length === 1
+        ? 'Page ' + pageNumbers[0] + ' sur ' + pdfDoc.numPages
+        : 'Pages ' + pageNumbers[0] + '–' + pageNumbers[1] + ' sur ' + pdfDoc.numPages;
+      } catch (err) {
+        indicator.textContent = 'Impossible d\'afficher cette page : ' + (err && err.message ? err.message : err);
+      }
+    }
+
+    prevBtn.addEventListener('click', function () {
+      prevBtn.blur();
+      if (currentView > 0) { currentView--; renderView(currentView); }
+    });
+    nextBtn.addEventListener('click', function () {
+      nextBtn.blur();
+      if (currentView < views.length - 1) { currentView++; renderView(currentView); }
+    });
+
+    if (fullscreenBtn) {
+      var requestFs = container.requestFullscreen || container.webkitRequestFullscreen;
+      var exitFs = document.exitFullscreen || document.webkitExitFullscreen;
+      var fsElement = function () { return document.fullscreenElement || document.webkitFullscreenElement; };
+      if (requestFs) {
+        fullscreenBtn.addEventListener('click', function () {
+          fullscreenBtn.blur();
+          if (fsElement() === container) {
+            exitFs.call(document);
+          } else {
+            requestFs.call(container);
+          }
+        });
+        var rerenderAfterFullscreenChange = function () {
+          spread.style.minHeight = '';
+          requestAnimationFrame(function () { requestAnimationFrame(function () { renderView(currentView, false); }); });
+        };
+        document.addEventListener('fullscreenchange', rerenderAfterFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', rerenderAfterFullscreenChange);
+      } else {
+        fullscreenBtn.style.display = 'none'; // not supported on this browser -- hide rather than show a broken button
+      }
+    }
+
+    renderView(currentView);
+  }
+
+  document.querySelectorAll('.embed-pdf-flipbook').forEach(initPdfFlipbook);
+  }
+</script>
+
+
+<!-- Cookie notice: small, equal-weight accept/reject, matches CNIL requirements -->
+<div id="cookieNotice" class="cookie-notice">
+  <p>Nous utilisons uniquement les cookies nécessaires au bon fonctionnement des inscriptions et des paiements. <a href="legal.html#cookies">En savoir plus</a>.</p>
+  <div class="cookie-notice-actions">
+    <button id="cookieReject" class="cookie-btn">Refuser</button>
+    <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accepter</button>
+  </div>
+</div>
+<style>
+  .cookie-notice {
+    position: fixed; left: 20px; bottom: 20px; z-index: 90;
+    max-width: 300px; background: #FAF8F5; border: 1px solid rgba(0,0,0,0.15);
+    padding: 16px 18px; font-family: 'Inter', sans-serif; font-size: 12.5px; line-height: 1.5; color: #2b2b2b;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: none;
+  }
+  .cookie-notice.visible { display: block; }
+  .cookie-notice a { color: #000; text-decoration: underline; }
+  .cookie-notice-actions { display: flex; gap: 10px; margin-top: 12px; }
+  .cookie-btn {
+    flex: 1; font-family: 'Fraunces', serif; font-size: 12.5px; padding: 7px 0;
+    background: transparent; border: 1px solid #000; color: #000; cursor: pointer;
+  }
+  .cookie-btn-accept { background: #000; color: #fff; }
+  @media (max-width: 520px) { .cookie-notice { left: 12px; right: 12px; bottom: 12px; max-width: none; } }
+</style>
+<script>
+  (function () {
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    }
+    function setCookie(name, value) {
+      document.cookie = name + '=' + value + '; max-age=31536000; path=/';
+    }
+    var existing = getCookie('cookie_consent');
+    var notice = document.getElementById('cookieNotice');
+    if (!existing) {
+      notice.classList.add('visible');
+    }
+    document.getElementById('cookieAccept').addEventListener('click', function () {
+      setCookie('cookie_consent', 'accepted');
+      notice.classList.remove('visible');
+      // If analytics/marketing scripts are ever added, load them here, gated behind consent.
+    });
+    document.getElementById('cookieReject').addEventListener('click', function () {
+      setCookie('cookie_consent', 'rejected');
+      notice.classList.remove('visible');
+    });
+  })();
+</script>
+</body>
+</html>
