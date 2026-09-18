@@ -38,15 +38,17 @@ function inlineFormat(text) {
   return text;
 }
 
-function renderEmbed(kind, arg) {
+function renderEmbed(kind, arg, lang) {
   if (kind === 'signup') {
     // Optional custom headline: [signup: Your custom text here] -- falls back to a
     // sensible default if left blank: [signup]
     const headline = arg || 'Get "The First Letter," free.';
+    const languageValue = lang === 'fr' ? 'Français' : 'English';
     return `<div class="embed-signup">
     <p class="embed-signup-title">${headline}</p>
     <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
       <input type="email" name="fields[email]" placeholder="Your email" required>
+      <input type="hidden" name="fields[language]" value="${languageValue}">
       <button type="submit">Sign up</button>
     </form>
     <p class="embed-signup-confirm">Thank you — check your inbox shortly.</p>
@@ -88,13 +90,13 @@ function renderEmbed(kind, arg) {
   return '';
 }
 
-function parseBody(raw) {
+function parseBody(raw, lang) {
   if (!raw) return '';
   const blocks = raw.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
   const html = blocks.map(block => {
     const embedMatch = block.match(/^\[(video|audio|youtube|flipbook|pdf-flipbook|signup)(?:\s*:\s*(.*))?\]$/i);
     if (embedMatch) {
-      return renderEmbed(embedMatch[1].toLowerCase(), embedMatch[2]);
+      return renderEmbed(embedMatch[1].toLowerCase(), embedMatch[2], lang);
     }
     const headingMatch = block.match(/^###\s+(.+)$/);
     if (headingMatch) {

@@ -149,7 +149,7 @@ async function main() {
       const row = langs[lang];
       if (!row) continue;
       if (!row.slug) { console.warn(`Skipping Blog row with no slug (post_id: ${postId}, lang: ${lang})`); continue; }
-      const bodyHtml = parseBody(row.body);
+      const bodyHtml = parseBody(row.body, lang);
       const ctaHtml = row.cta_link
         ? `<div class="wrap post-cta"><a href="${row.cta_link}" class="btn" target="_blank" rel="noopener">${row.cta_label || 'Subscribe'}</a></div>`
         : '';
@@ -181,7 +181,7 @@ async function main() {
       const row = langs[lang];
       if (!row) continue;
       if (!row.slug) { console.warn(`Skipping DigitalPosts row with no slug (post_id: ${postId}, lang: ${lang})`); continue; }
-      const bodyHtml = parseBody(row.body);
+      const bodyHtml = parseBody(row.body, lang);
       const gatedBadge = (row.gated || '').toLowerCase() === 'yes' ? '<div class="gated-badge">Members</div>' : '';
       const quoteBlock = row.quote ? `<p class="post-quote">"${row.quote}"</p>` : '';
       const html = fillTemplate(digitalTemplate, {
