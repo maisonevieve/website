@@ -150,12 +150,16 @@ async function main() {
       if (!row) continue;
       if (!row.slug) { console.warn(`Skipping Blog row with no slug (post_id: ${postId}, lang: ${lang})`); continue; }
       const bodyHtml = parseBody(row.body);
+      const ctaHtml = row.cta_link
+        ? `<div class="wrap post-cta"><a href="${row.cta_link}" class="btn" target="_blank" rel="noopener">${row.cta_label || 'Subscribe'}</a></div>`
+        : '';
       const html = fillTemplate(blogTemplate, {
         LANG: lang,
         TITLE: row.title,
         DATE: formatDate(row.date, lang),
         POST_HERO_IMAGE: heroImageBlock(row),
         BODY_HTML: bodyHtml,
+        POST_CTA: ctaHtml,
         HEADER: readHeaderPartial(lang),
         FOOTER: readPartial('footer-minimal.html'),
       });
