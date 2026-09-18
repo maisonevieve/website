@@ -139,8 +139,12 @@
   .tier-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
   .tier-slide.active { opacity: 1; }
   .tier-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .tier-slide-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.17); display: flex; align-items: flex-end; justify-content: center; padding: 22px; }
+  .tier-slide-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.17); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 22px; gap: 10px; }
   .tier-slide-overlay h4 { color: var(--white); font-family: var(--serif); font-weight: 400; font-size: 1.25rem; line-height: 1.4; text-align: center; margin: 0; }
+  .tier-slide-kicker { color: var(--white); font-family: var(--sans); font-size: 0.8rem; letter-spacing: 0.03em; text-align: center; margin: 0; opacity: 0.9; }
+  .tier-slide-title { color: var(--white); font-family: var(--serif); font-weight: 400; font-size: 1.8rem; line-height: 1.3; text-align: center; margin: 0; }
+  .tier-slide-rest { color: var(--white); font-family: var(--serif); font-weight: 400; font-size: 1rem; line-height: 1.4; text-align: center; margin: 0; opacity: 0.95; }
+  @media (max-width: 500px) { .tier-slide-title { font-size: 1.5rem; } }
   .tier-carousel-dots { position: absolute; top: 14px; left: 0; right: 0; display: flex; justify-content: center; gap: 7px; z-index: 2; }
   .tier-carousel-dots button { width: 6px; height: 6px; border-radius: 50%; border: none; background: rgba(255,255,255,0.5); padding: 0; cursor: pointer; }
   .tier-carousel-dots button.active { background: var(--white); }
@@ -149,7 +153,7 @@
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 200; padding: 24px; }
   .modal-overlay.open { display: flex; }
   .modal-box { background: var(--white); max-width: 900px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 40px; position: relative; }
-  .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.6rem; cursor: pointer; font-family: var(--serif); }
+  .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.6rem; cursor: pointer; font-family: var(--serif); color: var(--black); }
   .compare-table { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 0.9rem; }
   .compare-table th, .compare-table td { border-bottom: 1px solid rgba(0,0,0,0.12); padding: 12px 10px; text-align: center; }
   .billing-toggle { display: flex; justify-content: center; gap: 12px; margin-top: 20px; }
@@ -352,7 +356,10 @@
           <div class="tier-carousel">
             <div class="tier-slide active">
               <img src="images/slow-life-aesthetic-maison-evieve.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Art &amp; Meditation: Online content reminding you to live offline</h4></div>
+              <div class="tier-slide-overlay">
+                <p class="tier-slide-kicker">Art &amp; Meditation:</p>
+                <h2 class="tier-slide-title">Online content reminding you to live offline</h2>
+              </div>
             </div>
             <div class="tier-slide">
               <img src="images/abstract_art_jardins_de_tuileries.jpg" alt="">
@@ -376,7 +383,10 @@
           <div class="tier-carousel">
             <div class="tier-slide active">
               <img src="images/letters-in-transparent-bag-aesthetic.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>A retreat you can flip through. Every season a full magazine, every month a letter and a postcard.</h4></div>
+              <div class="tier-slide-overlay">
+                <h2 class="tier-slide-title">A retreat you can flip through.</h2>
+                <p class="tier-slide-rest">Every season a full magazine, every month a letter and a postcard.</p>
+              </div>
             </div>
             <div class="tier-slide">
               <img src="images/mailbox-letter-paris.jpg" alt="">
@@ -400,7 +410,9 @@
           <div class="tier-carousel">
             <div class="tier-slide active">
               <img src="images/letters-flower-shadow.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Your inbox doesn't have to be jealous of your mailbox</h4></div>
+              <div class="tier-slide-overlay">
+                <h2 class="tier-slide-title">Your inbox doesn't have to be jealous of your mailbox</h2>
+              </div>
             </div>
             <div class="tier-slide">
               <img src="images/letter-wax-seal-aesthetic.jpg" alt="">
