@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentions légales — Maison Eviève</title>
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000; --white: #FFFFFF; --charcoal: #636363;
+    --grey: #F0EFEC; --cream: #F5F1EA;
+    --serif: 'Fraunces', serif; --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--white); color: var(--black); font-family: var(--sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+
+  .top-bar { position: sticky; top: 0; z-index: 60; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.1); padding: 20px 32px; }
+  @media (min-width: 900px) { .top-bar { padding: 20px 64px; } }
+  .return-home { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--serif); font-size: 15px; }
+  .return-home:hover { text-decoration: underline; }
+
+  .legal-layout { display: block; }
+  @media (min-width: 980px) { .legal-layout { display: grid; grid-template-columns: 260px 1fr; gap: 64px; align-items: start; max-width: 1240px; margin: 0 auto; padding: 0 64px; } }
+  @media (max-width: 979px) { .legal-layout { padding: 0 32px; } }
+
+  /* Sticky sidebar TOC on desktop */
+  .toc-sidebar { display: none; }
+  @media (min-width: 980px) {
+    .toc-sidebar { display: block; position: sticky; top: 96px; padding-top: 56px; }
+    .toc-sidebar h4 { font-family: var(--sans); font-size: 13px; color: var(--charcoal); margin-bottom: 18px; }
+    .toc-sidebar a { display: block; text-decoration: none; font-family: var(--serif); font-size: 15px; padding: 8px 0; border-bottom: 1px solid transparent; color: #2b2b2b; }
+    .toc-sidebar a:hover, .toc-sidebar a.active { color: var(--black); border-color: var(--black); }
+  }
+
+  /* Horizontal scrolling TOC bar on mobile */
+  .toc-topbar { display: flex; gap: 20px; overflow-x: auto; padding: 16px 32px; background: var(--grey); position: sticky; top: 65px; z-index: 55; -webkit-overflow-scrolling: touch; }
+  @media (min-width: 980px) { .toc-topbar { display: none; } }
+  .toc-topbar a { white-space: nowrap; text-decoration: none; font-family: var(--serif); font-size: 14px; color: #2b2b2b; }
+
+  .legal-content { padding: 56px 0 100px; max-width: 760px; }
+  .legal-content h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4.5vw, 3rem); margin-bottom: 8px; }
+  .legal-content .updated { color: var(--charcoal); font-size: 13px; margin-bottom: 56px; }
+  .legal-section { padding: 44px 0; border-top: 1px solid rgba(0,0,0,0.1); }
+  .legal-section:first-of-type { border-top: none; }
+  .legal-section h2 { font-family: var(--serif); font-weight: 500; font-size: 1.6rem; margin-bottom: 20px; scroll-margin-top: 100px; }
+  .legal-section h3 { font-family: var(--serif); font-weight: 500; font-size: 1.1rem; margin: 28px 0 12px; }
+  .legal-section p { margin-bottom: 16px; color: #2b2b2b; }
+  .legal-section ul { margin: 0 0 16px 20px; color: #2b2b2b; }
+  .legal-section li { margin-bottom: 8px; }
+  .legal-section a.inline-link { text-decoration: underline; }
+  .legal-note { background: var(--grey); padding: 20px 24px; font-size: 14px; color: #2b2b2b; margin: 20px 0; }
+  .company-block { background: var(--cream); padding: 24px 28px; margin-bottom: 24px; font-size: 15px; }
+  .company-block p { margin-bottom: 4px; color: var(--black); }
+
+  footer { background: var(--black); color: var(--white); padding: 56px 0 32px; }
+  .footer-wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+  @media (min-width: 900px) { .footer-wrap { padding: 0 64px; } }
+  .footer-bottom { font-size: 12.5px; color: rgba(255,255,255,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html" class="return-home">&#8592; Retour à l'accueil</a>
+</div>
+
+<div class="toc-topbar">
+  <a href="#legal-notice">Mentions légales</a>
+  <a href="#terms">CGV</a>
+  <a href="#privacy">Confidentialité</a>
+  <a href="#data-protection">Données</a>
+  <a href="#cookies">Cookies</a>
+  <a href="#shipping">Livraison</a>
+  <a href="#customs">Douanes</a>
+  <a href="#subscription-billing">Facturation</a>
+  <a href="#refunds">Remboursements</a>
+  <a href="#mediation">Médiation</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<div class="legal-layout">
+  <nav class="toc-sidebar">
+    <h4>Sur cette page</h4>
+    <a href="#legal-notice">Mentions légales</a>
+    <a href="#terms">Conditions générales de vente</a>
+    <a href="#privacy">Politique de confidentialité</a>
+    <a href="#data-protection">Protection des données</a>
+    <a href="#cookies">Cookies</a>
+    <a href="#shipping">Livraison des biens physiques</a>
+    <a href="#customs">Douanes, droits et taxes à l'importation</a>
+    <a href="#subscription-billing">Facturation de l'abonnement</a>
+    <a href="#refunds">Remboursements et annulations</a>
+    <a href="#mediation">Droit applicable et médiation</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="legal-content">
+    <h1>Mentions légales, confidentialité et livraison</h1>
+    <p class="updated">Dernière mise à jour : septembre 2026</p>
+
+    <section class="legal-section" id="legal-notice">
+      <h2>Mentions légales</h2>
+      <div class="company-block">
+        <p><strong>Éditrice :</strong> Paraskevi Michailidou, exerçant sous le nom Maison Eviève</p>
+        <p><strong>Forme juridique :</strong> Entreprise individuelle, artiste-auteur</p>
+        <p><strong>Adresse du siège :</strong> 229 rue Saint-Honoré, 75001 Paris, France</p>
+        <p><strong>SIRET :</strong> immatriculation en cours — cette mention sera mise à jour avec le numéro de SIRET dès son émission</p>
+        <p><strong>TVA :</strong> Non applicable — Article 293 B du Code général des impôts (franchise en base de TVA)</p>
+        <p><strong>Directrice de la publication :</strong> Paraskevi Michailidou</p>
+        <p><strong>Email :</strong> <a href="mailto:bonjour@maisonevieve.com" class="inline-link">bonjour@maisonevieve.com</a></p>
+      </div>
+      <p><strong>Hébergeur :</strong> Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis.</p>
+      <p>L'ensemble du contenu de ce site — textes, photographies, œuvres, logos et mise en page — est la propriété intellectuelle de Paraskevi Michailidou / Maison Eviève, sauf mention contraire, et est protégé par le droit de la propriété intellectuelle français et international. Toute reproduction, distribution ou utilisation de ce contenu sans consentement écrit préalable est interdite.</p>
+    </section>
+
+    <section class="legal-section" id="terms">
+      <h2>Conditions générales de vente</h2>
+      <p>En accédant à maisonevieve.com (le « Site ») ou en y effectuant un achat, vous acceptez les présentes conditions générales de vente. Maison Eviève se réserve le droit de modifier ces conditions à tout moment ; la version publiée sur cette page au moment de votre commande s'applique à celle-ci.</p>
+      <p>Les prix sont affichés en euros et incluent toutes les taxes applicables, sauf mention contraire. Maison Eviève se réserve le droit de corriger toute erreur de tarification et de modifier ou de retirer tout produit, formule d'abonnement, ou collection, à sa discrétion.</p>
+
+      <h3>Propriété intellectuelle des œuvres</h3>
+      <p>L'achat d'une œuvre, d'un tirage, ou d'un abonnement auprès de Maison Eviève transfère uniquement la propriété de l'objet physique ou numérique. Il ne transfère ni les droits d'auteur, ni les droits de reproduction, ni aucun droit de revente commerciale de l'œuvre sous-jacente. Toutes les œuvres demeurent la propriété intellectuelle de Paraskevi Michailidou.</p>
+    </section>
+
+    <section class="legal-section" id="privacy">
+      <h2>Politique de confidentialité</h2>
+      <p>Cette section explique quelles données personnelles Maison Eviève collecte, pourquoi, et comment elles sont utilisées, conformément au Règlement Général sur la Protection des Données (RGPD) de l'Union européenne et à la loi française relative à la protection des données.</p>
+      <p>La responsable du traitement est Paraskevi Michailidou, exerçant sous le nom Maison Eviève, joignable à <a href="mailto:bonjour@maisonevieve.com" class="inline-link">bonjour@maisonevieve.com</a> pour toute demande relative à la confidentialité.</p>
+    </section>
+
+    <section class="legal-section" id="data-protection">
+      <h2>Protection des données</h2>
+      <h3>Ce que nous collectons</h3>
+      <ul>
+        <li>Nom, adresse de livraison, et adresse email, lorsque vous passez une commande ou souscrivez un abonnement (collectés et traités via Stripe)</li>
+        <li>Adresse email, lorsque vous vous inscrivez à la newsletter ou à l'abonnement lettre (collectée et traitée via MailerLite)</li>
+        <li>La correspondance que vous nous envoyez directement par email</li>
+      </ul>
+      <h3>Pourquoi nous les collectons</h3>
+      <ul>
+        <li>Pour honorer les commandes et abonnements — impression et envoi des lettres, magazines, et œuvres</li>
+        <li>Pour envoyer les communications liées à l'abonnement et, si vous y avez consenti, des emails marketing</li>
+        <li>Pour respecter les obligations comptables et fiscales françaises de conservation des documents</li>
+      </ul>
+      <h3>Avec qui nous les partageons</h3>
+      <p>Nous faisons appel à des prestataires tiers de confiance pour faire fonctionner le site et l'activité : Stripe (traitement des paiements), MailerLite (envoi des emails), et Cloudflare (hébergement). Chacun opère selon sa propre politique de confidentialité et ses propres garanties de protection des données. Nous ne vendons vos données personnelles à personne.</p>
+      <h3>Combien de temps nous les conservons</h3>
+      <p>Les données de commande et de facturation sont conservées aussi longtemps que l'exige le droit commercial et fiscal français. Les données liées aux emails marketing sont conservées jusqu'à votre désabonnement ou votre demande de suppression.</p>
+      <h3>Vos droits</h3>
+      <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, ou de portabilité de vos données personnelles, ainsi que d'un droit d'opposition ou de limitation de leur traitement. Pour exercer l'un de ces droits, écrivez à <a href="mailto:bonjour@maisonevieve.com" class="inline-link">bonjour@maisonevieve.com</a>. Vous disposez également du droit d'introduire une réclamation auprès de l'autorité française de protection des données, la <a href="https://www.cnil.fr" class="inline-link" target="_blank" rel="noopener">CNIL</a>.</p>
+    </section>
+
+    <section class="legal-section" id="cookies">
+      <h2>Cookies</h2>
+      <p>Ce site n'utilise actuellement aucun cookie d'analyse ou publicitaire. Les seuls cookies utilisés sont strictement fonctionnels : un cookie déposé par la fenêtre d'inscription MailerLite, pour se souvenir si vous l'avez déjà vue ou fermée, et les éventuels cookies déposés par Stripe lors du paiement, qui relèvent de la propre politique de confidentialité de Stripe. Si cela venait à changer — par exemple, si des outils d'analyse étaient ajoutés à l'avenir — cette politique sera mise à jour en conséquence.</p>
+    </section>
+
+    <section class="legal-section" id="shipping">
+      <h2>Livraison des biens physiques</h2>
+      <h3>Livraison standard</h3>
+      <ul>
+        <li>Europe : entre 9 et 15 jours ouvrés estimés (selon le pays)</li>
+        <li>États-Unis : entre 10 et 15 jours ouvrés estimés (selon la localisation)</li>
+      </ul>
+      <h3>Livraison express</h3>
+      <ul>
+        <li>Entre 2 et 6 jours ouvrés estimés (selon le pays)</li>
+      </ul>
+      <p>Les délais de livraison estimés commencent une fois la commande entrée en production et ne sont pas garantis, car ils dépendent du transporteur et de la destination.</p>
+    </section>
+
+    <section class="legal-section" id="customs">
+      <h2>Douanes, droits et taxes à l'importation</h2>
+      <p>Selon votre localisation, des frais et taxes d'importation peuvent s'appliquer à l'arrivée. Ces frais sont déterminés par la réglementation douanière de votre pays et relèvent de la responsabilité de l'acheteur. Maison Eviève ne peut être tenue responsable des frais de douane, taxes, ou retards liés au traitement douanier. Pour toute question concernant votre commande, contactez <a href="mailto:bonjour@maisonevieve.com" class="inline-link">bonjour@maisonevieve.com</a>.</p>
+    </section>
+
+    <section class="legal-section" id="subscription-billing">
+      <h2>Facturation de l'abonnement</h2>
+      <p>Les abonnements sont facturés automatiquement via Stripe, mensuellement ou annuellement selon la formule choisie, et se renouvellent automatiquement jusqu'à annulation.</p>
+      <ul>
+        <li>Votre email de bienvenue contient un lien sécurisé pour gérer votre abonnement — vous pouvez modifier vos informations de paiement ou annuler à tout moment, sans avoir besoin de nous contacter.</li>
+        <li>L'annulation arrête les prélèvements futurs ; elle ne rembourse pas rétroactivement les sommes déjà prélevées pour la période en cours.</li>
+        <li>En cas de changement de tarif, les abonnés existants seront prévenus par email avant l'entrée en vigueur du changement.</li>
+        <li>Les taxes applicables, le cas échéant, sont calculées au moment du paiement selon votre localisation.</li>
+      </ul>
+    </section>
+
+    <section class="legal-section" id="refunds">
+      <h2>Remboursements et annulations</h2>
+      <p>Chez Maison Eviève, chaque produit — y compris les œuvres originales, et pas seulement les tirages, lettres, et magazines — est fabriqué ou finalisé sur commande, plutôt que prélevé d'un stock existant. Les originaux ne sont achevés qu'une fois la commande passée : les touches finales, les finitions, ou une dédicace personnelle sont réalisées spécifiquement pour cette commande.</p>
+      <div class="legal-note">Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation standard de 14 jours ne s'applique pas aux biens confectionnés selon les spécifications du consommateur ou nettement personnalisés. Chaque pièce vendue ici — originale ou reproduction — étant réalisée après et en raison de votre commande, cette exception légale s'applique, et toute vente est définitive dès le début de la production.</div>
+
+      <h3>Annulation de commande</h3>
+      <p>Vous pouvez annuler votre commande dans les 24 heures suivant l'achat, à condition que la production n'ait pas encore commencé. Écrivez à <a href="mailto:bonjour@maisonevieve.com" class="inline-link">bonjour@maisonevieve.com</a> dès que possible pour vérifier si l'annulation est encore possible.</p>
+
+      <h3>Politique de vente définitive</h3>
+      <p>Chaque produit étant fabriqué sur mesure, nous n'acceptons ni retour ni échange en cas de simple changement d'avis. Merci de vérifier attentivement les descriptions, tailles, et dimensions des produits avant tout achat.</p>
+
+      <h3>Articles endommagés ou incorrects</h3>
+      <p>Si votre commande arrive endommagée, ou si vous recevez le mauvais article, nous vous proposerons un remplacement gratuit. Écrivez à <a href="mailto:bonjour@maisonevieve.com" class="inline-link">bonjour@maisonevieve.com</a> dans les 7 jours suivant la réception de votre commande, en incluant :</p>
+      <ul>
+        <li>Votre numéro de commande</li>
+        <li>Des photos claires de l'article et de l'emballage montrant le problème</li>
+      </ul>
+      <p>Nous organiserons un remplacement dans les meilleurs délais une fois cela confirmé.</p>
+
+      <h3>Colis perdus</h3>
+      <p>Si votre colis est perdu en transit, nous collaborerons avec le transporteur pour le retrouver. S'il ne peut être récupéré, nous vous proposerons soit un avoir, soit un remplacement. Contactez-nous si vous pensez que votre commande a été perdue.</p>
+    </section>
+
+    <section class="legal-section" id="mediation">
+      <h2>Droit applicable et médiation</h2>
+      <p>Les présentes conditions sont régies par le droit français. En cas de réclamation, merci de nous contacter d'abord à <a href="mailto:bonjour@maisonevieve.com" class="inline-link">bonjour@maisonevieve.com</a> — la plupart des situations se résolvent ainsi directement et rapidement.</p>
+      <p>Si un litige ne peut être résolu directement, vous avez le droit, en tant que consommateur, de recourir gratuitement à un médiateur de la consommation. Maison Eviève a désigné le médiateur suivant : <a href="https://www.mediateur-consommation-smp.fr" class="inline-link" target="_blank" rel="noopener">mediateur-consommation-smp.fr</a>.</p>
+    </section>
+
+    <section class="legal-section" id="contact">
+      <h2>Contact</h2>
+      <p>Pour toute question concernant ces conditions, votre commande, ou vos données personnelles, n'hésitez pas à nous contacter :</p>
+      <p><strong>Paraskevi Michailidou — Maison Eviève</strong><br>
+      229 rue Saint-Honoré, 75001 Paris, France<br>
+      <a href="mailto:bonjour@maisonevieve.com" class="inline-link">bonjour@maisonevieve.com</a></p>
+    </section>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-wrap">
+    <div class="footer-bottom">
+      <span>© 2026 Maison Eviève, Paris</span>
+      <span>Esthétique manuscrite, composée avec soin</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Highlight the active TOC entry as sections scroll into view
+  (function () {
+    var links = document.querySelectorAll('.toc-sidebar a');
+    var sections = document.querySelectorAll('.legal-section');
+    if (!links.length) return;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.getAttribute('id');
+          links.forEach(function (l) {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+    sections.forEach(function (s) { observer.observe(s); });
+  })();
+</script>
+
+
+<!-- Cookie notice: small, equal-weight accept/reject, matches CNIL requirements -->
+<div id="cookieNotice" class="cookie-notice">
+  <p>Nous utilisons uniquement les cookies nécessaires au bon fonctionnement des inscriptions et des paiements. <a href="legal.html#cookies">En savoir plus</a>.</p>
+  <div class="cookie-notice-actions">
+    <button id="cookieReject" class="cookie-btn">Refuser</button>
+    <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accepter</button>
+  </div>
+</div>
+<style>
+  .cookie-notice {
+    position: fixed; left: 20px; bottom: 20px; z-index: 90;
+    max-width: 300px; background: #FAF8F5; border: 1px solid rgba(0,0,0,0.15);
+    padding: 16px 18px; font-family: 'Inter', sans-serif; font-size: 12.5px; line-height: 1.5; color: #2b2b2b;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: none;
+  }
+  .cookie-notice.visible { display: block; }
+  .cookie-notice a { color: #000; text-decoration: underline; }
+  .cookie-notice-actions { display: flex; gap: 10px; margin-top: 12px; }
+  .cookie-btn {
+    flex: 1; font-family: 'Fraunces', serif; font-size: 12.5px; padding: 7px 0;
+    background: transparent; border: 1px solid #000; color: #000; cursor: pointer;
+  }
+  .cookie-btn-accept { background: #000; color: #fff; }
+  @media (max-width: 520px) { .cookie-notice { left: 12px; right: 12px; bottom: 12px; max-width: none; } }
+</style>
+<script>
+  (function () {
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    }
+    function setCookie(name, value) {
+      document.cookie = name + '=' + value + '; max-age=31536000; path=/';
+    }
+    var existing = getCookie('cookie_consent');
+    var notice = document.getElementById('cookieNotice');
+    if (!existing) {
+      notice.classList.add('visible');
+    }
+    document.getElementById('cookieAccept').addEventListener('click', function () {
+      setCookie('cookie_consent', 'accepted');
+      notice.classList.remove('visible');
+      // If analytics/marketing scripts are ever added, load them here, gated behind consent.
+    });
+    document.getElementById('cookieReject').addEventListener('click', function () {
+      setCookie('cookie_consent', 'rejected');
+      notice.classList.remove('visible');
+    });
+  })();
+</script>
+</body>
+</html>
