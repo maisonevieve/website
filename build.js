@@ -420,13 +420,31 @@ async function main() {
     }
   }
 
-  // Blog index page: inject post cards into blog.html for each language
+  // Blog index page: inject the most recent post as a featured lead story, and
+  // the rest into the regular grid below it, for each language
   for (const lang of ['en', 'fr']) {
     const distBlogPath = path.join(DIST, lang, 'blog.html');
     if (!fs.existsSync(distBlogPath)) continue;
     let html = fs.readFileSync(distBlogPath, 'utf-8');
     const posts = blogIndexByLang[lang].sort((a, b) => (parseSheetDate(b.date) || 0) - (parseSheetDate(a.date) || 0));
-    const cardsHtml = posts.map(row => `<div class="post-card">
+    const [featured, ...rest] = posts;
+
+    if (featured) {
+      const featuredHtml = `<a href="/${lang}/blog/${featured.slug}.html" class="card-link">
+      <div class="media">${featured.image ? `<img src="/images/${featured.image}" alt="${featured.title}">` : ''}</div>
+    </a>
+    <div>
+      <a href="/${lang}/blog/${featured.slug}.html" class="card-link">
+        <p class="post-date">${formatDate(featured.date, lang)}</p>
+        <h2>${featured.title}</h2>
+        <p class="excerpt">${featured.excerpt}</p>
+      </a>
+      <a href="/${lang}/blog/${featured.slug}.html" class="read-link">Read the post</a>
+    </div>`;
+      html = html.replace(/<div class="featured-post">[\s\S]*?<\/div>\s*<\/div>/, `<div class="featured-post">\n    ${featuredHtml}\n  </div>`);
+    }
+
+    const cardsHtml = rest.map(row => `<div class="post-card">
       <a href="/${lang}/blog/${row.slug}.html" class="card-link">
         <div class="media">${row.image ? `<img src="/images/${row.image}" alt="${row.title}">` : ''}</div>
         <p class="post-date">${formatDate(row.date, lang)}</p>
