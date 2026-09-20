@@ -311,11 +311,11 @@ async function main() {
     }
   }
 
-  // Canonical feelings list: maps whatever Evi types in the Sheet's "feelings"
-  // column (case-insensitive, matched loosely) to a clean slug used for filtering
-  // on the catalogue page. Keeping this in one place means the Sheet input stays
-  // forgiving (she can type "Deep Stillness" or "deep stillness") while the
-  // generated markup always gets a consistent, exact slug.
+  // Canonical feelings list: maps whatever's chosen in the Sheet's "feeling_1" /
+  // "feeling_2" dropdown columns (case-insensitive, matched loosely) to a clean
+  // slug used for filtering on the catalogue page. Keeping this in one place means
+  // the match stays forgiving even if a dropdown option's exact wording changes
+  // later, while the generated markup always gets a consistent, exact slug.
   const FEELINGS = [
     { slug: 'fractured-focus', match: /fractured\s*focus|brain\s*fog/i },
     { slug: 'quiet-burnout', match: /quiet\s*burnout|exhaustion/i },
@@ -326,9 +326,8 @@ async function main() {
     { slug: 'creative-spark', match: /creative\s*spark|awe/i },
     { slug: 'emotional-safety', match: /praise\s*of\s*shadows|emotional\s*safety/i },
   ];
-  function feelingsSlugs(raw) {
-    if (!raw) return [];
-    const parts = raw.split(',').map(s => s.trim()).filter(Boolean);
+  function feelingsSlugs(...raws) {
+    const parts = raws.map(r => (r || '').trim()).filter(Boolean);
     const slugs = parts.map(part => {
       const found = FEELINGS.find(f => f.match.test(part));
       if (!found) console.warn(`Unrecognized feeling "${part}" -- check spelling against the canonical list.`);
@@ -345,7 +344,7 @@ async function main() {
     const monthSuffix = lang === 'fr' ? ' / mois' : ' / mo';
     const priceText = row.price ? `€${row.price}${isSubscription ? monthSuffix : ''}` : priceUnknownText;
     const viewLinkText = lang === 'fr' ? 'Voir l\'œuvre' : 'View piece';
-    const feelingsAttr = feelingsSlugs(row.feelings).join(' ');
+    const feelingsAttr = feelingsSlugs(row.feeling_1, row.feeling_2).join(' ');
     return `<div class="art-card" data-feelings="${feelingsAttr}">
           <div class="media"><a href="${row._href}"><img src="/images/${img}" alt="${row.title}"></a></div>
           <h4>${row.title}</h4>
@@ -360,7 +359,7 @@ async function main() {
     const inner = isVideo
       ? `<video autoplay muted loop playsinline><source src="/videos/${img}" type="video/mp4"></video>`
       : `<img src="/images/${img}" alt="${row.title}">`;
-    const feelingsAttr = feelingsSlugs(row.feelings).join(' ');
+    const feelingsAttr = feelingsSlugs(row.feeling_1, row.feeling_2).join(' ');
     return `<div class="catalogue-cell" data-feelings="${feelingsAttr}"><a href="${row._href}">${inner}</a></div>`;
   }
 
