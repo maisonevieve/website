@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Maison Eviève</title>
+<link rel="icon" type="image/png" href="/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000; --white: #FFFFFF; --charcoal: #636363;
+    --grey: #F0EFEC; --cream: #F5F1EA;
+    --serif: 'Fraunces', serif; --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--white); color: var(--black); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; animation: pageFadeIn 0.7s ease both; }
+  @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes headerFadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { body, header { animation: none; } }
+  a { color: inherit; }
+  img, video { display: block; max-width: 100%; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+  @media (min-width: 900px) { .wrap { padding: 0 64px; } }
+
+  .btn { display: inline-block; font-family: var(--serif); text-transform: capitalize; font-size: 15px; background: transparent; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease; }
+  .btn:hover { background: rgba(0,0,0,0.6); color: var(--white); }
+
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.1); animation: headerFadeIn 0.6s ease both; animation-delay: 0.15s; }
+  .nav-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 16px 32px; }
+  @media (min-width: 900px) { .nav-row { padding: 16px 64px; } }
+  nav.links { display: none; gap: 28px; font-size: 14px; justify-self: start; }
+  nav.links a { text-decoration: none; }
+  @media (min-width: 860px) { nav.links { display: flex; align-items: center; } }
+  .logo-mark { width: 200px; height: 42px; justify-self: center; }
+  .logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+  .header-right { display: flex; align-items: center; gap: 20px; justify-self: end; }
+  .lang-switch { display: flex; gap: 6px; font-size: 13px; color: var(--charcoal); }
+  .lang-switch a { text-decoration: none; }
+  .lang-switch a.active { color: var(--black); font-weight: 600; }
+  .menu-toggle { background: none; border: none; cursor: pointer; width: 26px; height: 18px; position: relative; padding: 0; }
+  .menu-toggle span { position: absolute; left: 0; width: 100%; height: 2px; background: var(--black); }
+  .menu-toggle span:nth-child(1) { top: 0; } .menu-toggle span:nth-child(2) { top: 8px; } .menu-toggle span:nth-child(3) { top: 16px; }
+  @media (min-width: 860px) { .menu-toggle { display: none; } }
+  .mobile-nav { display: none; flex-direction: column; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.1); padding: 8px 32px 28px; position: absolute; top: 100%; left: 0; right: 0; z-index: 49; }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a { font-family: var(--serif); font-size: 1.1rem; padding: 14px 0; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.08); color: var(--black); }
+  @media (min-width: 860px) { .mobile-nav { display: none !important; } }
+
+  .back-link-row { padding: 96px 0 0; }
+  .back-link { text-decoration: none; font-size: 14px; color: var(--charcoal); }
+  .back-link:hover { color: var(--black); }
+
+  .product-gallery { position: relative; width: 100%; height: 72vh; min-height: 460px; margin-top: 24px; overflow: hidden; background: var(--charcoal); }
+  .product-gallery .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.8s ease; }
+  .product-gallery .slide.active { opacity: 1; }
+  .product-gallery .slide img, .product-gallery .slide video { width: 100%; height: 100%; object-fit: cover; }
+  .gallery-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.5rem; font-family: var(--serif); cursor: pointer; padding: 12px 20px; z-index: 5; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+  .gallery-arrow.prev { left: 8px; } .gallery-arrow.next { right: 8px; }
+  .gallery-dots { position: absolute; bottom: 16px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 5; }
+  .gallery-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.5); }
+  .gallery-dots span.active { background: var(--white); }
+
+  .product-body { padding: 56px 0 100px; }
+  .product-grid { display: grid; grid-template-columns: 1fr; gap: 48px; }
+  @media (min-width: 900px) { .product-grid { grid-template-columns: 1.3fr 1fr; gap: 72px; } }
+  .product-title-row .type-badge { font-family: var(--sans); font-size: 13px; color: var(--charcoal); }
+  .product-title-row h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(1.9rem, 3.6vw, 2.6rem); margin-top: 10px; }
+  .product-title-row .edition-line { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--charcoal); margin-top: 10px; }
+  .product-desc { margin-top: 28px; color: #2b2b2b; max-width: 560px; }
+  .product-desc p + p { margin-top: 16px; }
+  .specs-box { border-top: 1px solid var(--black); padding-top: 24px; }
+  .price-line { font-family: var(--serif); font-size: 2rem; font-weight: 300; margin-bottom: 24px; }
+  .price-line .price-suffix { font-size: 1rem; color: var(--charcoal); font-family: var(--sans); }
+  .specs-table { width: 100%; font-size: 0.95rem; }
+  .specs-table tr { border-bottom: 1px solid rgba(0,0,0,0.1); }
+  .specs-table td { padding: 12px 0; }
+  .specs-table td:first-child { color: var(--charcoal); width: 40%; }
+  .unframed-note { margin-top: 16px; font-size: 0.9rem; color: var(--charcoal); font-style: italic; }
+  .specs-box .btn { margin-top: 28px; width: 100%; text-align: center; }
+
+  footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
+  .footer-bottom { font-size: 12.5px; color: rgba(255,255,255,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+<div id="scrollSentinel" style="position:absolute; top:0; height:1px; width:1px;"></div>
+
+{{HEADER}}
+
+<div class="wrap back-link-row">
+  <a href="/{{LANG}}/catalogue.html" class="back-link">&#8592; Back to Available Art</a>
+</div>
+
+<div class="product-gallery">
+  {{GALLERY_SLIDES}}
+  <button class="gallery-arrow prev" aria-label="{{GALLERY_PREV_LABEL}}">&#8249;</button>
+  <button class="gallery-arrow next" aria-label="{{GALLERY_NEXT_LABEL}}">&#8250;</button>
+  <div class="gallery-dots">{{GALLERY_DOTS}}</div>
+</div>
+
+<div class="wrap product-body">
+  <div class="product-grid">
+    <div>
+      <div class="product-title-row">
+        <p class="type-badge">{{TYPE_LABEL}}</p>
+        <h1>{{TITLE}}</h1>
+        {{EDITION_LINE}}
+      </div>
+      <div class="product-desc">{{DESCRIPTION}}</div>
+    </div>
+    <div class="specs-box">
+      <div class="price-line">€{{PRICE}}{{PRICE_SUFFIX}}</div>
+      <table class="specs-table">
+        {{SIZE_ROW}}
+        {{MATERIAL_ROW}}
+        {{MEDIUM_ROW}}
+        {{THEME_ROW}}
+      </table>
+      {{UNFRAMED_NOTE}}
+      <a href="{{STRIPE_LINK}}" class="btn" target="_blank" rel="noopener">{{PURCHASE_LABEL}}</a>
+    </div>
+  </div>
+</div>
+
+{{FOOTER}}
+
+<script>
+  (function () {
+    var header = document.querySelector('header');
+    var sentinel = document.getElementById('scrollSentinel');
+    if (sentinel) {
+      var observer = new IntersectionObserver(function (entries) {
+        header.classList.toggle('scrolled', !entries[0].isIntersecting);
+      }, { threshold: 0 });
+      observer.observe(sentinel);
+    }
+    var toggle = document.getElementById('menuToggle');
+    var mobileNav = document.getElementById('mobileNav');
+    if (toggle && mobileNav) {
+      toggle.addEventListener('click', function () {
+        toggle.classList.toggle('open');
+        mobileNav.classList.toggle('open');
+      });
+    }
+  })();
+  (function () {
+    var slides = document.querySelectorAll('.product-gallery .slide');
+    var dots = document.querySelectorAll('.gallery-dots span');
+    if (!slides.length) return;
+    var current = 0;
+    function show(i) {
+      slides[current].classList.remove('active'); dots[current].classList.remove('active');
+      current = (i + slides.length) % slides.length;
+      slides[current].classList.add('active'); dots[current].classList.add('active');
+    }
+    document.querySelector('.gallery-arrow.prev').addEventListener('click', function () { show(current - 1); });
+    document.querySelector('.gallery-arrow.next').addEventListener('click', function () { show(current + 1); });
+  })();
+</script>
+</body>
+</html>
