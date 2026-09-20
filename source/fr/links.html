@@ -14,7 +14,9 @@
     --serif: 'Fraunces', serif; --sans: 'Inter', sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--white); color: var(--black); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  body { background: var(--white); color: var(--black); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; animation: pageFadeIn 0.7s ease both; }
+  @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { body { animation: none; } }
   a { color: inherit; }
   img { display: block; max-width: 100%; }
 

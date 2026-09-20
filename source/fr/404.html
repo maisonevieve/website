@@ -18,7 +18,10 @@
     background: var(--grey); color: var(--black); font-family: var(--sans);
     min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; padding: 48px 32px; -webkit-font-smoothing: antialiased;
+    animation: pageFadeIn 0.7s ease both;
   }
+  @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { body { animation: none; } }
   a { color: inherit; }
 
   .frame-illustration { width: 180px; height: auto; margin: 0 auto 40px; transform: rotate(-4deg); }
