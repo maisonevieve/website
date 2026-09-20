@@ -56,6 +56,15 @@
   /* Edge-to-edge collage grid, no gaps */
   .catalogue-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
   @media (max-width: 760px) { .catalogue-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .feelings-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 40px; }
+  .feelings-filter button { -webkit-appearance: none; appearance: none; font-family: var(--serif); font-size: 13px; background: transparent; border: 2px solid var(--black); color: var(--black); padding: 6px 16px; cursor: pointer; text-transform: capitalize; }
+  .feelings-filter button:hover { background: var(--grey); }
+  .feelings-filter button.active { background: var(--black); color: var(--white); }
+  .feelings-filter .filter-divider { width: 1px; align-self: stretch; background: var(--black); opacity: 0.2; margin: 0 2px; }
+  .catalogue-cell.filtered-out { display: none; }
+  .catalogue-empty-state { display: none; text-align: center; padding: 64px 0; font-family: var(--serif); font-style: italic; color: var(--charcoal); }
+  .catalogue-empty-state.visible { display: block; }
   .catalogue-cell { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--charcoal); }
   .catalogue-cell img, .catalogue-cell video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .catalogue-cell a { display: block; width: 100%; height: 100%; }
@@ -108,8 +117,20 @@
     <h1>Every piece we've made, in one place.</h1>
   </div>
 
+  <div class="feelings-filter" id="feelingsFilter">
+    <button data-feeling="fractured-focus">Fractured focus</button>
+    <button data-feeling="quiet-burnout">Quiet burnout</button>
+    <button data-feeling="urban-loneliness">Urban loneliness</button>
+    <button data-feeling="rushing-anxiety">Rushing anxiety</button>
+    <span class="filter-divider"></span>
+    <button data-feeling="deep-stillness">Deep stillness</button>
+    <button data-feeling="bittersweet-nostalgia">Bittersweet nostalgia</button>
+    <button data-feeling="creative-spark">Creative spark</button>
+    <button data-feeling="emotional-safety">Emotional safety</button>
+  </div>
+
   <!-- Every cell is a placeholder; video cells use a 3-second clip instead of a photo -->
-  <div class="catalogue-grid">
+  <div class="catalogue-grid" id="catalogueGrid">
     <!-- ART_CARDS:all:START -->
     <div class="catalogue-cell"><a href="#"><img src="images/art_galler_frame_meditation.png" alt="Placeholder piece"></a></div>
     <div class="catalogue-cell"><a href="#"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"></a></div>
@@ -129,6 +150,7 @@
     <div class="catalogue-cell"><a href="#"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"></a></div>
     <!-- ART_CARDS:all:END -->
   </div>
+  <p class="catalogue-empty-state" id="catalogueEmptyState">Nothing tagged with that feeling just yet — check back soon.</p>
 </main>
 
 <footer>
@@ -410,6 +432,43 @@
         confirmMsg.classList.add('visible');
         setCookie('signup_completed', '1', 365);
       }, 600);
+    });
+  })();
+</script>
+
+<script>
+  // Feelings filter: single-select -- click a feeling to show only matching
+  // pieces, click it again (or another feeling) to change the filter.
+  (function () {
+    var filterBar = document.getElementById('feelingsFilter');
+    var grid = document.getElementById('catalogueGrid');
+    var emptyState = document.getElementById('catalogueEmptyState');
+    if (!filterBar || !grid) return;
+    var buttons = filterBar.querySelectorAll('button');
+    var cells = grid.querySelectorAll('.catalogue-cell');
+
+    function showAll() {
+      cells.forEach(function (c) { c.classList.remove('filtered-out'); });
+      emptyState.classList.remove('visible');
+    }
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var wasActive = btn.classList.contains('active');
+        buttons.forEach(function (b) { b.classList.remove('active'); });
+        if (wasActive) { showAll(); return; }
+
+        btn.classList.add('active');
+        var feeling = btn.dataset.feeling;
+        var anyVisible = false;
+        cells.forEach(function (c) {
+          var feelings = (c.dataset.feelings || '').split(' ');
+          var matches = feelings.indexOf(feeling) !== -1;
+          c.classList.toggle('filtered-out', !matches);
+          if (matches) anyVisible = true;
+        });
+        emptyState.classList.toggle('visible', !anyVisible);
+      });
     });
   })();
 </script>
