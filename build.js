@@ -226,16 +226,55 @@ async function main() {
 
       const isOriginal = (row.type || '').toLowerCase() === 'original';
       const isSubscription = (row.type || '').toLowerCase() === 'subscription';
-      const isNumberedEdition = !isOriginal && !isSubscription && row.edition_size;
-      const typeLabel = isSubscription ? 'Subscription' : (isOriginal ? 'Original Work' : (isNumberedEdition ? 'Limited Print — Signed & Numbered' : 'Hand-Finished — Signed'));
+      const isBundle = (row.type || '').toLowerCase() === 'bundle';
+      const isLetter = (row.type || '').toLowerCase() === 'letter';
+      const isNumberedEdition = !isOriginal && !isSubscription && !isBundle && !isLetter && row.edition_size;
+
+      // Product-page labels, by language -- previously hardcoded in English only,
+      // which meant French product pages showed English UI text regardless of the
+      // row's own language. Centralized here so every label (including the two new
+      // types below) is correct in both languages from the start.
+      const L = lang === 'fr' ? {
+        subscription: 'Abonnement', original: 'Œuvre originale',
+        limitedNumbered: 'Tirage limité — signé et numéroté', handFinished: 'Fini à la main — signé',
+        bundle: 'Coffret', letter: 'Lettre à l\'aveugle',
+        edition: (size, remaining) => `Édition de ${size} — ${remaining} restants`,
+        medium: 'Support', size: 'Dimensions', material: 'Matériau', theme: 'Thème',
+        unframed: 'Cette pièce est livrée sans cadre.',
+        purchase: 'Acheter', subscribe: 'S\'abonner',
+        galleryPrev: 'Précédent', galleryNext: 'Suivant',
+      } : {
+        subscription: 'Subscription', original: 'Original Work',
+        limitedNumbered: 'Limited Print — Signed & Numbered', handFinished: 'Hand-Finished — Signed',
+        bundle: 'Bundle', letter: 'Blind-Date Letter',
+        edition: (size, remaining) => `Edition of ${size} — ${remaining} remaining`,
+        medium: 'Medium', size: 'Size', material: 'Material', theme: 'Theme',
+        unframed: 'This piece comes unframed.',
+        purchase: 'Purchase', subscribe: 'Subscribe',
+        galleryPrev: 'Previous', galleryNext: 'Next',
+      };
+
+      const typeLabel = isSubscription ? L.subscription
+        : isBundle ? L.bundle
+        : isLetter ? L.letter
+        : isOriginal ? L.original
+        : (isNumberedEdition ? L.limitedNumbered : L.handFinished);
       const editionLine = isNumberedEdition
-        ? `<p class="edition-line">Edition of ${row.edition_size} — ${row.edition_remaining} remaining</p>` : '';
-      const mediumRow = (isOriginal && row.medium) ? `<tr><td>Medium</td><td>${row.medium}</td></tr>` : '';
-      const sizeRow = (!isSubscription && row.size) ? `<tr><td>Size</td><td>${row.size}</td></tr>` : '';
-      const materialRow = (!isSubscription && row.material) ? `<tr><td>Material</td><td>${row.material}</td></tr>` : '';
-      const unframedNote = isSubscription ? '' : '<p class="unframed-note">This piece comes unframed.</p>';
-      const purchaseLabel = isSubscription ? 'Subscribe' : 'Purchase';
-      const priceSuffix = isSubscription ? ' <span class="price-suffix">per month</span>' : '';
+        ? `<p class="edition-line">${L.edition(row.edition_size, row.edition_remaining)}</p>` : '';
+      const mediumRow = (isOriginal && row.medium) ? `<tr><td>${L.medium}</td><td>${row.medium}</td></tr>` : '';
+      // Size/material only apply to physical, individually-crafted pieces -- not
+      // subscriptions, bundles (a curated set, not one object), or letters.
+      const isPhysicalSingleItem = !isSubscription && !isBundle && !isLetter;
+      const sizeRow = (isPhysicalSingleItem && row.size) ? `<tr><td>${L.size}</td><td>${row.size}</td></tr>` : '';
+      const materialRow = (isPhysicalSingleItem && row.material) ? `<tr><td>${L.material}</td><td>${row.material}</td></tr>` : '';
+      // Theme is optional and only meaningful for bundles for now (e.g. a seasonal
+      // or aesthetic name) -- left blank unless Evi fills it in for a given bundle.
+      const themeRow = (isBundle && row.theme) ? `<tr><td>${L.theme}</td><td>${row.theme}</td></tr>` : '';
+      const unframedNote = isPhysicalSingleItem ? `<p class="unframed-note">${L.unframed}</p>` : '';
+      const purchaseLabel = isSubscription ? L.subscribe : L.purchase;
+      // Bundles and letters are one-off purchases, same as original art and prints --
+      // no recurring-price suffix. Only an actual Subscription gets "per month".
+      const priceSuffix = isSubscription ? ` <span class="price-suffix">${lang === 'fr' ? '/ mois' : 'per month'}</span>` : '';
 
       const html = fillTemplate(productTemplate, {
         LANG: lang,
@@ -248,11 +287,14 @@ async function main() {
         SIZE_ROW: sizeRow,
         MATERIAL_ROW: materialRow,
         MEDIUM_ROW: mediumRow,
+        THEME_ROW: themeRow,
         UNFRAMED_NOTE: unframedNote,
         STRIPE_LINK: row.stripe_link,
         PURCHASE_LABEL: purchaseLabel,
         GALLERY_SLIDES: slides,
         GALLERY_DOTS: dots,
+        GALLERY_PREV_LABEL: L.galleryPrev,
+        GALLERY_NEXT_LABEL: L.galleryNext,
         HEADER: readHeaderPartial(lang),
         FOOTER: readPartial('footer-minimal.html'),
       });
@@ -269,16 +311,46 @@ async function main() {
     }
   }
 
+  // Canonical feelings list: maps whatever Evi types in the Sheet's "feelings"
+  // column (case-insensitive, matched loosely) to a clean slug used for filtering
+  // on the catalogue page. Keeping this in one place means the Sheet input stays
+  // forgiving (she can type "Deep Stillness" or "deep stillness") while the
+  // generated markup always gets a consistent, exact slug.
+  const FEELINGS = [
+    { slug: 'fractured-focus', match: /fractured\s*focus|brain\s*fog/i },
+    { slug: 'quiet-burnout', match: /quiet\s*burnout|exhaustion/i },
+    { slug: 'urban-loneliness', match: /urban\s*loneliness|disconnection/i },
+    { slug: 'rushing-anxiety', match: /rushing\s*anxiety|urgency/i },
+    { slug: 'deep-stillness', match: /deep\s*stillness|calm/i },
+    { slug: 'bittersweet-nostalgia', match: /bittersweet\s*nostalgia|longing/i },
+    { slug: 'creative-spark', match: /creative\s*spark|awe/i },
+    { slug: 'emotional-safety', match: /praise\s*of\s*shadows|emotional\s*safety/i },
+  ];
+  function feelingsSlugs(raw) {
+    if (!raw) return [];
+    const parts = raw.split(',').map(s => s.trim()).filter(Boolean);
+    const slugs = parts.map(part => {
+      const found = FEELINGS.find(f => f.match.test(part));
+      if (!found) console.warn(`Unrecognized feeling "${part}" -- check spelling against the canonical list.`);
+      return found ? found.slug : null;
+    }).filter(Boolean);
+    return [...new Set(slugs)]; // de-duplicate, in case two phrasings map to the same slug
+  }
+
   // ---- Card HTML for listings (latest 3, and full catalogue) ----
-  function artCardHtml(row, featuredImgOverride) {
+  function artCardHtml(row, featuredImgOverride, lang) {
     const img = featuredImgOverride || row.featured || (row.images || '').split(',')[0].trim();
     const isSubscription = (row.type || '').toLowerCase() === 'subscription';
-    const priceText = row.price ? `€${row.price}${isSubscription ? ' / mo' : ''}` : 'Price upon inquiry';
-    return `<div class="art-card">
+    const priceUnknownText = lang === 'fr' ? 'Prix sur demande' : 'Price upon inquiry';
+    const monthSuffix = lang === 'fr' ? ' / mois' : ' / mo';
+    const priceText = row.price ? `€${row.price}${isSubscription ? monthSuffix : ''}` : priceUnknownText;
+    const viewLinkText = lang === 'fr' ? 'Voir l\'œuvre' : 'View piece';
+    const feelingsAttr = feelingsSlugs(row.feelings).join(' ');
+    return `<div class="art-card" data-feelings="${feelingsAttr}">
           <div class="media"><a href="${row._href}"><img src="/images/${img}" alt="${row.title}"></a></div>
           <h4>${row.title}</h4>
           <div class="price">${priceText}</div>
-          <a href="${row._href}" class="view-link">View piece</a>
+          <a href="${row._href}" class="view-link">${viewLinkText}</a>
         </div>`;
   }
 
@@ -288,7 +360,8 @@ async function main() {
     const inner = isVideo
       ? `<video autoplay muted loop playsinline><source src="/videos/${img}" type="video/mp4"></video>`
       : `<img src="/images/${img}" alt="${row.title}">`;
-    return `<div class="catalogue-cell"><a href="${row._href}">${inner}</a></div>`;
+    const feelingsAttr = feelingsSlugs(row.feelings).join(' ');
+    return `<div class="catalogue-cell" data-feelings="${feelingsAttr}"><a href="${row._href}">${inner}</a></div>`;
   }
 
   // ---- Copy static pages through, injecting art cards + fixing asset paths ----
@@ -314,7 +387,7 @@ async function main() {
       // Inject latest-3 art cards
       if (html.includes('ART_CARDS:latest:START')) {
         const latest = availableArt[lang].slice(-3).reverse();
-        const cardsHtml = latest.map(r => artCardHtml(r)).join('\n        ');
+        const cardsHtml = latest.map(r => artCardHtml(r, null, lang)).join('\n        ');
         html = html.replace(
           /<!-- ART_CARDS:latest:START -->[\s\S]*?<!-- ART_CARDS:latest:END -->/,
           `<!-- ART_CARDS:latest:START -->\n        ${cardsHtml}\n        <!-- ART_CARDS:latest:END -->`
@@ -325,7 +398,7 @@ async function main() {
       // just above it on this page -- so nothing repeats between the two sections.
       if (html.includes('ART_CARDS:carousel:START')) {
         const rest = availableArt[lang].slice(0, -3).reverse().slice(0, 10);
-        const carouselHtml = rest.map(r => artCardHtml(r)).join('\n        ');
+        const carouselHtml = rest.map(r => artCardHtml(r, null, lang)).join('\n        ');
         html = html.replace(
           /<!-- ART_CARDS:carousel:START -->[\s\S]*?<!-- ART_CARDS:carousel:END -->/,
           `<!-- ART_CARDS:carousel:START -->\n        ${carouselHtml}\n        <!-- ART_CARDS:carousel:END -->`
