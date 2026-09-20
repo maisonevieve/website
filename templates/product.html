@@ -92,8 +92,8 @@
 
 <div class="product-gallery">
   {{GALLERY_SLIDES}}
-  <button class="gallery-arrow prev" aria-label="Previous">&#8249;</button>
-  <button class="gallery-arrow next" aria-label="Next">&#8250;</button>
+  <button class="gallery-arrow prev" aria-label="{{GALLERY_PREV_LABEL}}">&#8249;</button>
+  <button class="gallery-arrow next" aria-label="{{GALLERY_NEXT_LABEL}}">&#8250;</button>
   <div class="gallery-dots">{{GALLERY_DOTS}}</div>
 </div>
 
@@ -113,6 +113,7 @@
         {{SIZE_ROW}}
         {{MATERIAL_ROW}}
         {{MEDIUM_ROW}}
+        {{THEME_ROW}}
       </table>
       {{UNFRAMED_NOTE}}
       <a href="{{STRIPE_LINK}}" class="btn" target="_blank" rel="noopener">{{PURCHASE_LABEL}}</a>
