@@ -367,7 +367,7 @@ async function main() {
   }
 
   // ---- Copy static pages through, injecting art cards + fixing asset paths ----
-  const staticPages = ['index.html', 'art.html', 'catalogue.html', 'blog.html', 'legal.html', '404.html', 'links.html', 'the-first-letter.html'];
+  const staticPages = ['index.html', 'art.html', 'catalogue.html', 'blog.html', 'legal.html', '404.html', 'links.html'];
 
   for (const lang of ['en', 'fr']) {
     for (const page of staticPages) {
