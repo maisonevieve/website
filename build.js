@@ -457,6 +457,17 @@ async function main() {
     fs.writeFileSync(distBlogPath, html, 'utf-8');
   }
 
+  // ---- Root-level 404 fallback: Cloudflare's not_found_handling looks for the
+  // nearest 404.html to the unmatched path. For anything outside /en/ or /fr/
+  // entirely (e.g. an old QR code linking to /blog/some-slug with no language
+  // prefix), neither language folder is "near" -- so without a copy at the very
+  // root, those paths would still fall through to a blank response. Defaults to
+  // the English version, matching the root "/" redirect's own default. ----
+  const rootNotFoundSrc = path.join(DIST, 'en', '404.html');
+  if (fs.existsSync(rootNotFoundSrc)) {
+    fs.copyFileSync(rootNotFoundSrc, path.join(DIST, '404.html'));
+  }
+
   // ---- Root redirect: sends "/" to English by default. (French pages are being
   // added one at a time -- this stays /en/ regardless, so visitors don't land on
   // a French page that isn't ready yet; revisit this once the French site is complete.) ----
