@@ -16,6 +16,14 @@ function escapeAttr(str) {
   return String(str).replace(/"/g, '&quot;');
 }
 
+function slugify(text) {
+  return text
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents: é -> e, etc.
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 function inlineFormat(text) {
   // Order matters: links before bold/italic so URLs with underscores etc. aren't mangled.
   // A link starting with http:// or https:// is treated as external and opens in a new
@@ -100,7 +108,7 @@ function parseBody(raw, lang) {
     }
     const headingMatch = block.match(/^###\s+(.+)$/);
     if (headingMatch) {
-      return `<h3>${inlineFormat(headingMatch[1])}</h3>`;
+      return `<h3 id="${slugify(headingMatch[1])}">${inlineFormat(headingMatch[1])}</h3>`;
     }
     return `<p>${inlineFormat(block)}</p>`;
   }).join('\n\n  ');
