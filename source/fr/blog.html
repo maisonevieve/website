@@ -297,8 +297,8 @@
 
       <div class="popup-coverlines">
         <p class="coverline-main">Une méditation sensorielle sur la réception d'une lettre</p>
-        <p class="coverline-kicker">Et aussi, à l'intérieur</p>
-        <p class="coverline-sub">Un numéro d'essai du magazine — écrit et lu à voix haute</p>
+        <p class="coverline-kicker">Écrite et lue à voix haute</p>
+        <p class="coverline-sub">Et aussi, un numéro d'essai du magazine</p>
       </div>
 
       <div class="popup-bottom">
@@ -372,6 +372,17 @@
   }
   .signup-popup-confirm { display: none; font-size: 12.5px; margin-top: 12px; }
   .signup-popup-confirm.visible { display: block; }
+  /* Submitted state: the enticing photo/headline hook disappears entirely, leaving
+     just a simple, quiet thank-you on a plain dark ground -- no reason to keep
+     selling once someone has already said yes. */
+  .signup-popup.submitted .signup-popup-media img { opacity: 0; transition: opacity 0.4s ease; }
+  .signup-popup.submitted .signup-popup-scrim { background: var(--black, #000); }
+  .signup-popup.submitted .popup-masthead,
+  .signup-popup.submitted .popup-coverlines,
+  .signup-popup.submitted .signup-popup-form,
+  .signup-popup.submitted .signup-popup-privacy { display: none; }
+  .signup-popup.submitted .signup-popup-content { justify-content: center; }
+  .signup-popup.submitted .signup-popup-confirm { font-size: 1.15rem; }
   .signup-popup-privacy { font-size: 10.5px; opacity: 0.65; margin-top: 12px; }
   @media (max-width: 700px) { .signup-popup { left: 16px; right: 16px; width: auto; top: auto; bottom: 80px; } }
   @media (min-width: 701px) {
@@ -442,6 +453,7 @@
       setTimeout(function () {
         form.style.display = 'none';
         confirmMsg.classList.add('visible');
+        popup.classList.add('submitted');
         setCookie('signup_completed', '1', 365);
       }, 600);
     });
