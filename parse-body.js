@@ -47,6 +47,10 @@ function inlineFormat(text) {
 }
 
 function renderEmbed(kind, arg, lang) {
+  if (kind === 'image') {
+    // A single standalone image: [image: filename.jpg]
+    return `<div class="embed-image"><img src="/images/${arg}" alt=""></div>`;
+  }
   if (kind === 'signup') {
     // Optional custom headline: [signup: Your custom text here] -- falls back to a
     // sensible default if left blank: [signup]
@@ -102,7 +106,7 @@ function parseBody(raw, lang) {
   if (!raw) return '';
   const blocks = raw.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
   const html = blocks.map(block => {
-    const embedMatch = block.match(/^\[(video|audio|youtube|flipbook|pdf-flipbook|signup)(?:\s*:\s*(.*))?\]$/i);
+    const embedMatch = block.match(/^\[(video|audio|youtube|flipbook|pdf-flipbook|signup|image)(?:\s*:\s*(.*))?\]$/i);
     if (embedMatch) {
       return renderEmbed(embedMatch[1].toLowerCase(), embedMatch[2], lang);
     }
