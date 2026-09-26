@@ -52,13 +52,37 @@ function renderEmbed(kind, arg, lang) {
     return `<div class="embed-image"><img src="/images/${arg}" alt=""></div>`;
   }
   if (kind === 'signup') {
-    // Optional custom headline: [signup: Your custom text here] -- falls back to a
-    // sensible default if left blank: [signup]
-    const headline = arg || 'Get "The First Letter," free.';
+    // [signup] -> the original "First Letter" form, default headline.
+    // [signup: Custom headline] -> same form, custom headline.
+    // [signup: 123456789] -> a different form (by its MailerLite form ID), generic headline.
+    // [signup: 123456789 | Custom headline] -> a different form, with its own headline.
+    // Find a form's ID in MailerLite: Forms -> open the form -> Embed -> the number
+    // after /forms/ in the code shown there.
+    const DEFAULT_FORM_ID = '198581432152491948';
+    const DEFAULT_HEADLINE = 'Get "The First Letter," free.';
+    const ACCOUNT_ID = '2634193';
+
+    let formId = DEFAULT_FORM_ID;
+    let headline = DEFAULT_HEADLINE;
+
+    const raw = (arg || '').trim();
+    if (raw) {
+      const parts = raw.split('|').map(s => s.trim());
+      if (parts.length === 2) {
+        formId = parts[0] || DEFAULT_FORM_ID;
+        headline = parts[1] || DEFAULT_HEADLINE;
+      } else if (/^\d+$/.test(parts[0])) {
+        formId = parts[0];
+        headline = 'Sign up'; // no headline given for this other form -- generic fallback
+      } else {
+        headline = parts[0];
+      }
+    }
+
     const languageValue = lang === 'fr' ? 'Français' : 'English';
     return `<div class="embed-signup">
     <p class="embed-signup-title">${headline}</p>
-    <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
+    <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/${ACCOUNT_ID}/forms/${formId}/subscribe" method="post" target="ml_hidden_iframe">
       <input type="email" name="fields[email]" placeholder="Your email" required>
       <input type="hidden" name="fields[language]" value="${languageValue}">
       <button type="submit">Sign up</button>
