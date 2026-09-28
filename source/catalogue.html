@@ -79,7 +79,17 @@
   .catalogue-empty-state.visible { display: block; }
   .catalogue-cell { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--charcoal); }
   .catalogue-cell img, .catalogue-cell video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .catalogue-cell a { display: block; width: 100%; height: 100%; }
+  .catalogue-cell a { display: block; width: 100%; height: 100%; position: relative; }
+  /* Hover: crossfade to the piece's second image (if it has one), while a dark
+     scrim and the title fade in together. Video cells keep their own motion and
+     just get the scrim + title. */
+  .cell-img { transition: opacity 0.5s ease; }
+  .cell-img-secondary { opacity: 0; }
+  .catalogue-cell a:hover .cell-img-primary { opacity: 0; }
+  .catalogue-cell a:hover .cell-img-secondary { opacity: 1; }
+  .cell-overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 18px; background: rgba(0,0,0,0); opacity: 0; transition: opacity 0.3s ease, background 0.3s ease; }
+  .catalogue-cell a:hover .cell-overlay { background: rgba(0,0,0,0.2); opacity: 1; }
+  .cell-title { color: var(--white); font-family: var(--serif); font-size: 1rem; font-weight: 400; line-height: 1.3; text-shadow: 0 1px 6px rgba(0,0,0,0.35); }
 
   footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
   .footer-grid { display: flex; flex-direction: column; gap: 32px; }
@@ -151,21 +161,21 @@
   <!-- Every cell is a placeholder; video cells use a 3-second clip instead of a photo -->
   <div class="catalogue-grid" id="catalogueGrid">
     <!-- ART_CARDS:all:START -->
-    <div class="catalogue-cell"><a href="#"><img src="images/art_galler_frame_meditation.png" alt="Placeholder piece"></a></div>
-    <div class="catalogue-cell"><a href="#"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"></a></div>
-    <div class="catalogue-cell"><a href="#"><img src="images/toile_de_jouy_maison_evieve.png" alt="Placeholder piece"></a></div>
-    <div class="catalogue-cell"><a href="#"><img src="images/art_galler_frame_meditation.png" alt="Placeholder piece"></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Placeholder piece"><img class="cell-img cell-img-secondary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt=""><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/toile_de_jouy_maison_evieve.png" alt="Placeholder piece"><img class="cell-img cell-img-secondary" src="images/art_galler_frame_meditation.png" alt=""><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
     <div class="catalogue-cell">
-      <a href="#"><video autoplay muted loop playsinline poster="images/gallery_grame_art_as_souvenir_of_feeling.png"><source src="videos/piece-clip-1.mp4" type="video/mp4"></video></a>
+      <a href="#"><video autoplay muted loop playsinline poster="images/gallery_grame_art_as_souvenir_of_feeling.png"><source src="videos/piece-clip-1.mp4" type="video/mp4"></video><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a>
     </div>
-    <div class="catalogue-cell"><a href="#"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"></a></div>
-    <div class="catalogue-cell"><a href="#"><img src="images/toile_de_jouy_maison_evieve.png" alt="Placeholder piece"></a></div>
-    <div class="catalogue-cell"><a href="#"><img src="images/art_galler_frame_meditation.png" alt="Placeholder piece"></a></div>
-    <div class="catalogue-cell"><a href="#"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/toile_de_jouy_maison_evieve.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
     <div class="catalogue-cell">
-      <a href="#"><video autoplay muted loop playsinline poster="images/toile_de_jouy_maison_evieve.png"><source src="videos/piece-clip-2.mp4" type="video/mp4"></video></a>
+      <a href="#"><video autoplay muted loop playsinline poster="images/toile_de_jouy_maison_evieve.png"><source src="videos/piece-clip-2.mp4" type="video/mp4"></video><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a>
     </div>
-    <div class="catalogue-cell"><a href="#"><img src="images/art_galler_frame_meditation.png" alt="Placeholder piece"></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
     <div class="catalogue-cell"><a href="#"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"></a></div>
     <!-- ART_CARDS:all:END -->
   </div>
