@@ -60,7 +60,16 @@
   .catalogue-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
   @media (max-width: 760px) { .catalogue-grid { grid-template-columns: repeat(2, 1fr); } }
 
-  .feelings-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0 0 40px; }
+  .feelings-filter-toggle-row { text-align: center; padding: 0 32px; margin: 0 0 20px; }
+  @media (min-width: 900px) { .feelings-filter-toggle-row { padding: 0 64px; } }
+  .feelings-filter-toggle { -webkit-appearance: none; appearance: none; background: var(--white); border: 1px solid rgba(0,0,0,0.16); border-radius: 999px; font-family: var(--serif); font-size: 13px; color: var(--charcoal); padding: 8px 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; transition: border-color 0.2s ease, color 0.2s ease; }
+  .feelings-filter-toggle:hover { border-color: var(--black); color: var(--black); }
+  .feelings-filter-toggle.open { border-color: var(--black); color: var(--black); }
+  .feelings-filter-toggle svg { transition: transform 0.2s ease; }
+  .feelings-filter-toggle.open svg { transform: rotate(180deg); }
+  .feelings-filter { display: none; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; max-width: 1240px; margin: 0 auto 40px; padding: 0 32px; }
+  @media (min-width: 900px) { .feelings-filter { padding: 0 64px; } }
+  .feelings-filter.open { display: flex; }
   .feelings-filter button { -webkit-appearance: none; appearance: none; font-family: var(--serif); font-size: 13px; background: var(--white); border: 1px solid rgba(0,0,0,0.16); border-radius: 999px; color: var(--charcoal); padding: 7px 16px; cursor: pointer; text-transform: capitalize; transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease; }
   .feelings-filter button:hover { border-color: var(--black); color: var(--black); }
   .feelings-filter button.active { background: var(--black); border-color: var(--black); color: var(--white); }
@@ -118,6 +127,13 @@
 <main>
   <div class="catalogue-title">
     <h1>Every piece we've made, in one place.</h1>
+  </div>
+
+  <div class="feelings-filter-toggle-row">
+    <button class="feelings-filter-toggle" id="feelingsFilterToggle" aria-expanded="false">
+      Filter by Feeling
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </div>
 
   <div class="feelings-filter" id="feelingsFilter">
@@ -455,7 +471,15 @@
   // Feelings filter: single-select -- click a feeling to show only matching
   // pieces, click it again (or another feeling) to change the filter.
   (function () {
+    var filterToggle = document.getElementById('feelingsFilterToggle');
     var filterBar = document.getElementById('feelingsFilter');
+    if (filterToggle && filterBar) {
+      filterToggle.addEventListener('click', function () {
+        var isOpen = filterBar.classList.toggle('open');
+        filterToggle.classList.toggle('open', isOpen);
+        filterToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    }
     var grid = document.getElementById('catalogueGrid');
     var emptyState = document.getElementById('catalogueEmptyState');
     if (!filterBar || !grid) return;
