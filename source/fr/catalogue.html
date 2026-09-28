@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,6 +97,14 @@
     .cell-overlay { transition: opacity 0.3s ease, background 0.3s ease; }
     .catalogue-cell a:hover .cell-overlay { background: rgba(0,0,0,0.2); opacity: 1; }
   }
+  /* Touch devices: no real hover, so the first tap reveals the same preview
+     (second image + title) instead of navigating straight away; a second tap
+     on that same cell then follows the link through to the piece. */
+  .cell-img { transition: opacity 0.4s ease; }
+  .catalogue-cell a.tap-active .cell-img-primary { opacity: 0; }
+  .catalogue-cell a.tap-active .cell-img-secondary { opacity: 1; }
+  .cell-overlay { transition: opacity 0.3s ease, background 0.3s ease; }
+  .catalogue-cell a.tap-active .cell-overlay { background: rgba(0,0,0,0.2); opacity: 1; }
 
   footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
   .footer-grid { display: flex; flex-direction: column; gap: 32px; }
@@ -116,10 +124,10 @@
 <header>
   <div class="nav-row">
     <nav class="links">
-      <a href="index.html#home">Home</a>
-      <a href="index.html#about">About</a>
+      <a href="index.html#home">Accueil</a>
+      <a href="index.html#about">À propos</a>
       <a href="index.html#magazine">Magazine</a>
-      <a href="index.html#subscriptions">Subscriptions</a>
+      <a href="index.html#subscriptions">Abonnements</a>
       <a href="art.html">Art</a>
     </nav>
     <a href="index.html" class="logo-mark">
@@ -127,66 +135,66 @@
     </a>
     <div class="header-right">
       <div class="lang-switch">
-        <a href="/en/catalogue.html" class="active">EN</a><span>/</span><a href="/fr/catalogue.html">FR</a>
+        <a href="/en/catalogue.html">EN</a><span>/</span><a href="/fr/catalogue.html" class="active">FR</a>
       </div>
-      <button class="menu-toggle" id="menuToggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
     </div>
   </div>
   <div class="mobile-nav" id="mobileNav">
-    <a href="index.html#home">Home</a>
-    <a href="index.html#about">About</a>
+    <a href="index.html#home">Accueil</a>
+    <a href="index.html#about">À propos</a>
     <a href="index.html#magazine">Magazine</a>
-    <a href="index.html#subscriptions">Subscriptions</a>
+    <a href="index.html#subscriptions">Abonnements</a>
     <a href="art.html">Art</a>
   </div>
 </header>
 
 <main>
   <div class="catalogue-title">
-    <h1>Every piece we've made, in one place.</h1>
+    <h1>Toutes nos œuvres, réunies en un seul lieu.</h1>
   </div>
 
   <div class="feelings-filter-toggle-row">
     <button class="feelings-filter-toggle" id="feelingsFilterToggle" aria-expanded="false">
-      Filter by Feeling
+      Filtrer par émotion
       <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
 
   <div class="feelings-filter" id="feelingsFilter">
-    <button data-feeling="fractured-focus">Fractured focus</button>
-    <button data-feeling="quiet-burnout">Quiet burnout</button>
-    <button data-feeling="urban-loneliness">Urban loneliness</button>
-    <button data-feeling="rushing-anxiety">Rushing anxiety</button>
+    <button data-feeling="fractured-focus">Concentration éparpillée</button>
+    <button data-feeling="quiet-burnout">Épuisement silencieux</button>
+    <button data-feeling="urban-loneliness">Solitude urbaine</button>
+    <button data-feeling="rushing-anxiety">Anxiété pressante</button>
     <span class="filter-divider"></span>
-    <button data-feeling="deep-stillness">Deep stillness</button>
-    <button data-feeling="bittersweet-nostalgia">Bittersweet nostalgia</button>
-    <button data-feeling="creative-spark">Creative spark</button>
-    <button data-feeling="emotional-safety">Emotional safety</button>
+    <button data-feeling="deep-stillness">Calme profond</button>
+    <button data-feeling="bittersweet-nostalgia">Nostalgie douce-amère</button>
+    <button data-feeling="creative-spark">Étincelle créative</button>
+    <button data-feeling="emotional-safety">Sécurité émotionnelle</button>
   </div>
 
   <!-- Every cell is a placeholder; video cells use a 3-second clip instead of a photo -->
   <div class="catalogue-grid" id="catalogueGrid">
     <!-- ART_CARDS:all:START -->
-    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Placeholder piece"><img class="cell-img cell-img-secondary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt=""><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
-    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
-    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/toile_de_jouy_maison_evieve.png" alt="Placeholder piece"><img class="cell-img cell-img-secondary" src="images/art_galler_frame_meditation.png" alt=""><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
-    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Image temporaire"><img class="cell-img cell-img-secondary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt=""><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Image temporaire"><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/toile_de_jouy_maison_evieve.png" alt="Image temporaire"><img class="cell-img cell-img-secondary" src="images/art_galler_frame_meditation.png" alt=""><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Image temporaire"><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a></div>
     <div class="catalogue-cell">
-      <a href="#"><video autoplay muted loop playsinline poster="images/gallery_grame_art_as_souvenir_of_feeling.png"><source src="videos/piece-clip-1.mp4" type="video/mp4"></video><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a>
+      <a href="#"><video autoplay muted loop playsinline poster="images/gallery_grame_art_as_souvenir_of_feeling.png"><source src="videos/piece-clip-1.mp4" type="video/mp4"></video><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a>
     </div>
-    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
-    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/toile_de_jouy_maison_evieve.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
-    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
-    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Image temporaire"><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/toile_de_jouy_maison_evieve.png" alt="Image temporaire"><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Image temporaire"><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Image temporaire"><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a></div>
     <div class="catalogue-cell">
-      <a href="#"><video autoplay muted loop playsinline poster="images/toile_de_jouy_maison_evieve.png"><source src="videos/piece-clip-2.mp4" type="video/mp4"></video><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a>
+      <a href="#"><video autoplay muted loop playsinline poster="images/toile_de_jouy_maison_evieve.png"><source src="videos/piece-clip-2.mp4" type="video/mp4"></video><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a>
     </div>
-    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Placeholder piece"><div class="cell-overlay"><span class="cell-title">Placeholder Piece</span></div></a></div>
-    <div class="catalogue-cell"><a href="#"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Placeholder piece"></a></div>
+    <div class="catalogue-cell"><a href="#"><img class="cell-img cell-img-primary" src="images/art_galler_frame_meditation.png" alt="Image temporaire"><div class="cell-overlay"><span class="cell-title">Pièce temporaire</span></div></a></div>
+    <div class="catalogue-cell"><a href="#"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Image temporaire"></a></div>
     <!-- ART_CARDS:all:END -->
   </div>
-  <p class="catalogue-empty-state" id="catalogueEmptyState">Nothing tagged with that feeling just yet — check back soon.</p>
+  <p class="catalogue-empty-state" id="catalogueEmptyState">Rien n'est encore associé à cette émotion — revenez bientôt.</p>
 </main>
 
 <footer>
@@ -194,33 +202,33 @@
     <div class="footer-grid">
       <div>
         <img src="images/Logo_maison_evieve_meditation.png" alt="Maison Eviève" style="height:64px; width:auto; filter: invert(1);">
-        <p class="footer-tagline">a souvenir of a feeling</p>
+        <p class="footer-tagline">un souvenir d'une émotion</p>
       </div>
       <div class="footer-links">
         <div class="footer-col">
-          <h4>Explore</h4>
-          <a href="art.html">Available Art</a>
+          <h4>Explorer</h4>
+          <a href="art.html">Œuvres disponibles</a>
           <a href="index.html#magazine">Magazine</a>
           <a href="blog.html">Journal</a>
-          <a href="index.html#contact">Find us</a>
+          <a href="index.html#contact">Nous trouver</a>
         </div>
         <div class="footer-col">
-          <h4>Legal</h4>
-          <a href="legal.html#terms">Terms</a>
-          <a href="legal.html#privacy">Privacy</a>
-          <a href="legal.html#shipping">Shipping</a>
-          <a href="legal.html#refunds">Refunds</a>
+          <h4>Légal</h4>
+          <a href="legal.html#terms">Conditions</a>
+          <a href="legal.html#privacy">Confidentialité</a>
+          <a href="legal.html#shipping">Livraison</a>
+          <a href="legal.html#refunds">Remboursements</a>
         </div>
         <div class="footer-col">
-          <h4>Language</h4>
-          <a href="index.html">English</a>
-          <span style="display:block; opacity:0.4; cursor:default;" title="French version coming soon">Français</span>
+          <h4>Langue</h4>
+          <a href="/en/catalogue.html">Anglais</a>
+          <a href="catalogue.html">Français</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2026 Maison Eviève, Paris</span>
-      <span>Handwritten aesthetic, typed with care</span>
+      <span>Esthétique manuscrite, composée avec soin</span>
     </div>
   </div>
 </footer>
@@ -250,10 +258,10 @@
 
 <!-- Cookie notice: small, equal-weight accept/reject, matches CNIL requirements -->
 <div id="cookieNotice" class="cookie-notice">
-  <p>We use only the cookies necessary for signups and checkout to work. <a href="legal.html#cookies">Learn more</a>.</p>
+  <p>Nous utilisons uniquement les cookies nécessaires au bon fonctionnement des inscriptions et des paiements. <a href="legal.html#cookies">En savoir plus</a>.</p>
   <div class="cookie-notice-actions">
-    <button id="cookieReject" class="cookie-btn">Reject</button>
-    <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accept</button>
+    <button id="cookieReject" class="cookie-btn">Refuser</button>
+    <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accepter</button>
   </div>
 </div>
 <style>
@@ -303,7 +311,7 @@
 <!-- Editorial-style signup popup: click-to-open tab, gentle exit-intent pulse only -->
 <iframe name="ml_hidden_iframe" style="display:none;"></iframe>
 
-<button id="signupTab" class="signup-tab" aria-label="Open The First Letter signup">
+<button id="signupTab" class="signup-tab" aria-label="Ouvrir l'inscription à la première lettre">
   <svg viewBox="0 0 26 20" xmlns="http://www.w3.org/2000/svg" width="24" height="18">
     <path d="M2 4 C1.8 2.3 3 1.6 4.6 1.8 L21.2 1.5 C22.8 1.6 23.2 2.6 23.1 4.2 L22.8 15.4 C22.9 16.9 21.7 17.5 20.1 17.3 L4.3 17.5 C2.7 17.4 2 16.5 2.1 15 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M3 4.2 C7.5 8.6 10.3 10.9 13 11.1 C15.6 10.8 18.7 8.4 22.2 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -312,29 +320,29 @@
 
 <div id="signupOverlay" class="signup-overlay"></div>
 <div id="signupPopup" class="signup-popup">
-  <button id="signupPopupClose" class="signup-popup-close" aria-label="Close">&times;</button>
+  <button id="signupPopupClose" class="signup-popup-close" aria-label="Fermer">&times;</button>
   <div class="signup-popup-media">
     <img src="images/art-meditation-letter-experience.jpg" alt="">
     <div class="signup-popup-scrim"></div>
     <div class="signup-popup-content">
-      <div class="popup-masthead">The First Letter</div>
+      <div class="popup-masthead">La première lettre</div>
 
       <div class="popup-coverlines">
-        <p class="coverline-main">A Sensory Meditation on Receiving a Letter</p>
-        <p class="coverline-kicker">Written &amp; Read Aloud</p>
-        <p class="coverline-sub">Plus, a Sample Issue of the Magazine</p>
+        <p class="coverline-main">Une méditation sensorielle sur la réception d'une lettre</p>
+        <p class="coverline-kicker">Écrite et lue à voix haute</p>
+        <p class="coverline-sub">Et aussi, un numéro d'essai du magazine</p>
       </div>
 
       <div class="popup-bottom">
         <!-- Submits to a hidden iframe so the page never navigates away -->
         <form id="signupPopupForm" class="signup-popup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
-          <input type="email" name="fields[email]" placeholder="Your email" required>
-          <input type="hidden" name="fields[language]" value="English">
-          <button type="submit">Send it to me</button>
+          <input type="email" name="fields[email]" placeholder="Votre email" required>
+          <input type="hidden" name="fields[language]" value="Français">
+          <button type="submit">Envoyez-la-moi</button>
         </form>
-        <p class="signup-popup-confirm" id="signupPopupConfirm">Thank you — check your inbox shortly.</p>
+        <p class="signup-popup-confirm" id="signupPopupConfirm">Merci — vérifiez votre boîte de réception sous peu.</p>
 
-        <p class="signup-popup-privacy">We respect your privacy. Unsubscribe anytime.</p>
+        <p class="signup-popup-privacy">Nous respectons votre vie privée. Désabonnement possible à tout moment.</p>
       </div>
     </div>
   </div>
@@ -480,6 +488,31 @@
         popup.classList.add('submitted');
         setCookie('signup_completed', '1', 365);
       }, 600);
+    });
+  })();
+</script>
+
+<script>
+  // Touch-device tap-to-preview: first tap on a cell reveals the hover-equivalent
+  // state (second image + title); a second tap on that same cell then follows the
+  // link through. Skipped entirely on devices with real mouse hover, since there
+  // the CSS :hover rules already do this and this would just get in the way.
+  (function () {
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var links = document.querySelectorAll('.catalogue-cell a');
+    links.forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        if (!link.classList.contains('tap-active')) {
+          e.preventDefault();
+          links.forEach(function (l) { l.classList.remove('tap-active'); });
+          link.classList.add('tap-active');
+        }
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.catalogue-cell')) {
+        links.forEach(function (l) { l.classList.remove('tap-active'); });
+      }
     });
   })();
 </script>
