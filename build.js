@@ -356,14 +356,27 @@ async function main() {
         </div>`;
   }
 
+  // Catalogue grid cell -- supports the hover treatment: fades from the piece's
+  // first image to its second (if one exists) while a dark scrim and the title
+  // fade in. Video cells skip the image crossfade (the video itself already
+  // provides motion) but still get the scrim + title on hover.
   function catalogueCellHtml(row) {
-    const img = row.featured || (row.images || '').split(',')[0].trim();
-    const isVideo = /\.(mp4|mov|webm)$/i.test(img);
-    const inner = isVideo
-      ? `<video autoplay muted loop playsinline><source src="/videos/${img}" type="video/mp4"></video>`
-      : `<img src="/images/${img}" alt="${row.title}">`;
+    const imgList = (row.images || '').split(',').map(s => s.trim()).filter(Boolean);
+    const primaryImg = row.featured || imgList[0] || '';
+    const secondaryImg = imgList.find(f => f !== primaryImg) || '';
+    const isVideo = /\.(mp4|mov|webm)$/i.test(primaryImg);
     const feelingsAttr = feelingsSlugs(row.feelings).join(' ');
-    return `<div class="catalogue-cell" data-feelings="${feelingsAttr}"><a href="${row._href}">${inner}</a></div>`;
+
+    let inner;
+    if (isVideo) {
+      inner = `<video autoplay muted loop playsinline><source src="/videos/${primaryImg}" type="video/mp4"></video>`;
+    } else {
+      const secondaryTag = secondaryImg
+        ? `<img class="cell-img cell-img-secondary" src="/images/${secondaryImg}" alt="">`
+        : '';
+      inner = `<img class="cell-img cell-img-primary" src="/images/${primaryImg}" alt="${row.title}">${secondaryTag}`;
+    }
+    return `<div class="catalogue-cell" data-feelings="${feelingsAttr}"><a href="${row._href}">${inner}<div class="cell-overlay"><span class="cell-title">${row.title}</span></div></a></div>`;
   }
 
   // ---- Copy static pages through, injecting art cards + fixing asset paths ----
