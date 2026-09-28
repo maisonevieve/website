@@ -169,6 +169,20 @@
   .toggle-btn.active .save-badge { background: var(--white); }
   .compare-table th { font-family: var(--serif); font-weight: 500; }
   .compare-table td:first-child, .compare-table th:first-child { text-align: left; color: var(--charcoal); }
+  .compare-table a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  .compare-table a:hover { color: var(--black); }
+  /* Contained scroll: only the table itself scrolls if it genuinely can't fit --
+     the modal and page layout never break because of it. On screens where it
+     fits, no scrollbar appears at all. */
+  .compare-table-wrap { overflow-x: auto; margin-top: 24px; }
+  .compare-table-wrap .compare-table { margin-top: 0; }
+  /* Tighter sizing on narrower windows (e.g. a 13-inch laptop not full-screen)
+     so the table is more likely to fit without needing to scroll at all. */
+  @media (max-width: 760px) {
+    .modal-box { padding: 28px 20px; }
+    .compare-table { font-size: 0.8rem; }
+    .compare-table th, .compare-table td { padding: 10px 6px; }
+  }
 
   /* ---------- Art grid ---------- */
   .art-grid { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 56px; }
@@ -383,7 +397,7 @@
           </div>
           <div class="tier-price">€11 <span>/ mois</span></div>
           <a href="https://buy.stripe.com/bJeeV58bgdOD516ciqgYU02" class="btn btn-subscribe" target="_blank" rel="noopener">S'abonner</a>
-          <a href="https://buy.stripe.com/8x2aEPezEbGvgJOdmugYU09" class="tier-yearly-link" target="_blank" rel="noopener">ou €120/an — économisez ~10%</a>
+          <a href="https://buy.stripe.com/8x2aEPezEbGvgJOdmugYU09" class="tier-yearly-link" target="_blank" rel="noopener">ou €120/an — plus le journal numérique, réservé à l'annuel</a>
         </div>
         <div class="tier">
           <div class="tier-name">Lettre &amp; Magazine</div>
@@ -411,7 +425,7 @@
           </div>
           <div class="tier-price">€22 <span>/ mois</span></div>
           <a href="https://buy.stripe.com/dRm9AL3V08uj9hm1DMgYU03" class="btn btn-subscribe" target="_blank" rel="noopener">S'abonner</a>
-          <a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" class="tier-yearly-link" target="_blank" rel="noopener">ou €240/an — économisez ~10%</a>
+          <a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" class="tier-yearly-link" target="_blank" rel="noopener">ou €240/an — plus l'encart journal imprimé, réservé à l'annuel</a>
         </div>
         <div class="tier">
           <div class="tier-name">Les Deux</div>
@@ -438,7 +452,7 @@
           </div>
           <div class="tier-price">€27 <span>/ mois</span></div>
           <a href="https://buy.stripe.com/eVqaEPgHM9yn516dmugYU04" class="btn btn-subscribe" target="_blank" rel="noopener">S'abonner</a>
-          <a href="https://buy.stripe.com/00w7sD8bg9ynbpu6Y6gYU0b" class="tier-yearly-link" target="_blank" rel="noopener">ou €290/an — économisez ~10%</a>
+          <a href="https://buy.stripe.com/00w7sD8bg9ynbpu6Y6gYU0b" class="tier-yearly-link" target="_blank" rel="noopener">ou €290/an — plus les deux journaux, réservé à l'annuel</a>
         </div>
       </div>
       <div class="compare-row">
@@ -458,7 +472,7 @@
         <button class="toggle-btn" data-billing="yearly">Annuel <span class="save-badge">Économisez ~10%</span></button>
       </div>
 
-      <table class="compare-table">
+      <div class="compare-table-wrap"><table class="compare-table">
         <thead>
           <tr><th>Inclus</th><th>Digital</th><th>Lettre &amp; Magazine</th><th>Les Deux</th></tr>
         </thead>
@@ -477,12 +491,12 @@
           </tr>
           <tr>
             <td>Prix</td>
-            <td><span class="price-monthly">€11 / mois</span><span class="price-yearly" style="display:none;">€120 / an</span></td>
-            <td><span class="price-monthly">€22 / mois</span><span class="price-yearly" style="display:none;">€240 / an</span></td>
-            <td><span class="price-monthly">€27 / mois</span><span class="price-yearly" style="display:none;">€290 / an</span></td>
+            <td><span class="price-monthly"><a href="https://buy.stripe.com/bJeeV58bgdOD516ciqgYU02" target="_blank" rel="noopener">€11 / mois</a></span><span class="price-yearly" style="display:none;"><a href="https://buy.stripe.com/8x2aEPezEbGvgJOdmugYU09" target="_blank" rel="noopener">€120 / an</a></span></td>
+            <td><span class="price-monthly"><a href="https://buy.stripe.com/dRm9AL3V08uj9hm1DMgYU03" target="_blank" rel="noopener">€22 / mois</a></span><span class="price-yearly" style="display:none;"><a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" target="_blank" rel="noopener">€240 / an</a></span></td>
+            <td><span class="price-monthly"><a href="https://buy.stripe.com/eVqaEPgHM9yn516dmugYU04" target="_blank" rel="noopener">€27 / mois</a></span><span class="price-yearly" style="display:none;"><a href="https://buy.stripe.com/00w7sD8bg9ynbpu6Y6gYU0b" target="_blank" rel="noopener">€290 / an</a></span></td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
   </div>
 
