@@ -83,13 +83,20 @@
   /* Hover: crossfade to the piece's second image (if it has one), while a dark
      scrim and the title fade in together. Video cells keep their own motion and
      just get the scrim + title. */
-  .cell-img { transition: opacity 0.5s ease; }
   .cell-img-secondary { opacity: 0; }
-  .catalogue-cell a:hover .cell-img-primary { opacity: 0; }
-  .catalogue-cell a:hover .cell-img-secondary { opacity: 1; }
-  .cell-overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 18px; background: rgba(0,0,0,0); opacity: 0; transition: opacity 0.3s ease, background 0.3s ease; }
-  .catalogue-cell a:hover .cell-overlay { background: rgba(0,0,0,0.2); opacity: 1; }
+  .cell-overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 18px; background: rgba(0,0,0,0); opacity: 0; }
   .cell-title { color: var(--white); font-family: var(--serif); font-size: 1rem; font-weight: 400; line-height: 1.3; text-shadow: 0 1px 6px rgba(0,0,0,0.35); }
+  /* Hover only on devices that genuinely have a mouse (hover: hover) -- on
+     touch devices like iPad, :hover can trigger on tap and then get "stuck"
+     with no mouse-leave event to clear it, so touch devices get the plain
+     primary image with no hover behavior at all rather than a glitchy one. */
+  @media (hover: hover) and (pointer: fine) {
+    .cell-img { transition: opacity 0.5s ease; }
+    .catalogue-cell a:hover .cell-img-primary { opacity: 0; }
+    .catalogue-cell a:hover .cell-img-secondary { opacity: 1; }
+    .cell-overlay { transition: opacity 0.3s ease, background 0.3s ease; }
+    .catalogue-cell a:hover .cell-overlay { background: rgba(0,0,0,0.2); opacity: 1; }
+  }
 
   footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
   .footer-grid { display: flex; flex-direction: column; gap: 32px; }
