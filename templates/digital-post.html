@@ -89,7 +89,7 @@
   .flipbook-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.2rem; font-family: var(--serif); cursor: pointer; padding: 10px 16px; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
   .flipbook-arrow.prev { left: 4px; } .flipbook-arrow.next { right: 4px; }
   .embed-pdf-flipbook { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: 40px; margin-bottom: 40px; background: var(--grey); }
-  .pdf-spread { display: flex; justify-content: center; align-items: center; overflow: hidden; }
+  .pdf-spread { display: flex; justify-content: center; align-items: center; overflow: hidden; transition: opacity 0.25s ease; }
   .pdf-page-wrap { position: relative; line-height: 0; }
   .pdf-page-wrap canvas { display: block; width: 100%; height: auto; }
   .pdf-link-overlay { position: absolute; display: block; }
@@ -209,6 +209,11 @@
     async function renderView(idx, holdHeight) {
       var nums = views[idx];
       if (holdHeight !== false) { spread.style.minHeight = spread.offsetHeight + 'px'; } else { spread.style.minHeight = ''; }
+      // Fade the current spread out before swapping its content, then fade the
+      // new one in -- softens what was previously an instant, jarring snap
+      // between page turns.
+      spread.style.opacity = '0';
+      await new Promise(function (resolve) { setTimeout(resolve, 220); });
       spread.innerHTML = '';
       try {
       var singleW = spread.clientWidth / 2;
@@ -259,8 +264,10 @@
         });
       }
       indicator.textContent = nums.length === 1 ? ('Page ' + nums[0] + ' of ' + pdfDoc.numPages) : ('Pages ' + nums[0] + '\u2013' + nums[1] + ' of ' + pdfDoc.numPages);
+      spread.style.opacity = '1';
       } catch (err) {
         indicator.textContent = 'Could not display this page: ' + (err && err.message ? err.message : err);
+        spread.style.opacity = '1';
       }
     }
     prevBtn.addEventListener('click', function () { prevBtn.blur(); if (currentView>0){currentView--;renderView(currentView);} });
