@@ -89,17 +89,17 @@
   .flipbook-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.2rem; font-family: var(--serif); cursor: pointer; padding: 10px 16px; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
   .flipbook-arrow.prev { left: 4px; } .flipbook-arrow.next { right: 4px; }
   .embed-pdf-flipbook { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: 40px; margin-bottom: 40px; background: var(--grey); }
-  .pdf-spread { display: flex; justify-content: center; align-items: flex-start; }
+  .pdf-spread { display: flex; justify-content: center; align-items: center; overflow: hidden; }
   .pdf-page-wrap { position: relative; line-height: 0; }
   .pdf-page-wrap canvas { display: block; width: 100%; height: auto; }
   .pdf-link-overlay { position: absolute; display: block; }
   .pdf-link-overlay:hover { outline: 1px solid rgba(0,0,0,0.25); }
-  .pdf-nav-row { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 16px 0; }
+  .pdf-nav-row { display: flex; align-items: center; justify-content: center; gap: 24px; padding: 16px 0; flex-shrink: 0; }
   .pdf-nav-row button { background: transparent; border: none; font-family: var(--serif); font-size: 1.6rem; cursor: pointer; color: var(--black); }
   .pdf-nav-row span { font-size: 13px; color: var(--charcoal); }
   .pdf-fullscreen-btn { font-size: 1.1rem !important; }
   .embed-pdf-flipbook:fullscreen, .embed-pdf-flipbook:-webkit-full-screen { background: var(--black); display: flex; flex-direction: column; justify-content: center; }
-  .embed-pdf-flipbook:fullscreen .pdf-spread, .embed-pdf-flipbook:-webkit-full-screen .pdf-spread { flex: 1; }
+  .embed-pdf-flipbook:fullscreen .pdf-spread, .embed-pdf-flipbook:-webkit-full-screen .pdf-spread { flex: 1; min-height: 0; }
   .embed-pdf-flipbook:fullscreen .pdf-nav-row button, .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row button { color: var(--white); }
   .embed-pdf-flipbook:fullscreen .pdf-nav-row span, .embed-pdf-flipbook:-webkit-full-screen .pdf-nav-row span { color: var(--grey); }
 
@@ -197,6 +197,7 @@
     var prevBtn = container.querySelector('.pdf-prev');
     var nextBtn = container.querySelector('.pdf-next');
     var fullscreenBtn = container.querySelector('.pdf-fullscreen-btn');
+    var navRow = container.querySelector('.pdf-nav-row');
     var pdfDoc, views, currentView = 0;
     var timedOut = false;
     var timeoutId = setTimeout(function () { timedOut = true; spread.innerHTML = '<p class="pdf-loading">This PDF is taking too long to load.</p>'; }, 15000);
@@ -214,10 +215,22 @@
       spread.innerHTML = '';
       try {
       var singleW = spread.clientWidth / 2;
+      // Cap page height to whatever's actually available, the same way an
+      // image would with object-fit: contain -- width-only scaling is what
+      // let pages grow too tall to fit on a wide-but-short screen (like a
+      // 13-inch laptop), cramming the layout and, in fullscreen, pushing the
+      // nav row off-screen entirely.
+      var isFullscreen = (document.fullscreenElement || document.webkitFullscreenElement) === container;
+      var navRowHeight = (navRow && navRow.offsetHeight) || 56;
+      var availableHeight = isFullscreen
+        ? Math.max(200, window.innerHeight - navRowHeight - 24)
+        : Math.max(200, window.innerHeight * 0.72);
       for (var p = 0; p < nums.length; p++) {
         var page = await pdfDoc.getPage(nums[p]);
         var unscaled = page.getViewport({ scale: 1 });
-        var scale = singleW / unscaled.width;
+        var scaleByWidth = singleW / unscaled.width;
+        var scaleByHeight = availableHeight / unscaled.height;
+        var scale = Math.min(scaleByWidth, scaleByHeight);
         var viewport = page.getViewport({ scale: scale });
         var dpr = window.devicePixelRatio || 1;
         var renderViewport = page.getViewport({ scale: scale * dpr });
