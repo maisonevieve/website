@@ -89,7 +89,7 @@
   .flipbook-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--white); font-size: 2.2rem; font-family: var(--serif); cursor: pointer; padding: 10px 16px; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
   .flipbook-arrow.prev { left: 4px; } .flipbook-arrow.next { right: 4px; }
   .embed-pdf-flipbook { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); margin-top: 40px; margin-bottom: 40px; background: var(--grey); }
-  .pdf-spread { display: flex; justify-content: center; align-items: center; overflow: hidden; transition: opacity 0.25s ease; }
+  .pdf-spread { display: flex; justify-content: center; align-items: center; overflow: hidden; transition: opacity 0.18s ease; }
   .pdf-page-wrap { position: relative; line-height: 0; }
   .pdf-page-wrap canvas { display: block; width: 100%; height: auto; }
   .pdf-link-overlay { position: absolute; display: block; }
@@ -216,7 +216,7 @@
       // new one in -- softens what was previously an instant, jarring snap
       // between page turns.
       spread.style.opacity = '0';
-      await new Promise(function (resolve) { setTimeout(resolve, 220); });
+      await new Promise(function (resolve) { setTimeout(resolve, 140); });
       spread.innerHTML = '';
       try {
       var singleW = spread.clientWidth / 2;
