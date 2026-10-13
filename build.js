@@ -527,6 +527,20 @@ ${urlEntries}
     }
   }
 
+  // ---- Image manifest: a list of every photo in /images, so the Pin Creator can see photos no page uses yet ----
+  try {
+    const imgRoot = path.join(DIST, 'images');
+    if (fs.existsSync(imgRoot)) {
+      const walk = (dir, rel) => fs.readdirSync(dir, { withFileTypes: true }).flatMap(e =>
+        e.isDirectory() ? walk(path.join(dir, e.name), rel + e.name + '/') : [rel + e.name]);
+      const photos = walk(imgRoot, '').filter(f => /\.(jpe?g|png|webp)$/i.test(f)).sort();
+      writeFile('image-manifest.json', JSON.stringify({ site: SITE_URL, images: photos.map(f => `${SITE_URL}/images/${encodeURI(f)}`) }, null, 1));
+      console.log(`Wrote image-manifest.json (${photos.length} photos)`);
+    }
+  } catch (err) {
+    console.warn('WARNING: could not write image-manifest.json:', err.message);
+  }
+
   console.log('Build complete. Output in /dist');
 }
 
