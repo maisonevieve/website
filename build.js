@@ -112,6 +112,38 @@ function parseSheetDate(dateStr) {
   return isNaN(d) ? null : d;
 }
 
+// Link previews (Instagram DMs, WhatsApp, iMessage, Pinterest, Facebook): without these tags
+// apps fall back to the favicon and stretch it. Each page gets its own title, text and image.
+const OG_DEFAULT_IMAGE = 'art-meditation-letter-experience.jpg'; // used when a page has no image of its own
+function attr(s) {
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function plainText(s, max) {
+  const t = String(s ?? '').replace(/<[^>]+>/g, ' ').replace(/[*_#>\[\]`]/g, '').replace(/\s+/g, ' ').trim();
+  return t.length > max ? t.slice(0, max - 1).replace(/\s+\S*$/, '') + '…' : t;
+}
+function ogTags({ title, description, image, path: pagePath, lang, type }) {
+  // Light copies in images/og/ (about 1200px, under 300 KB) load reliably in WhatsApp and Instagram;
+  // a new image without one there simply uses the original.
+  const file = String(image || '').trim() || OG_DEFAULT_IMAGE;
+  const ogName = file.replace(/\.[^.]+$/, '') + '.jpg';
+  const img = fs.existsSync(path.join(__dirname, 'images', 'og', ogName))
+    ? `${SITE_URL}/images/og/${encodeURI(ogName)}`
+    : `${SITE_URL}/images/${encodeURI(file)}`;
+  const desc = plainText(description, 200);
+  return [
+    `<meta property="og:site_name" content="Maison Eviève">`,
+    `<meta property="og:type" content="${type || 'article'}">`,
+    `<meta property="og:title" content="${attr(title)}">`,
+    desc ? `<meta property="og:description" content="${attr(desc)}">` : '',
+    desc ? `<meta name="description" content="${attr(desc)}">` : '',
+    `<meta property="og:url" content="${SITE_URL}/${pagePath}">`,
+    `<meta property="og:image" content="${attr(img)}">`,
+    `<meta property="og:locale" content="${lang === 'fr' ? 'fr_FR' : 'en_GB'}">`,
+    `<meta name="twitter:card" content="summary_large_image">`,
+  ].filter(Boolean).join('\n');
+}
+
 function heroImageBlock(row) {
   if (!row.image) {
     console.warn(`No image set for "${row.title}" (slug: ${row.slug}) -- showing a plain placeholder block instead of a broken image.`);
@@ -156,6 +188,7 @@ async function main() {
       const html = fillTemplate(blogTemplate, {
         LANG: lang,
         TITLE: row.title,
+        OG_TAGS: ogTags({ title: row.title, description: row.excerpt || row.body, image: row.image, path: `${lang}/blog/${row.slug}`, lang }),
         DATE: formatDate(row.date, lang),
         POST_HERO_IMAGE: heroImageBlock(row),
         BODY_HTML: bodyHtml,
@@ -279,6 +312,7 @@ async function main() {
       const html = fillTemplate(productTemplate, {
         LANG: lang,
         TITLE: row.title,
+        OG_TAGS: ogTags({ title: row.title, description: row.description, image: images[0], path: `${lang}/art/${row.slug}`, lang, type: 'product' }),
         TYPE_LABEL: typeLabel,
         EDITION_LINE: editionLine,
         DESCRIPTION: toParagraphs(row.description),
@@ -533,7 +567,8 @@ ${urlEntries}
     if (fs.existsSync(imgRoot)) {
       const walk = (dir, rel) => fs.readdirSync(dir, { withFileTypes: true }).flatMap(e =>
         e.isDirectory() ? walk(path.join(dir, e.name), rel + e.name + '/') : [rel + e.name]);
-      const photos = walk(imgRoot, '').filter(f => /\.(jpe?g|png|webp)$/i.test(f)).sort();
+      // images/og/ only holds light link-preview copies, so it is left out of the photo list.
+      const photos = walk(imgRoot, '').filter(f => /\.(jpe?g|png|webp)$/i.test(f) && !f.startsWith('og/')).sort();
       writeFile('image-manifest.json', JSON.stringify({ site: SITE_URL, images: photos.map(f => `${SITE_URL}/images/${encodeURI(f)}`) }, null, 1));
       console.log(`Wrote image-manifest.json (${photos.length} photos)`);
     }
