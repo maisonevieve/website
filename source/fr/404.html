@@ -260,6 +260,7 @@
     // If they already subscribed, hide the tab entirely rather than keep inviting them
     if (getCookie('signup_completed')) {
       tab.style.display = 'none';
+      document.documentElement.classList.add('signed-up');
     }
 
     // Auto-open once, after a delay -- but never for someone who's already
@@ -280,6 +281,17 @@
     tab.addEventListener('click', function () {
       popup.classList.contains('visible') ? closePopup() : openPopup();
     });
+
+    // Any "Receive the First Letter" link (header, menu, hero) opens the popup here
+    // instead of leaving the page.
+    document.querySelectorAll('[data-open-signup]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var nav = document.getElementById('mobileNav');
+        if (nav) nav.classList.remove('open');
+        openPopup();
+      });
+    });
     closeBtn.addEventListener('click', closePopup);
     overlay.addEventListener('click', closePopup);
 
@@ -292,13 +304,29 @@
     });
 
     form.addEventListener('submit', function () {
+      setCookie('signup_completed', '1', 365);
       setTimeout(function () {
         form.style.display = 'none';
         confirmMsg.classList.add('visible');
         popup.classList.add('submitted');
-        setCookie('signup_completed', '1', 365);
       }, 600);
+      goToThankYou(form);
     });
+
+    // After a sign-up, wait for MailerLite's answer (the hidden iframe loads),
+    // then open the thank-you page, which links back to the page she was on.
+    function goToThankYou(form) {
+      var lang = window.location.pathname.indexOf('/fr/') === 0 ? 'fr' : 'en';
+      var id = (form.action.match(/forms\/(\d+)/) || [])[1];
+      var gift = id === '199668290639890405' ? 'diary' : (id === '198581432152491948' ? 'letter' : 'other');
+      var from = window.location.pathname + window.location.search;
+      var url = '/' + lang + '/thank-you.html?gift=' + gift + '&from=' + encodeURIComponent(from);
+      var done = false;
+      function go() { if (!done) { done = true; window.location.href = url; } }
+      var frame = document.querySelector('iframe[name="ml_hidden_iframe"]');
+      if (frame) frame.addEventListener('load', go, { once: true });
+      setTimeout(go, 4000);
+    }
   })();
 </script>
 </body>

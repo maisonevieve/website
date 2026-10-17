@@ -5,6 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maison Eviève — un souvenir d'une émotion</title>
+<meta name="description" content="Une lettre par la poste chaque mois, un magazine d&#x27;art de saison et des tirages finis à la main, depuis Paris. De petits rituels d&#x27;art pour un quotidien plus calme.">
+<meta property="og:site_name" content="Maison Eviève">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Maison Eviève — un souvenir d&#x27;une émotion">
+<meta property="og:description" content="Une lettre par la poste chaque mois, un magazine d&#x27;art de saison et des tirages finis à la main, depuis Paris. De petits rituels d&#x27;art pour un quotidien plus calme.">
+<meta property="og:url" content="https://maisonevieve.com/fr/">
+<meta property="og:image" content="https://maisonevieve.com/images/og/art-meditation-letter-experience.jpg">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="en" href="https://maisonevieve.com/en/">
+<link rel="alternate" hreflang="fr" href="https://maisonevieve.com/fr/">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -56,6 +67,10 @@
   .lang-switch { display: flex; gap: 6px; font-size: 13px; color: var(--charcoal); }
   .lang-switch a { text-decoration: none; }
   .lang-switch a.active { color: var(--black); font-weight: 600; }
+  .header-letter { display: none; font-family: var(--serif); font-size: 13.5px; color: var(--black); border: 1px solid var(--black); padding: 6px 14px; text-decoration: none; white-space: nowrap; transition: background 0.25s ease, color 0.25s ease; }
+  .header-letter:hover { background: var(--black); color: var(--white); }
+  @media (min-width: 1100px) { .header-letter { display: inline-block; } }
+  .signed-up .header-letter, .signed-up .mobile-letter { display: none !important; }
   .menu-toggle { background: none; border: none; cursor: pointer; width: 26px; height: 18px; position: relative; padding: 0; }
   .menu-toggle span { position: absolute; left: 0; width: 100%; height: 2px; background: var(--black); transition: transform 0.3s ease, opacity 0.3s ease; }
   .menu-toggle span:nth-child(1) { top: 0; }
@@ -79,6 +94,9 @@
   .hero-intro .eyebrow-line { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.05; }
   .hero-intro .big-word { font-family: var(--serif); font-size: clamp(4rem, 14vw, 9rem); font-weight: 600; line-height: 0.85; letter-spacing: -0.01em; }
   .hero-intro p { max-width: 480px; margin-top: 28px; font-size: 1.05rem; color: #2b2b2b; }
+  .hero-intro p.hero-offer { margin-top: 18px; font-family: var(--serif); font-size: 1.15rem; color: var(--black); }
+  .hero-cta { display: inline-block; margin-top: 26px; font-family: var(--serif); font-size: 15px; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease; }
+  .hero-cta:hover { background: var(--black); color: var(--white); }
   .gallery-tags { display: flex; flex-direction: column; }
   .gallery-tag { min-height: 130vh; display: flex; flex-direction: column; justify-content: center; padding: 40px 0; opacity: 0.3; transition: opacity 1.4s ease; }
   .gallery-tag.active { opacity: 1; }
@@ -249,6 +267,7 @@
       <img src="images/maisonevieve_logo_meditation_art.png" alt="Maison Eviève">
     </a>
     <div class="header-right">
+      <a href="/fr/blog/the-first-letter.html" class="header-letter" data-open-signup>Recevoir la Première Lettre</a>
       <div class="lang-switch">
         <a href="/en/">EN</a><span>/</span><a href="/fr/" class="active">FR</a>
       </div>
@@ -261,6 +280,7 @@
     <a href="index.html#magazine">Magazine</a>
     <a href="index.html#subscriptions">Abonnements</a>
     <a href="art.html">Art</a>
+    <a href="/fr/blog/the-first-letter.html" class="mobile-letter" data-open-signup>Recevoir la Première Lettre</a>
   </div>
 </header>
 
@@ -273,6 +293,8 @@
           <div class="eyebrow-line">méditer sur</div>
           <div class="big-word">L'ART</div>
           <p>L'art comme souvenir d'une émotion — un petit monde de collections d'art, de lettres, et d'une pratique lente à l'esthétique de musée, conçu pour vous aider à garder un peu de calme à portée de main.</p>
+          <p class="hero-offer">Une lettre dans votre boîte aux lettres chaque mois, un magazine de saison à garder, et des œuvres finies à la main, chacune accompagnée de sa petite pratique.</p>
+          <a href="/fr/blog/the-first-letter.html" class="hero-cta" data-open-signup>Recevoir la Première Lettre</a>
         </div>
 
         <div class="gallery-tags">
@@ -293,7 +315,7 @@
           <div class="gallery-tag" data-stage="3">
             <div class="tag-label">Œuvres disponibles</div>
             <h3>Une collection petite et changeante</h3>
-            <p class="tag-italic">Œuvres originales et tirages limités, signés</p>
+            <p class="tag-italic">Œuvres originales et tirages finis à la main, signés</p>
             <p>Chaque œuvre fusionne art et méditation et s'accompagne de sa propre lettre de méditation — un instant silencieux à l'esthétique de musée, et une véritable pièce de collection à ajouter à la vôtre.</p>
             <a href="#art" class="tag-link">Parcourir la collection</a>
           </div>
@@ -434,11 +456,11 @@
             </div>
             <div class="tier-slide">
               <img src="images/letter-wax-seal-aesthetic.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Retrouvez la joie de recevoir. Chaque mois, sachez que quelqu'un a pensé à vous…</h4></div>
+              <div class="tier-slide-overlay"><h4>Du papier sur le paillasson et, entre deux lettres, un fil tranquille sur votre écran : vidéos, récits en photos, et le magazine numérique où que vous soyez.</h4></div>
             </div>
             <div class="tier-slide">
               <img src="images/baguette-book-cafe.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Au fil des saisons, le magazine "(meditating) On Art" vous retrouve, avec des pratiques, de l'art, et une vraie correspondance.</h4></div>
+              <div class="tier-slide-overlay"><h4>Lisez le magazine imprimé chez vous, et feuilletez l'édition numérique dans le métro. Le même calme, à deux endroits.</h4></div>
             </div>
             <div class="tier-carousel-dots">
               <button class="active" aria-label="Diapositive 1"></button>
@@ -499,7 +521,7 @@
     <div class="wrap">
       <p class="section-label">Œuvres disponibles</p>
       <h2>Là où l'art et la méditation ne font plus qu'une œuvre.</h2>
-      <p class="lede">Chaque œuvre fusionne l'art et une pratique méditative, et arrive avec sa propre lettre de méditation. Chacune est soit une œuvre originale, soit un tirage limité, signé et numéroté — une véritable pièce de collection, pas une reproduction que l'on retrouve partout.</p>
+      <p class="lede">Chaque œuvre fusionne l'art et une pratique méditative, et arrive avec sa propre lettre de méditation. Chacune est soit une œuvre originale, soit un tirage que je termine à la main et que je signe, si bien qu'aucun n'est tout à fait identique à un autre. Une véritable pièce de collection, pas une reproduction que l'on retrouve partout.</p>
 
       <div class="art-grid">
         <!-- ART_CARDS:latest:START -->
@@ -511,14 +533,14 @@
         </div>
         <div class="art-card">
           <div class="media"><img src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="Image temporaire — œuvre 2"></div>
-          <h4>Tirage limité</h4>
-          <div class="price">Signé et numéroté — édition limitée</div>
+          <h4>Tirage fini à la main</h4>
+          <div class="price">Signé, retouché à la main</div>
           <a href="#" class="view-link">Voir l'œuvre</a>
         </div>
         <div class="art-card">
           <div class="media"><img src="images/toile_de_jouy_maison_evieve.png" alt="Image temporaire — œuvre 3"></div>
-          <h4>Tirage limité</h4>
-          <div class="price">Signé et numéroté — édition limitée</div>
+          <h4>Tirage fini à la main</h4>
+          <div class="price">Signé, retouché à la main</div>
           <a href="#" class="view-link">Voir l'œuvre</a>
         </div>
         <!-- ART_CARDS:latest:END -->
@@ -545,7 +567,7 @@
         </details>
         <details class="faq-item">
           <summary>Les œuvres sont-elles des originaux ou des tirages ?</summary>
-          <p>Les deux existent dans la collection : certaines œuvres sont des originaux signés, d'autres sont des tirages limités, signés et numérotés en petite édition. Dans tous les cas, chacune est une véritable pièce de collection — une fois qu'une œuvre ou une édition est épuisée, elle ne revient pas.</p>
+          <p>Les deux existent dans la collection : certaines œuvres sont des originaux signés, d'autres sont des tirages que je termine à la main et que je signe, si bien que chacun diffère légèrement du suivant. Lorsqu'un tirage fait partie d'une édition limitée et numérotée, sa page l'indique, avec le nombre d'exemplaires.</p>
         </details>
         <details class="faq-item">
           <summary>Le magazine est-il vraiment en deux langues ?</summary>
@@ -952,6 +974,7 @@
     // If they already subscribed, hide the tab entirely rather than keep inviting them
     if (getCookie('signup_completed')) {
       tab.style.display = 'none';
+      document.documentElement.classList.add('signed-up');
     }
 
     // Auto-open once, after a delay -- but never for someone who's already
@@ -972,6 +995,17 @@
     tab.addEventListener('click', function () {
       popup.classList.contains('visible') ? closePopup() : openPopup();
     });
+
+    // Any "Receive the First Letter" link (header, menu, hero) opens the popup here
+    // instead of leaving the page.
+    document.querySelectorAll('[data-open-signup]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var nav = document.getElementById('mobileNav');
+        if (nav) nav.classList.remove('open');
+        openPopup();
+      });
+    });
     closeBtn.addEventListener('click', closePopup);
     overlay.addEventListener('click', closePopup);
 
@@ -984,13 +1018,29 @@
     });
 
     form.addEventListener('submit', function () {
+      setCookie('signup_completed', '1', 365);
       setTimeout(function () {
         form.style.display = 'none';
         confirmMsg.classList.add('visible');
         popup.classList.add('submitted');
-        setCookie('signup_completed', '1', 365);
       }, 600);
+      goToThankYou(form);
     });
+
+    // After a sign-up, wait for MailerLite's answer (the hidden iframe loads),
+    // then open the thank-you page, which links back to the page she was on.
+    function goToThankYou(form) {
+      var lang = window.location.pathname.indexOf('/fr/') === 0 ? 'fr' : 'en';
+      var id = (form.action.match(/forms\/(\d+)/) || [])[1];
+      var gift = id === '199668290639890405' ? 'diary' : (id === '198581432152491948' ? 'letter' : 'other');
+      var from = window.location.pathname + window.location.search;
+      var url = '/' + lang + '/thank-you.html?gift=' + gift + '&from=' + encodeURIComponent(from);
+      var done = false;
+      function go() { if (!done) { done = true; window.location.href = url; } }
+      var frame = document.querySelector('iframe[name="ml_hidden_iframe"]');
+      if (frame) frame.addEventListener('load', go, { once: true });
+      setTimeout(go, 4000);
+    }
   })();
 </script>
 </body>

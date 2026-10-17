@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merci — Maison Eviève</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000; --white: #FFFFFF; --charcoal: #636363;
+    --grey: #F0EFEC; --cream: #F5F1EA;
+    --serif: 'Fraunces', serif; --sans: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--grey); color: var(--black); font-family: var(--sans);
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 48px 32px; -webkit-font-smoothing: antialiased;
+    animation: pageFadeIn 0.7s ease both;
+  }
+  @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { body { animation: none; } }
+  a { color: inherit; }
+
+  .frame-illustration { width: 180px; height: auto; margin: 0 auto 40px; transform: rotate(-4deg); }
+  .frame-illustration path, .frame-illustration rect { stroke: var(--black); }
+
+  .not-found-label { font-family: var(--sans); font-size: 13px; color: var(--charcoal); letter-spacing: 0.02em; margin-bottom: 18px; }
+  h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; max-width: 640px; margin: 0 auto; }
+  .lede { font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: #2b2b2b; margin-top: 20px; max-width: 480px; }
+
+  .btn { display: inline-block; margin-top: 40px; font-family: var(--serif); text-transform: capitalize; font-size: 15px; background: transparent; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease; }
+  .btn:hover { background: rgba(0,0,0,0.6); color: var(--white); }
+
+  .quick-links { margin-top: 32px; display: flex; gap: 24px; font-size: 14px; }
+  .quick-links a { text-decoration: none; border-bottom: 1px solid transparent; }
+  .quick-links a:hover { border-color: var(--black); }
+  .opt-in-line { margin-top: 48px; font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--charcoal); }
+  .opt-in-line a { text-decoration: underline; color: var(--black); }
+
+  .envelope { width: 120px; height: auto; margin: 0 auto 36px; transform: rotate(-4deg); }
+  .envelope path { stroke: var(--black); }
+  .ty-body { max-width: 520px; margin: 28px auto 0; font-size: 1rem; line-height: 1.7; color: #2b2b2b; }
+  .ty-body p + p { margin-top: 16px; }
+  .ty-signoff { margin-top: 36px; font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--charcoal); max-width: 460px; }
+  #tyBack { text-transform: none; }
+  .ty-signoff span { display: block; margin-top: 10px; font-style: normal; color: var(--black); }
+</style>
+</head>
+<body>
+
+  <svg class="envelope" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M2 4 C1.8 2.3 3 1.6 4.6 1.8 L21.2 1.5 C22.8 1.6 23.2 2.6 23.1 4.2 L22.8 15.4 C22.9 16.9 21.7 17.5 20.1 17.3 L4.3 17.5 C2.7 17.4 2 16.5 2.1 15 Z" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 4.2 C7.5 8.6 10.3 10.9 13 11.1 C15.6 10.8 18.7 8.4 22.2 4" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <p class="not-found-label">Merci</p>
+  <h1 id="tyHeadline">Elle est en chemin.</h1>
+
+  <div class="ty-body">
+    <p id="tyFirst">La Première Lettre voyage vers votre boîte de réception, accompagnée d'un numéro d'essai de « (meditating) On Art ». Elle arrive en général en quelques minutes.</p>
+    <p>Si l'e-mail se cache, jetez un œil dans les onglets Promotions ou Spam, et déplacez-le dans votre boîte principale pour que les prochaines lettres vous trouvent.</p>
+    <p>En attendant : répondez à mon premier e-mail avec un mot pour dire comment se passe votre semaine. Je lis chaque réponse moi-même.</p>
+  </div>
+
+  <a href="/fr/" class="btn" id="tyBack">Revenir là où vous étiez</a>
+
+  <p class="ty-signoff">N'oubliez pas de prendre tout le temps qu'il vous faut, et retrouvez-moi à la prochaine.<span>Avec tendresse,<br>Evi</span></p>
+
+<script>
+  // Shows the right gift (?gift=letter|diary|other) and points the button back
+  // to the page she signed up from (?from=), staying on this site only.
+  (function () {
+    var t = {"h_letter": "Elle est en chemin.", "h_diary": "Votre Journal de la Collectionneuse est en chemin.", "h_other": "Vous êtes bien inscrite.", "p1_letter": "La Première Lettre voyage vers votre boîte de réception, accompagnée d'un numéro d'essai de « (meditating) On Art ». Elle arrive en général en quelques minutes.", "p1_diary": "Le Journal de la Collectionneuse voyage vers votre boîte de réception. Imprimez-le, glissez-le dans votre sac, et emportez-le à votre prochaine visite au musée.", "p1_other": "Votre confirmation voyage vers votre boîte de réception. Elle arrive en général en quelques minutes."};
+    var q = new URLSearchParams(window.location.search);
+    var gift = q.get('gift');
+    if (gift === 'diary' || gift === 'other') {
+      document.getElementById('tyHeadline').textContent = t['h_' + gift];
+      document.getElementById('tyFirst').textContent = t['p1_' + gift];
+    }
+    var from = q.get('from') || '';
+    if (/^\/(en|fr)\//.test(from) && from.indexOf('//') === -1 && from.indexOf('thank-you') === -1) {
+      document.getElementById('tyBack').href = from;
+    }
+    document.cookie = 'signup_completed=1; max-age=' + (365 * 86400) + '; path=/';
+  })();
+</script>
+
+<!-- Cookie notice: small, equal-weight accept/reject, matches CNIL requirements -->
+<div id="cookieNotice" class="cookie-notice">
+  <p>Nous utilisons uniquement les cookies nécessaires au bon fonctionnement des inscriptions et des paiements. <a href="legal.html#cookies">En savoir plus</a>.</p>
+  <div class="cookie-notice-actions">
+    <button id="cookieReject" class="cookie-btn">Refuser</button>
+    <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accepter</button>
+  </div>
+</div>
+<style>
+  .cookie-notice {
+    position: fixed; left: 20px; bottom: 20px; z-index: 90;
+    max-width: 300px; background: #FAF8F5; border: 1px solid rgba(0,0,0,0.15);
+    padding: 16px 18px; font-family: 'Inter', sans-serif; font-size: 12.5px; line-height: 1.5; color: #2b2b2b;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: none;
+  }
+  .cookie-notice.visible { display: block; }
+  .cookie-notice a { color: #000; text-decoration: underline; }
+  .cookie-notice-actions { display: flex; gap: 10px; margin-top: 12px; }
+  .cookie-btn {
+    flex: 1; font-family: 'Fraunces', serif; font-size: 12.5px; padding: 7px 0;
+    background: transparent; border: 1px solid #000; color: #000; cursor: pointer;
+  }
+  .cookie-btn-accept { background: #000; color: #fff; }
+  @media (max-width: 520px) { .cookie-notice { left: 12px; right: 12px; bottom: 12px; max-width: none; } }
+</style>
+<script>
+  (function () {
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    }
+    function setCookie(name, value) {
+      document.cookie = name + '=' + value + '; max-age=31536000; path=/';
+    }
+    var existing = getCookie('cookie_consent');
+    var notice = document.getElementById('cookieNotice');
+    if (!existing) {
+      notice.classList.add('visible');
+    }
+    document.getElementById('cookieAccept').addEventListener('click', function () {
+      setCookie('cookie_consent', 'accepted');
+      notice.classList.remove('visible');
+      // If analytics/marketing scripts are ever added, load them here, gated behind consent.
+    });
+    document.getElementById('cookieReject').addEventListener('click', function () {
+      setCookie('cookie_consent', 'rejected');
+      notice.classList.remove('visible');
+    });
+  })();
+</script>
+</body>
+</html>

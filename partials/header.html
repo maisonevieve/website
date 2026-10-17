@@ -11,8 +11,9 @@
       <img src="/images/maisonevieve_logo_meditation_art.png" alt="Maison Eviève">
     </a>
     <div class="header-right">
+      <a href="/{{LANG}}/blog/the-first-letter.html" class="header-letter" data-open-signup>{{FIRST_LETTER}}</a>
       <div class="lang-switch">
-        <a href="#" class="lang-en" data-active-if="en">EN</a><span>/</span><a href="#" class="lang-fr" data-active-if="fr">FR</a>
+        <a href="{{ALT_EN}}" class="lang-en" data-active-if="en">EN</a><span>/</span><a href="{{ALT_FR}}" class="lang-fr" data-active-if="fr">FR</a>
       </div>
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
@@ -23,19 +24,19 @@
     <a href="/{{LANG}}/index.html#magazine">Magazine</a>
     <a href="/{{LANG}}/index.html#subscriptions">Subscriptions</a>
     <a href="/{{LANG}}/art.html">Art</a>
+    <a href="/{{LANG}}/blog/the-first-letter.html" class="mobile-letter" data-open-signup>{{FIRST_LETTER}}</a>
   </div>
 </header>
 <script>
-  // Points EN/FR to the equivalent page in the other language, falling back to
-  // the English homepage if this exact page has no French version (yet).
+  // EN/FR links are written at build time (French slugs differ from English
+  // ones), so this only marks the current language as active.
   (function () {
-    var path = window.location.pathname;
-    var isFr = path.indexOf('/fr/') !== -1;
-    var enPath = isFr ? path.replace('/fr/', '/en/') : path;
-    var frPath = isFr ? path : path.replace('/en/', '/fr/');
+    var isFr = window.location.pathname.indexOf('/fr/') === 0;
     var enLink = document.querySelector('.lang-en');
     var frLink = document.querySelector('.lang-fr');
-    if (enLink) { enLink.href = enPath; enLink.classList.toggle('active', !isFr); }
-    if (frLink) { frLink.href = frPath; frLink.classList.toggle('active', isFr); }
+    if (enLink) enLink.classList.toggle('active', !isFr);
+    if (frLink) frLink.classList.toggle('active', isFr);
+    // Readers who already signed up stop seeing the First Letter invitation.
+    if (/(^| )signup_completed=/.test(document.cookie)) document.documentElement.classList.add('signed-up');
   })();
 </script>

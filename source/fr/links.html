@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maison Eviève — Liens</title>
+<meta name="description" content="Tout Maison Eviève au même endroit : la Première Lettre, les abonnements, l&#x27;art et le Journal.">
+<meta property="og:site_name" content="Maison Eviève">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Maison Eviève — Liens">
+<meta property="og:description" content="Tout Maison Eviève au même endroit : la Première Lettre, les abonnements, l&#x27;art et le Journal.">
+<meta property="og:url" content="https://maisonevieve.com/fr/links.html">
+<meta property="og:image" content="https://maisonevieve.com/images/og/art-meditation-letter-experience.jpg">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="en" href="https://maisonevieve.com/en/links.html">
+<link rel="alternate" hreflang="fr" href="https://maisonevieve.com/fr/links.html">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -83,7 +94,7 @@
     </a>
     <a href="art.html" class="link-item">
       <div class="link-title">Découvrir les œuvres disponibles</div>
-      <div class="link-sub">Œuvres originales et tirages limités, signés</div>
+      <div class="link-sub">Œuvres originales et tirages finis à la main, signés</div>
     </a>
     <!-- Placeholder link -- points to a dedicated blog post about the magazine, once written -->
     <a href="index.html#magazine" class="link-item">
@@ -304,6 +315,7 @@
     // If they already subscribed, hide the tab entirely rather than keep inviting them
     if (getCookie('signup_completed')) {
       tab.style.display = 'none';
+      document.documentElement.classList.add('signed-up');
     }
 
     // Auto-open once, after a delay -- but never for someone who's already
@@ -324,6 +336,17 @@
     tab.addEventListener('click', function () {
       popup.classList.contains('visible') ? closePopup() : openPopup();
     });
+
+    // Any "Receive the First Letter" link (header, menu, hero) opens the popup here
+    // instead of leaving the page.
+    document.querySelectorAll('[data-open-signup]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var nav = document.getElementById('mobileNav');
+        if (nav) nav.classList.remove('open');
+        openPopup();
+      });
+    });
     closeBtn.addEventListener('click', closePopup);
     overlay.addEventListener('click', closePopup);
 
@@ -336,13 +359,29 @@
     });
 
     form.addEventListener('submit', function () {
+      setCookie('signup_completed', '1', 365);
       setTimeout(function () {
         form.style.display = 'none';
         confirmMsg.classList.add('visible');
         popup.classList.add('submitted');
-        setCookie('signup_completed', '1', 365);
       }, 600);
+      goToThankYou(form);
     });
+
+    // After a sign-up, wait for MailerLite's answer (the hidden iframe loads),
+    // then open the thank-you page, which links back to the page she was on.
+    function goToThankYou(form) {
+      var lang = window.location.pathname.indexOf('/fr/') === 0 ? 'fr' : 'en';
+      var id = (form.action.match(/forms\/(\d+)/) || [])[1];
+      var gift = id === '199668290639890405' ? 'diary' : (id === '198581432152491948' ? 'letter' : 'other');
+      var from = window.location.pathname + window.location.search;
+      var url = '/' + lang + '/thank-you.html?gift=' + gift + '&from=' + encodeURIComponent(from);
+      var done = false;
+      function go() { if (!done) { done = true; window.location.href = url; } }
+      var frame = document.querySelector('iframe[name="ml_hidden_iframe"]');
+      if (frame) frame.addEventListener('load', go, { once: true });
+      setTimeout(go, 4000);
+    }
   })();
 </script>
 </body>

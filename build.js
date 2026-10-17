@@ -49,8 +49,35 @@ function readPartial(name) {
 // at the right language). Resolving those here, before the partial is handed to the
 // outer page's fillTemplate call, avoids depending on token-processing order -- the
 // outer call just inserts this already-finished string, nothing left to substitute.
-function readHeaderPartial(lang) {
-  return readPartial('header.html').split('{{LANG}}').join(lang);
+// alt = { en: '/en/...', fr: '/fr/...' } -- the same page in each language. Written
+// at build time because translated pages usually have their own translated slug,
+// so a simple /en/ -> /fr/ swap in the browser would land on a missing page.
+// Falls back to that language's homepage when a page has no translation yet.
+function readHeaderPartial(lang, alt = {}) {
+  return readPartial('header.html')
+    .split('{{LANG}}').join(lang)
+    .split('{{ALT_EN}}').join(alt.en || '/en/')
+    .split('{{ALT_FR}}').join(alt.fr || '/fr/')
+    .split('{{FIRST_LETTER}}').join(lang === 'fr' ? 'Recevoir la Première Lettre' : 'Receive the First Letter')
+    .replace(/>Home</g, lang === 'fr' ? '>Accueil<' : '>Home<')
+    .replace(/>About</g, lang === 'fr' ? '>À propos<' : '>About<')
+    .replace(/>Subscriptions</g, lang === 'fr' ? '>Abonnements<' : '>Subscriptions<');
+}
+
+// Interface words written in English inside the post/product templates.
+function localizeTemplate(html, lang) {
+  if (lang !== 'fr') return html;
+  return html
+    .split('&#8592; Back to the Journal').join('&#8592; Retour au Journal')
+    .split('&#8592; Back to Available Art').join('&#8592; Retour aux œuvres disponibles');
+}
+
+function altPaths(langs, section) {
+  const alt = {};
+  for (const l of ['en', 'fr']) {
+    if (langs[l] && langs[l].slug) alt[l] = `/${l}/${section}/${langs[l].slug}.html`;
+  }
+  return alt;
 }
 
 function readTemplate(name) {
@@ -185,7 +212,7 @@ async function main() {
       const ctaHtml = row.cta_link
         ? `<div class="wrap post-cta"><a href="${row.cta_link}" class="btn" target="_blank" rel="noopener">${row.cta_label || 'Subscribe'}</a></div>`
         : '';
-      const html = fillTemplate(blogTemplate, {
+      const html = localizeTemplate(fillTemplate(blogTemplate, {
         LANG: lang,
         TITLE: row.title,
         OG_TAGS: ogTags({ title: row.title, description: row.excerpt || row.body, image: row.image, path: `${lang}/blog/${row.slug}`, lang }),
@@ -193,9 +220,9 @@ async function main() {
         POST_HERO_IMAGE: heroImageBlock(row),
         BODY_HTML: bodyHtml,
         POST_CTA: ctaHtml,
-        HEADER: readHeaderPartial(lang),
+        HEADER: readHeaderPartial(lang, altPaths(langs, 'blog')),
         FOOTER: readPartial('footer-minimal.html'),
-      });
+      }), lang);
       const relPath = `${lang}/blog/${row.slug}.html`;
       writeFile(relPath, html);
       langPaths[lang] = relPath;
@@ -217,7 +244,7 @@ async function main() {
       const bodyHtml = parseBody(row.body, lang);
       const gatedBadge = (row.gated || '').toLowerCase() === 'yes' ? '<div class="gated-badge">Members</div>' : '';
       const quoteBlock = row.quote ? `<p class="post-quote">"${row.quote}"</p>` : '';
-      const html = fillTemplate(digitalTemplate, {
+      const html = localizeTemplate(fillTemplate(digitalTemplate, {
         LANG: lang,
         TITLE: row.title,
         DATE: formatDate(row.date, lang),
@@ -225,9 +252,9 @@ async function main() {
         BODY_HTML: bodyHtml,
         GATED_BADGE: gatedBadge,
         QUOTE_BLOCK: quoteBlock,
-        HEADER: readHeaderPartial(lang),
+        HEADER: readHeaderPartial(lang, altPaths(langs, 'members')),
         FOOTER: readPartial('footer-minimal.html'),
-      });
+      }), lang);
       writeFile(`${lang}/members/${row.slug}.html`, html);
       // Deliberately NOT added to sitemapUrls or any listing page -- direct-link-only, as designed.
     }
@@ -309,7 +336,7 @@ async function main() {
       // no recurring-price suffix. Only an actual Subscription gets "per month".
       const priceSuffix = isSubscription ? ` <span class="price-suffix">${lang === 'fr' ? '/ mois' : 'per month'}</span>` : '';
 
-      const html = fillTemplate(productTemplate, {
+      const html = localizeTemplate(fillTemplate(productTemplate, {
         LANG: lang,
         TITLE: row.title,
         OG_TAGS: ogTags({ title: row.title, description: row.description, image: images[0], path: `${lang}/art/${row.slug}`, lang, type: 'product' }),
@@ -329,9 +356,9 @@ async function main() {
         GALLERY_DOTS: dots,
         GALLERY_PREV_LABEL: L.galleryPrev,
         GALLERY_NEXT_LABEL: L.galleryNext,
-        HEADER: readHeaderPartial(lang),
+        HEADER: readHeaderPartial(lang, altPaths(langs, 'art')),
         FOOTER: readPartial('footer-minimal.html'),
-      });
+      }), lang);
       const relPath = `${lang}/art/${row.slug}.html`;
       writeFile(relPath, html);
       langPaths[lang] = relPath;
@@ -414,7 +441,7 @@ async function main() {
   }
 
   // ---- Copy static pages through, injecting art cards + fixing asset paths ----
-  const staticPages = ['index.html', 'art.html', 'catalogue.html', 'blog.html', 'legal.html', '404.html', 'links.html'];
+  const staticPages = ['index.html', 'art.html', 'catalogue.html', 'blog.html', 'legal.html', '404.html', 'links.html', 'thank-you.html'];
 
   for (const lang of ['en', 'fr']) {
     for (const page of staticPages) {
@@ -486,7 +513,7 @@ async function main() {
         <h2>${featured.title}</h2>
         <p class="excerpt">${featured.excerpt}</p>
       </a>
-      <a href="/${lang}/blog/${featured.slug}.html" class="read-link">Read the post</a>
+      <a href="/${lang}/blog/${featured.slug}.html" class="read-link">${lang === 'fr' ? "Lire l'article" : 'Read the post'}</a>
     </div>`;
       html = html.replace(/<div class="featured-post">[\s\S]*?<\/div>\s*<\/div>/, `<div class="featured-post">\n    ${featuredHtml}\n  </div>`);
     }
@@ -498,7 +525,7 @@ async function main() {
         <h2>${row.title}</h2>
         <p class="excerpt">${row.excerpt}</p>
       </a>
-      <a href="/${lang}/blog/${row.slug}.html" class="read-link">Read the post</a>
+      <a href="/${lang}/blog/${row.slug}.html" class="read-link">${lang === 'fr' ? "Lire l'article" : 'Read the post'}</a>
     </div>`).join('\n    ');
     html = html.replace(/<div class="post-grid">[\s\S]*?<\/div>\s*<\/div>/, `<div class="post-grid">\n    ${cardsHtml}\n  </div>\n</div>`);
     fs.writeFileSync(distBlogPath, html, 'utf-8');
@@ -539,6 +566,17 @@ async function main() {
 ${urlEntries}
 </urlset>`;
   writeFile('sitemap.xml', sitemap);
+  // ---- Redirects for renamed pages, so old links (pins, QR codes, emails) keep working.
+  // Add a line here whenever a slug changes in the Sheet. Each is listed with and
+  // without .html, since the site answers to both forms of every address. ----
+  const RENAMED = [
+    ['/en/art/yoga-energy-blogs', '/en/art/yoga-energy-blocks'], // typo fixed, Oct 2026
+    ['/fr/art/yoga-energy-blogs', '/fr/art/yoga-energy-blocks'],
+  ];
+  writeFile('_redirects', RENAMED.flatMap(([from, to]) => [
+    `${from}.html ${to}.html 301`,
+    `${from} ${to} 301`,
+  ]).join('\n') + '\n');
   writeFile('robots.txt', `User-agent: *\nDisallow: /en/members/\nDisallow: /fr/members/\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 
   // ---- Copy shared asset folders straight through ----
