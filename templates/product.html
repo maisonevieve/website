@@ -82,6 +82,8 @@
   .specs-table tr { border-bottom: 1px solid rgba(0,0,0,0.1); }
   .specs-table td { padding: 12px 0; }
   .specs-table td:first-child { color: var(--charcoal); width: 40%; }
+  .yearly-line { margin-top: 16px; font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--charcoal); }
+  .yearly-line a { color: var(--black); text-decoration: underline; text-underline-offset: 3px; }
   .unframed-note { margin-top: 16px; font-size: 0.9rem; color: var(--charcoal); font-style: italic; }
   .specs-box .btn { margin-top: 28px; width: 100%; text-align: center; }
 
@@ -125,6 +127,7 @@
       </table>
       {{UNFRAMED_NOTE}}
       <a href="{{STRIPE_LINK}}" class="btn" target="_blank" rel="noopener">{{PURCHASE_LABEL}}</a>
+      {{YEARLY_LINE}}
     </div>
   </div>
 </div>

@@ -212,6 +212,28 @@ async function main() {
       const ctaHtml = row.cta_link
         ? `<div class="wrap post-cta"><a href="${row.cta_link}" class="btn" target="_blank" rel="noopener">${row.cta_label || 'Subscribe'}</a></div>`
         : '';
+      // A single quiet First Letter line before the closing button -- skipped when the
+      // post already has its own sign-up form (e.g. The First Letter, The Collector's Diary).
+      const hasOwnSignup = /\[signup/i.test(row.body || '');
+      const endSignup = hasOwnSignup ? '' : (lang === 'fr'
+        ? `<div class="wrap end-signup">
+  <p class="end-signup-line">Avant de partir : La Première Lettre, une courte méditation sur la réception d'une lettre, à lire ou à écouter.</p>
+  <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
+    <input type="email" name="fields[email]" placeholder="Votre e-mail" required>
+    <input type="hidden" name="fields[language]" value="Français">
+    <button type="submit">Envoyez-la-moi</button>
+  </form>
+  <p class="embed-signup-confirm">Merci, regardez votre boîte de réception dans quelques instants.</p>
+</div>`
+        : `<div class="wrap end-signup">
+  <p class="end-signup-line">Before you go: The First Letter, a short meditation on receiving a letter, to read or to listen to.</p>
+  <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
+    <input type="email" name="fields[email]" placeholder="Your email" required>
+    <input type="hidden" name="fields[language]" value="English">
+    <button type="submit">Send it to me</button>
+  </form>
+  <p class="embed-signup-confirm">Thank you — check your inbox shortly.</p>
+</div>`);
       const html = localizeTemplate(fillTemplate(blogTemplate, {
         LANG: lang,
         TITLE: row.title,
@@ -220,6 +242,7 @@ async function main() {
         POST_HERO_IMAGE: heroImageBlock(row),
         BODY_HTML: bodyHtml,
         POST_CTA: ctaHtml,
+        END_SIGNUP: endSignup,
         HEADER: readHeaderPartial(lang, altPaths(langs, 'blog')),
         FOOTER: readPartial('footer-minimal.html'),
       }), lang);
@@ -336,6 +359,13 @@ async function main() {
       // no recurring-price suffix. Only an actual Subscription gets "per month".
       const priceSuffix = isSubscription ? ` <span class="price-suffix">${lang === 'fr' ? '/ mois' : 'per month'}</span>` : '';
 
+      // Subscriptions: a quiet second option under the button, from the Sheet's
+      // yearly_price / yearly_stripe_link / yearly_bonus columns (left out when empty).
+      const yearlyLine = (isSubscription && row.yearly_price && row.yearly_stripe_link)
+        ? (lang === 'fr'
+          ? `<p class="yearly-line">ou <a href="${row.yearly_stripe_link}" target="_blank" rel="noopener">€${row.yearly_price} par an</a>${row.yearly_bonus ? `, avec ${row.yearly_bonus} en bonus` : ''}</p>`
+          : `<p class="yearly-line">or <a href="${row.yearly_stripe_link}" target="_blank" rel="noopener">€${row.yearly_price} a year</a>${row.yearly_bonus ? `, with ${row.yearly_bonus} as a bonus` : ''}</p>`)
+        : '';
       const html = localizeTemplate(fillTemplate(productTemplate, {
         LANG: lang,
         TITLE: row.title,
@@ -352,6 +382,7 @@ async function main() {
         UNFRAMED_NOTE: unframedNote,
         STRIPE_LINK: row.stripe_link,
         PURCHASE_LABEL: purchaseLabel,
+        YEARLY_LINE: yearlyLine,
         GALLERY_SLIDES: slides,
         GALLERY_DOTS: dots,
         GALLERY_PREV_LABEL: L.galleryPrev,
@@ -407,7 +438,15 @@ async function main() {
     const priceUnknownText = lang === 'fr' ? 'Prix sur demande' : 'Price upon inquiry';
     const monthSuffix = lang === 'fr' ? ' / mois' : ' / mo';
     const priceText = row.price ? `€${row.price}${isSubscription ? monthSuffix : ''}` : priceUnknownText;
-    const viewLinkText = lang === 'fr' ? 'Voir l\'œuvre' : 'View piece';
+    // "View piece" only makes sense for art; subscriptions, bundles and letters get their own words.
+    const type = (row.type || '').toLowerCase();
+    const viewLabels = {
+      subscription: ['See the subscription', 'Voir l\'abonnement'],
+      bundle: ['See the bundle', 'Voir le coffret'],
+      letter: ['See the letter', 'Voir la lettre'],
+    };
+    const [enLabel, frLabel] = viewLabels[type] || ['View piece', 'Voir l\'œuvre'];
+    const viewLinkText = lang === 'fr' ? frLabel : enLabel;
     const feelingsAttr = feelingsSlugs(row.feelings).join(' ');
     return `<div class="art-card" data-feelings="${feelingsAttr}">
           <div class="media"><a href="${row._href}"><img src="/images/${img}" alt="${row.title}"></a></div>

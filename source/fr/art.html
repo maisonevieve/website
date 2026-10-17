@@ -132,6 +132,8 @@
   .tier-carousel-dots button.active { background: var(--white); }
   .tier .btn-subscribe { margin-top: 28px; }
   .compare-row { text-align: center; margin-top: 48px; }
+  .compare-row .choose-link { margin-top: 18px; font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--charcoal); }
+  .compare-row .choose-link a { color: var(--black); text-decoration: underline; text-underline-offset: 3px; }
 
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 200; padding: 24px; }
   .modal-overlay.open { display: flex; }
@@ -367,6 +369,7 @@
       </div>
       <div class="compare-row">
         <button class="btn" id="openCompare">Comparer</button>
+        <p class="choose-link">Vous hésitez ? <a href="/fr/blog/choose_membership.html">Voici comment choisir</a></p>
       </div>
     </div>
   </section>
