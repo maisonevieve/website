@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseCSV } = require('./parse-csv');
+const { blogCategory } = require('./blog-category');
 const { parseBody } = require('./parse-body');
 
 // ---------------------------------------------------------------------------
@@ -179,6 +180,14 @@ function heroImageBlock(row) {
   return `<div class="post-hero-image">\n  <img src="/images/${row.image}" alt="${row.title}">\n</div>`;
 }
 
+// Publication date kept out of sight for readers but visible to search engines.
+function dateMeta(row) {
+  const d = parseSheetDate(row.date);
+  if (!d) return '';
+  const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  return `<meta property="article:published_time" content="${iso}">\n<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BlogPosting', headline: row.title, datePublished: iso, inLanguage: row.lang, author: { '@type': 'Person', name: 'Evi Michailidou' } })}</script>`;
+}
+
 function formatDate(dateStr, lang) {
   const d = parseSheetDate(dateStr);
   if (!d) return dateStr || '';
@@ -208,6 +217,7 @@ async function main() {
       const row = langs[lang];
       if (!row) continue;
       if (!row.slug) { console.warn(`Skipping Blog row with no slug (post_id: ${postId}, lang: ${lang})`); continue; }
+      row._category = blogCategory(langs, lang);
       const bodyHtml = parseBody(row.body, lang);
       const ctaHtml = row.cta_link
         ? `<div class="wrap post-cta"><a href="${row.cta_link}" class="btn" target="_blank" rel="noopener">${row.cta_label || 'Subscribe'}</a></div>`
@@ -238,7 +248,8 @@ async function main() {
         LANG: lang,
         TITLE: row.title,
         OG_TAGS: ogTags({ title: row.title, description: row.excerpt || row.body, image: row.image, path: `${lang}/blog/${row.slug}`, lang }),
-        DATE: formatDate(row.date, lang),
+        CATEGORY: row._category,
+        DATE_META: dateMeta(row),
         POST_HERO_IMAGE: heroImageBlock(row),
         BODY_HTML: bodyHtml,
         POST_CTA: ctaHtml,
@@ -539,7 +550,8 @@ async function main() {
     const distBlogPath = path.join(DIST, lang, 'blog.html');
     if (!fs.existsSync(distBlogPath)) continue;
     let html = fs.readFileSync(distBlogPath, 'utf-8');
-    const posts = blogIndexByLang[lang].sort((a, b) => (parseSheetDate(b.date) || 0) - (parseSheetDate(a.date) || 0));
+    // Newest first, by post number (dates are no longer shown anywhere on the blog).
+    const posts = blogIndexByLang[lang].sort((a, b) => (Number(b.post_id) || 0) - (Number(a.post_id) || 0));
     const [featured, ...rest] = posts;
 
     if (featured) {
@@ -548,7 +560,7 @@ async function main() {
     </a>
     <div>
       <a href="/${lang}/blog/${featured.slug}.html" class="card-link">
-        <p class="post-date">${formatDate(featured.date, lang)}</p>
+        <p class="post-category">${featured._category}</p>
         <h2>${featured.title}</h2>
         <p class="excerpt">${featured.excerpt}</p>
       </a>
@@ -560,7 +572,7 @@ async function main() {
     const cardsHtml = rest.map(row => `<div class="post-card">
       <a href="/${lang}/blog/${row.slug}.html" class="card-link">
         <div class="media">${row.image ? `<img src="/images/${row.image}" alt="${row.title}">` : ''}</div>
-        <p class="post-date">${formatDate(row.date, lang)}</p>
+        <p class="post-category">${row._category}</p>
         <h2>${row.title}</h2>
         <p class="excerpt">${row.excerpt}</p>
       </a>
