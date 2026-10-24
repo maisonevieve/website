@@ -283,7 +283,7 @@ function giftBlock({ row, lang, isGift, isSubscription, giftable, purchaseLabel 
 
 // Wraps a description section whose heading mentions Christmas (or Noël) in the festive box.
 function festiveSections(html) {
-  return html.replace(/(<h3[^>]*>[^<]*(?:Christmas|Noël)[^<]*<\/h3>)([\s\S]*?)(?=<h3|$)/g, '<div class="festive-box">$1$2</div>\n  ');
+  return html.replace(/(<h3[^>]*>[^<]*(?:Christmas|Noël|Mother's Day|Fête des mères|Valentine|Saint-Valentin)[^<]*<\/h3>)([\s\S]*?)(?=<h3|$)/g, '<div class="festive-box">$1$2</div>\n  ');
 }
 
 module.exports = { giftBlock, STANDARD, FOLLOWUP, festiveSections };
