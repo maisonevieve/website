@@ -336,8 +336,8 @@ async function main() {
         const posterFile = f.replace(/\.[^.]+$/, '') + '-poster.jpg';
         const poster = fs.existsSync(path.join(__dirname, 'images', posterFile)) ? `/images/${posterFile}` : '';
         return isVideo
-          ? `<div class="slide${active}"><video autoplay muted loop playsinline preload="auto"${poster ? ` poster="${poster}"` : ''}><source src="/images/${f}" type="video/mp4"></video></div>`
-          : `<div class="slide${active}"><img src="/images/${f}" alt=""></div>`;
+          ? `<div class="slide${active}"><video muted playsinline preload="auto"${poster ? ` poster="${poster}"` : ''}><source src="/images/${f}" type="video/mp4"></video></div>`
+          : `<div class="slide${active}"><img src="/images/${f}" alt="${i === 0 ? escapeAttrB(row.title) : ''}"></div>`;
       }).join('\n  ');
       const dots = galleryFiles.map((_, i) => `<span${i === 0 ? ' class="active"' : ''}></span>`).join('');
 

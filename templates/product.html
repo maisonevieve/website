@@ -89,30 +89,72 @@
 
   footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
   .footer-bottom { font-size: 12.5px; color: rgba(255,255,255,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  /* Product hero: a full-height slideshow under a transparent header, title at its foot.
+     Each picture keeps its own shape at full height; a portrait picture or video sits in the middle
+     with the edges of the previous and next pictures showing on either side, never blank space. */
+  .product-hero { position: relative; height: 100vh; height: 100svh; min-height: 520px; overflow: hidden; background: #e9e4dc; }
+  .ph-track { position: absolute; top: 0; bottom: 0; left: 0; display: flex; gap: 3px; will-change: transform; }
+  .ph-track.animate { transition: transform 0.9s cubic-bezier(.65,.05,.25,1); }
+  .ph-track .slide { position: relative; flex: 0 0 auto; height: 100%; overflow: hidden; opacity: 1; }
+  .ph-track .slide img, .ph-track .slide video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ph-track .slide:not(.current)::after { content: ""; position: absolute; inset: 0; background: rgba(245,241,234,0.28); transition: background 0.6s ease; }
+  .ph-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 40%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.25) 100%); }
+  .ph-title { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 24px 64px; text-align: center; color: var(--white); pointer-events: none; }
+  .ph-title .type-badge { color: rgba(255,255,255,0.85); }
+  .ph-title h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.15; max-width: 900px; margin: 10px auto 0; color: var(--white); }
+  .product-hero .gallery-arrow { z-index: 6; text-shadow: 0 1px 8px rgba(0,0,0,0.35); }
+  .product-hero .gallery-dots { bottom: 26px; z-index: 6; }
+  .product-hero.single .gallery-arrow, .product-hero.single .gallery-dots { display: none; }
+  .back-link-row { padding: 28px 0 0; }
+  header { transition: background-color 0.3s ease, border-color 0.3s ease; }
+  body.hero-dark header:not(.scrolled) { background: transparent; border-bottom-color: transparent; }
+  /* Pages with a full-bleed hero: white logo and navigation until the header turns solid on scroll */
+  body.hero-dark header:not(.scrolled) nav.links a,
+  body.hero-dark header:not(.scrolled) .lang-switch,
+  body.hero-dark header:not(.scrolled) .lang-switch a,
+  body.hero-dark header:not(.scrolled) .lang-switch a.active { color: var(--white); }
+  body.hero-dark header:not(.scrolled) nav.links a:hover { border-color: var(--white); }
+  body.hero-dark header:not(.scrolled) .logo-mark img { filter: brightness(0) invert(1); }
+  body.hero-dark header:not(.scrolled) .menu-toggle span { background: var(--white); }
+  body.hero-dark header:not(.scrolled) .header-letter { color: var(--white); border-color: var(--white); }
+  body.hero-dark header:not(.scrolled) .header-letter:hover { background: rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-color: transparent; color: var(--white); font-style: italic; }
+  body.hero-dark header:has(.mobile-nav.open) { background: var(--white); }
+  body.hero-dark header:has(.mobile-nav.open) .logo-mark img { filter: none; }
+  body.hero-dark header:has(.mobile-nav.open) .menu-toggle span { background: var(--black); }
+  body.hero-dark header:has(.mobile-nav.open) .lang-switch, body.hero-dark header:has(.mobile-nav.open) .lang-switch a { color: var(--charcoal); }
+  body.hero-dark header:has(.mobile-nav.open) .lang-switch a.active { color: var(--black); }
+
+  /* Touch screens: first tap on a subscription button shows the price, second tap opens it */
+  .sub-buttons .btn.tap-active { background: rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-color: transparent; color: var(--white); font-style: italic; }
+  .sub-buttons .btn.tap-active .lbl { opacity: 0; }
+  .sub-buttons .btn.tap-active .prc { opacity: 1; }
 </style>
 </head>
-<body>
+<body class="hero-dark">
 <div id="scrollSentinel" style="position:absolute; top:0; height:1px; width:1px;"></div>
 
 {{HEADER}}
 
-<div class="wrap back-link-row">
-  <a href="/{{LANG}}/catalogue.html" class="back-link">&#8592; Back to Available Art</a>
-</div>
-
-<div class="product-gallery">
+<section class="product-hero" aria-roledescription="carousel">
+  <div class="ph-track" id="phTrack">
   {{GALLERY_SLIDES}}
+  </div>
+  <div class="ph-shade"></div>
+  <div class="ph-title"><p class="type-badge">{{TYPE_LABEL}}</p><h1>{{TITLE}}</h1></div>
   <button class="gallery-arrow prev" aria-label="{{GALLERY_PREV_LABEL}}">&#8249;</button>
   <button class="gallery-arrow next" aria-label="{{GALLERY_NEXT_LABEL}}">&#8250;</button>
   <div class="gallery-dots">{{GALLERY_DOTS}}</div>
+</section>
+
+<div class="wrap back-link-row">
+  <a href="/{{LANG}}/catalogue.html" class="back-link">&#8592; Back to Available Art</a>
 </div>
 
 <div class="wrap product-body">
   <div class="product-grid">
     <div>
       <div class="product-title-row">
-        <p class="type-badge">{{TYPE_LABEL}}</p>
-        <h1>{{TITLE}}</h1>
         {{EDITION_LINE}}
       </div>
       <div class="product-desc">{{DESCRIPTION}}</div>
@@ -154,17 +196,78 @@
     }
   })();
   (function () {
-    var slides = document.querySelectorAll('.product-gallery .slide');
-    var dots = document.querySelectorAll('.gallery-dots span');
-    if (!slides.length) return;
-    var current = 0;
-    function show(i) {
-      slides[current].classList.remove('active'); dots[current].classList.remove('active');
-      current = (i + slides.length) % slides.length;
-      slides[current].classList.add('active'); dots[current].classList.add('active');
+    // Full-height slideshow. Slides are laid out side by side at their own proportions; the current one is centred.
+    // The set is repeated on both sides so there is always a neighbour to show, even with a single picture.
+    var hero = document.querySelector('.product-hero');
+    var track = document.getElementById('phTrack');
+    if (!hero || !track) return;
+    var originals = [].slice.call(track.querySelectorAll('.slide'));
+    var n = originals.length;
+    var dots = [].slice.call(hero.querySelectorAll('.gallery-dots span'));
+    if (n < 2) hero.classList.add('single');
+    originals.forEach(function (s) { s.classList.remove('active'); });
+    // three copies: [before][originals][after]
+    var before = originals.map(function (s) { var c = s.cloneNode(true); c.setAttribute('aria-hidden', 'true'); return c; });
+    var after = originals.map(function (s) { var c = s.cloneNode(true); c.setAttribute('aria-hidden', 'true'); return c; });
+    before.forEach(function (c) { track.insertBefore(c, originals[0]); });
+    after.forEach(function (c) { track.appendChild(c); });
+    var all = [].slice.call(track.querySelectorAll('.slide'));
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    all.forEach(function (s, i) { var v = s.querySelector('video'); if (!v) return; v.loop = (n < 2 || reduceMotion); if (i < n || i >= 2 * n) v.preload = 'metadata'; });
+    var index = n; // first original
+    var ratios = all.map(function () { return 0.75; });
+
+    function mediaOf(s) { return s.querySelector('img, video'); }
+    function ratioOf(m) {
+      if (m.tagName === 'VIDEO') return m.videoWidth && m.videoHeight ? m.videoWidth / m.videoHeight : 9 / 16;
+      return m.naturalWidth && m.naturalHeight ? m.naturalWidth / m.naturalHeight : 0.75;
     }
-    document.querySelector('.gallery-arrow.prev').addEventListener('click', function () { show(current - 1); });
-    document.querySelector('.gallery-arrow.next').addEventListener('click', function () { show(current + 1); });
+    function layout(animate) {
+      var H = hero.clientHeight, W = hero.clientWidth;
+      all.forEach(function (s, i) {
+        var w = Math.min(H * ratios[i], W);   // landscape pictures fill the width; portrait ones keep their shape
+        s.style.width = Math.round(w) + 'px';
+      });
+      var cur = all[index];
+      var x = cur.offsetLeft + cur.offsetWidth / 2 - W / 2;
+      track.classList.toggle('animate', !!animate);
+      track.style.transform = 'translateX(' + (-x) + 'px)';
+      all.forEach(function (s, i) { s.classList.toggle('current', i === index); });
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === (index % n)); });
+      // only the centred video plays
+      all.forEach(function (s, i) { var v = s.querySelector('video'); if (!v) return; if (i === index) { v.currentTime = 0; v.play().catch(function () {}); } else v.pause(); });
+    }
+    all.forEach(function (s, i) {
+      var m = mediaOf(s); if (!m) return;
+      var set = function () { ratios[i] = ratioOf(m); layout(false); };
+      if (m.tagName === 'VIDEO') { if (m.readyState >= 1) set(); else m.addEventListener('loadedmetadata', set, { once: true }); }
+      else { if (m.complete && m.naturalWidth) set(); else m.addEventListener('load', set, { once: true }); }
+    });
+    function go(to) {
+      index = to; layout(true);
+      clearTimeout(timer); schedule();
+    }
+    track.addEventListener('transitionend', function () {
+      // after moving into a copy, jump back to the matching original without animation
+      if (index < n || index >= 2 * n) { index = n + ((index % n) + n) % n; layout(false); }
+    });
+    hero.querySelector('.gallery-arrow.prev').addEventListener('click', function () { go(index - 1); });
+    hero.querySelector('.gallery-arrow.next').addEventListener('click', function () { go(index + 1); });
+    dots.forEach(function (d, i) { d.style.cursor = 'pointer'; d.addEventListener('click', function () { go(n + i); }); });
+    var x0 = null;
+    hero.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    hero.addEventListener('touchend', function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1)); x0 = null; });
+    // gentle autoplay: a picture stays 6 seconds, a video plays once through
+    var timer = null;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function schedule() {
+      if (n < 2 || reduce) return;
+      var v = all[index].querySelector('video');
+      var wait = v && v.duration ? Math.max(v.duration * 1000, 4000) : 6000;
+      timer = setTimeout(function () { if (!document.hidden) go(index + 1); else schedule(); }, wait);
+    }
+    window.addEventListener('resize', function () { layout(false); });
+    layout(false); schedule();
   })();
 </script>
 </body>
