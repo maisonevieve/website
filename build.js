@@ -342,7 +342,11 @@ async function main() {
       const dots = galleryFiles.map((_, i) => `<span${i === 0 ? ' class="active"' : ''}></span>`).join('');
 
       const isOriginal = (row.type || '').toLowerCase() === 'original';
-      const isSubscription = (row.type || '').toLowerCase() === 'subscription';
+      // Subscription-like rows: the monthly subscription, the yearly plan ("Yearly") and the magazine presentation ("Magazine").
+      const rowType = (row.type || '').toLowerCase();
+      const isYearly = rowType === 'yearly';
+      const isMagazine = rowType === 'magazine';
+      const isSubscription = rowType === 'subscription' || isYearly || isMagazine;
       const isBundle = (row.type || '').toLowerCase() === 'bundle';
       const isLetter = (row.type || '').toLowerCase() === 'letter';
       // The gift page for "(letters) On Art": a one-time 12 or 6 month package, sold only as a gift.
@@ -375,6 +379,8 @@ async function main() {
       };
 
       const typeLabel = isGift ? (lang === 'fr' ? 'À offrir' : 'A gift')
+        : isYearly ? (lang === 'fr' ? 'Abonnement annuel' : 'Yearly subscription')
+        : isMagazine ? (lang === 'fr' ? 'Le magazine' : 'The magazine')
         : isSubscription ? L.subscription
         : isBundle ? L.bundle
         : isLetter ? L.letter
@@ -395,14 +401,17 @@ async function main() {
       const purchaseLabel = isSubscription ? L.subscribe : L.purchase;
       // Bundles and letters are one-off purchases, same as original art and prints --
       // no recurring-price suffix. Only an actual Subscription gets "per month".
-      const priceSuffix = isSubscription ? ` <span class="price-suffix">${lang === 'fr' ? '/ mois' : 'per month'}</span>` : '';
+      const priceSuffix = isYearly ? ` <span class="price-suffix">${lang === 'fr' ? '/ an' : 'a year'}</span>`
+        : isSubscription ? ` <span class="price-suffix">${lang === 'fr' ? '/ mois' : 'per month'}</span>` : '';
 
       // Subscriptions: a quiet second option under the button, from the Sheet's
       // yearly_price / yearly_stripe_link / yearly_bonus columns (left out when empty).
-      const yearlyLine = (isSubscription && row.yearly_price && row.yearly_stripe_link)
+      // A link starting with "/" is a page on the site (the yearly plan's own page); anything else is a Stripe link.
+      const ylTarget = /^\//.test(row.yearly_stripe_link || '') ? '' : ' target="_blank" rel="noopener"';
+      const yearlyLine = (isSubscription && !isYearly && row.yearly_price && row.yearly_stripe_link)
         ? (lang === 'fr'
-          ? `<p class="yearly-line">ou <a href="${row.yearly_stripe_link}" target="_blank" rel="noopener">€${row.yearly_price} par an</a>${row.yearly_bonus ? `, avec ${row.yearly_bonus} en bonus` : ''}</p>`
-          : `<p class="yearly-line">or <a href="${row.yearly_stripe_link}" target="_blank" rel="noopener">€${row.yearly_price} a year</a>${row.yearly_bonus ? `, with ${row.yearly_bonus} as a bonus` : ''}</p>`)
+          ? `<p class="yearly-line">ou <a href="${row.yearly_stripe_link}"${ylTarget}>${row.yearly_price} € par an</a>${row.yearly_bonus ? `, avec ${row.yearly_bonus} en bonus` : ''}</p>`
+          : `<p class="yearly-line">or <a href="${row.yearly_stripe_link}"${ylTarget}>€${row.yearly_price} a year</a>${row.yearly_bonus ? `, with ${row.yearly_bonus} as a bonus` : ''}</p>`)
         : '';
       const html = localizeTemplate(fillTemplate(productTemplate, {
         LANG: lang,
@@ -410,10 +419,10 @@ async function main() {
         OG_TAGS: ogTags({ title: row.title, description: row.description, image: images[0], path: `${lang}/art/${row.slug}`, lang, type: 'product' }),
         TYPE_LABEL: typeLabel,
         EDITION_LINE: editionLine,
-        DESCRIPTION: isGift ? festiveSections(parseBody(row.description, lang)) : toParagraphs(row.description),
+        DESCRIPTION: (isGift || isSubscription) ? festiveSections(parseBody(row.description, lang)) : toParagraphs(row.description),
         PRICE_LINE: isGift
           ? `<div class="price-line">${lang === 'fr' ? 'Dès ' + row.yearly_price + ' €' : 'From €' + row.yearly_price}</div>`
-          : `<div class="price-line">€${row.price}${priceSuffix}</div>`,
+          : `<div class="price-line">${lang === 'fr' ? row.price + ' €' : '€' + row.price}${priceSuffix}</div>`,
         BUY_BLOCK: giftBlock({ row, lang, isGift, isSubscription, giftable: isPhysicalSingleItem, purchaseLabel }),
         PRICE_SUFFIX: priceSuffix,
         SIZE_ROW: sizeRow,
@@ -473,16 +482,19 @@ async function main() {
   // ---- Card HTML for listings (latest 3, and full catalogue) ----
   function artCardHtml(row, featuredImgOverride, lang) {
     const img = featuredImgOverride || row.featured || (row.images || '').split(',')[0].trim();
-    const isSubscription = (row.type || '').toLowerCase() === 'subscription';
+    const isSubscription = ['subscription', 'magazine'].includes((row.type || '').toLowerCase());
+    const isYearlyRow = (row.type || '').toLowerCase() === 'yearly';
     const priceUnknownText = lang === 'fr' ? 'Prix sur demande' : 'Price upon inquiry';
     const monthSuffix = lang === 'fr' ? ' / mois' : ' / mo';
     const isGiftRow = (row.type || '').toLowerCase() === 'gift';
     const priceText = isGiftRow && row.yearly_price ? (lang === 'fr' ? `Dès ${row.yearly_price} €` : `From €${row.yearly_price}`)
-      : row.price ? `€${row.price}${isSubscription ? monthSuffix : ''}` : priceUnknownText;
+      : row.price ? `€${row.price}${isSubscription ? monthSuffix : isYearlyRow ? (lang === 'fr' ? ' / an' : ' / yr') : ''}` : priceUnknownText;
     // "View piece" only makes sense for art; subscriptions, bundles and letters get their own words.
     const type = (row.type || '').toLowerCase();
     const viewLabels = {
       subscription: ['See the subscription', 'Voir l\'abonnement'],
+      yearly: ['See the yearly plan', 'Voir l\'abonnement annuel'],
+      magazine: ['See the magazine', 'Voir le magazine'],
       bundle: ['See the bundle', 'Voir le coffret'],
       letter: ['See the letter', 'Voir la lettre'],
       gift: ['See the gift', 'Voir le cadeau'],
@@ -552,7 +564,7 @@ async function main() {
   // first image to its second (if one exists) while a dark scrim and the title
   // fade in. Video cells skip the image crossfade (the video itself already
   // provides motion) but still get the scrim + title on hover.
-  function catalogueCellHtml(row, lang) {
+  function catalogueCellHtml(row, lang, pinned) {
     // A tile in the catalogue grid: a quiet stack of the piece's images (and its video),
     // which the page cross-fades one tile at a time. Title in the middle, price on hover or first tap.
     const imgList = (row.images || '').split(',').map(s => s.trim()).filter(Boolean);
@@ -560,11 +572,16 @@ async function main() {
     const video = (row.video || '').trim();
     const others = imgList.filter(f => f !== first && !/\.(mp4|mov|webm)$/i.test(f)).slice(0, 2);
     const feelingsAttr = feelingsSlugs(row.feelings).join(' ');
-    const isSub = (row.type || '').toLowerCase() === 'subscription';
+    const isSub = ['subscription', 'magazine'].includes((row.type || '').toLowerCase());
+    const isYr = (row.type || '').toLowerCase() === 'yearly';
     const isGiftRow = (row.type || '').toLowerCase() === 'gift';
     const price = isGiftRow && row.yearly_price ? (lang === 'fr' ? `Dès ${row.yearly_price} €` : `From €${row.yearly_price}`)
-      : row.price ? (lang === 'fr' ? `${row.price} €${isSub ? ' par mois' : ''}` : `€${row.price}${isSub ? ' a month' : ''}`)
+      : row.price ? (lang === 'fr' ? `${row.price} €${isSub ? ' par mois' : isYr ? ' par an' : ''}` : `€${row.price}${isSub ? ' a month' : isYr ? ' a year' : ''}`)
       : (lang === 'fr' ? 'Prix sur demande' : 'Price on request');
+    if (pinned && video) {
+      // Pinned tile: just its video, playing on a loop (the featured image shows while it loads).
+      return `<div class="catalogue-cell pinned" data-feelings="${feelingsAttr}"><a href="${row._href}"><div class="cell-stack"><video class="cell-media active" autoplay muted loop playsinline preload="auto" poster="/images/${first}" src="/images/${video}"></video></div><div class="cell-shade"></div><div class="cell-label"><span class="cell-title">${row.title}</span><span class="cell-price">${price}</span></div></a></div>`;
+    }
     const firstTag = /\.(mp4|mov|webm)$/i.test(first)
       ? `<video class="cell-media active" muted playsinline loop autoplay src="/images/${first}"></video>`
       : `<img class="cell-media active" src="/images/${first}" alt="${escapeAttrB(row.title)}">`;
@@ -572,6 +589,9 @@ async function main() {
       + (video && video !== first ? `<video class="cell-media" muted playsinline loop preload="none" data-src="/images/${video}"></video>` : '');
     return `<div class="catalogue-cell" data-feelings="${feelingsAttr}"><a href="${row._href}"><div class="cell-stack">${firstTag}${more}</div><div class="cell-shade"></div><div class="cell-label"><span class="cell-title">${row.title}</span><span class="cell-price">${price}</span></div></a></div>`;
   }
+
+  // The yearly plan and the magazine presentation live at the end of the catalogue only.
+  function listable(rows) { return rows.filter(r => !['yearly', 'magazine'].includes((r.type || '').toLowerCase())); }
 
   // ---- Copy static pages through, injecting art cards + fixing asset paths ----
   const staticPages = ['index.html', 'art.html', 'catalogue.html', 'blog.html', 'legal.html', '404.html', 'links.html', 'thank-you.html', 'gift-card.html'];
@@ -595,7 +615,7 @@ async function main() {
 
       // Inject latest-3 art cards
       if (html.includes('ART_CARDS:latest:START')) {
-        const latest = availableArt[lang].slice(-3).reverse();
+        const latest = listable(availableArt[lang]).slice(-3).reverse();
         const cardsHtml = latest.map((r, i) => homeCardHtml(r, i, lang)).join('\n        ');
         html = html.replace(
           /<!-- ART_CARDS:latest:START -->[\s\S]*?<!-- ART_CARDS:latest:END -->/,
@@ -606,7 +626,7 @@ async function main() {
       // pieces, newest first, skipping the same 3 already shown in "Available Now"
       // just above it on this page -- so nothing repeats between the two sections.
       if (html.includes('ART_CARDS:carousel:START')) {
-        const rest = availableArt[lang].slice(0, -3).reverse().slice(0, 10);
+        const rest = listable(availableArt[lang]).slice(0, -3).reverse().slice(0, 10);
         const carouselHtml = rest.map(r => artCardHtml(r, null, lang)).join('\n        ');
         html = html.replace(
           /<!-- ART_CARDS:carousel:START -->[\s\S]*?<!-- ART_CARDS:carousel:END -->/,
@@ -615,8 +635,12 @@ async function main() {
       }
       // Inject full catalogue
       if (html.includes('ART_CARDS:all:START')) {
-        const all = availableArt[lang];
-        const cellsHtml = all.map(r => catalogueCellHtml(r, lang)).join('\n    ');
+        // The monthly letters are pinned first, their video playing on a loop; the yearly plan and the magazine come last.
+        const isPinned = r => (r.type || '').toLowerCase() === 'subscription';
+        const isLast = r => ['yearly', 'magazine'].includes((r.type || '').toLowerCase());
+        const src = availableArt[lang];
+        const all = [...src.filter(isPinned), ...src.filter(r => !isPinned(r) && !isLast(r)), ...src.filter(isLast)];
+        const cellsHtml = all.map(r => catalogueCellHtml(r, lang, isPinned(r))).join('\n    ');
         if (all.length >= 12) html = html.replace('class="catalogue-grid"', 'class="catalogue-grid many"');
         html = html.replace(
           /<!-- ART_CARDS:all:START -->[\s\S]*?<!-- ART_CARDS:all:END -->/,

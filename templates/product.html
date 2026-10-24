@@ -75,6 +75,9 @@
   .product-title-row .edition-line { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--charcoal); margin-top: 10px; }
   .product-desc { margin-top: 28px; color: #2b2b2b; max-width: 560px; }
   .product-desc p + p { margin-top: 16px; }
+  .product-desc h3 { font-family: var(--serif); font-weight: 500; font-size: 1.3rem; margin: 36px 0 12px; }
+  .product-desc ol, .product-desc ul { margin: 12px 0 18px 1.2em; }
+  .product-desc li + li { margin-top: 8px; }
   .specs-box { border-top: 1px solid var(--black); padding-top: 24px; }
   .price-line { font-family: var(--serif); font-size: 2rem; font-weight: 300; margin-bottom: 24px; }
   .price-line .price-suffix { font-size: 1rem; color: var(--charcoal); font-family: var(--sans); }
@@ -129,6 +132,11 @@
   .sub-buttons .btn.tap-active { background: rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-color: transparent; color: var(--white); font-style: italic; }
   .sub-buttons .btn.tap-active .lbl { opacity: 0; }
   .sub-buttons .btn.tap-active .prc { opacity: 1; }
+
+  /* Images inside a sales page, to break up the text */
+  .product-desc .embed-image { margin: 32px 0; }
+  .product-desc .embed-image img { width: 100%; height: auto; display: block; }
+  .product-desc .embed-image figcaption { font-size: 13px; color: var(--charcoal); font-style: italic; text-align: center; margin-top: 10px; line-height: 1.5; }
 </style>
 </head>
 <body class="hero-dark">
