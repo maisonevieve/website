@@ -72,8 +72,6 @@
   .catalogue-title h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.1; max-width: 900px; margin: 0 auto; }
 
   /* Edge-to-edge collage grid, no gaps */
-  .catalogue-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
-  @media (max-width: 760px) { .catalogue-grid { grid-template-columns: repeat(2, 1fr); } }
 
   .feelings-filter-toggle-row { text-align: center; padding: 0 32px; margin: 0 0 20px; }
   @media (min-width: 900px) { .feelings-filter-toggle-row { padding: 0 64px; } }
@@ -92,35 +90,6 @@
   .catalogue-cell.filtered-out { display: none; }
   .catalogue-empty-state { display: none; text-align: center; padding: 64px 0; font-family: var(--serif); font-style: italic; color: var(--charcoal); }
   .catalogue-empty-state.visible { display: block; }
-  .catalogue-cell { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--charcoal); }
-  .catalogue-cell img, .catalogue-cell video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .catalogue-cell a { display: block; width: 100%; height: 100%; position: relative; }
-  /* Hover: crossfade to the piece's second image (if it has one), while a dark
-     scrim and the title fade in together. Video cells keep their own motion and
-     just get the scrim + title. */
-  .cell-img-secondary { opacity: 0; }
-  .cell-overlay { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 18px; background: rgba(0,0,0,0); opacity: 0; }
-  .cell-title { color: var(--white); font-family: var(--serif); font-size: 1rem; font-weight: 400; line-height: 1.3; text-shadow: 0 1px 6px rgba(0,0,0,0.35); }
-  /* Hover only on devices that genuinely have a mouse (hover: hover) -- on
-     touch devices like iPad, :hover can trigger on tap and then get "stuck"
-     with no mouse-leave event to clear it, so touch devices get the plain
-     primary image with no hover behavior at all rather than a glitchy one. */
-  @media (hover: hover) and (pointer: fine) {
-    .cell-img { transition: opacity 0.5s ease; }
-    .catalogue-cell a:hover .cell-img-primary { opacity: 0; }
-    .catalogue-cell a:hover .cell-img-secondary { opacity: 1; }
-    .cell-overlay { transition: opacity 0.3s ease, background 0.3s ease; }
-    .catalogue-cell a:hover .cell-overlay { background: rgba(0,0,0,0.2); opacity: 1; }
-  }
-  /* Touch devices: no real hover, so the first tap reveals the same preview
-     (second image + title) instead of navigating straight away; a second tap
-     on that same cell then follows the link through to the piece. */
-  .cell-img { transition: opacity 0.4s ease; }
-  .catalogue-cell a.tap-active .cell-img-primary { opacity: 0; }
-  .catalogue-cell a.tap-active .cell-img-secondary { opacity: 1; }
-  .cell-overlay { transition: opacity 0.3s ease, background 0.3s ease; }
-  .catalogue-cell a.tap-active .cell-overlay { background: rgba(0,0,0,0.2); opacity: 1; }
-
   footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
   .footer-grid { display: flex; flex-direction: column; gap: 32px; }
   @media (min-width: 700px) { .footer-grid { flex-direction: row; justify-content: space-between; align-items: flex-start; } }
@@ -131,6 +100,35 @@
   .footer-col a { display: block; text-decoration: none; color: var(--white); margin-bottom: 8px; opacity: 0.9; }
   .footer-col a:hover { opacity: 1; text-decoration: underline; }
   .footer-bottom { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  /* Catalogue grid: edge to edge, thin white gutters, 2 columns on phones, 3 on desktop (4 from 12 pieces on wide screens).
+     Each tile slowly cross-fades through its images and video, one tile at a time, so the page moves without pulling at the eye. */
+  .catalogue-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--white); }
+  @media (min-width: 760px) { .catalogue-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1400px) { .catalogue-grid.many { grid-template-columns: repeat(4, 1fr); } }
+  .catalogue-cell { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #e9e4dc; }
+  .catalogue-cell.span-2 { grid-column: span 2; aspect-ratio: 8 / 5; }
+  .catalogue-cell.span-3 { grid-column: span 3; aspect-ratio: 12 / 5; }
+  .catalogue-cell a { display: block; width: 100%; height: 100%; position: relative; color: var(--white); text-decoration: none; }
+  .cell-stack, .cell-media { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cell-media { object-fit: cover; opacity: 0; transition: opacity 1.8s ease; }
+  .cell-media.active { opacity: 1; }
+  img.cell-media { animation: cellDrift 26s ease-in-out infinite alternate; }
+  .catalogue-cell:nth-child(3n+2) img.cell-media { animation-delay: -9s; }
+  .catalogue-cell:nth-child(3n) img.cell-media { animation-delay: -17s; animation-direction: alternate-reverse; }
+  @keyframes cellDrift { from { transform: scale(1); } to { transform: scale(1.06); } }
+  .cell-shade { position: absolute; inset: 0; background: rgba(0,0,0,0.22); transition: background 0.4s ease; }
+  .cell-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 16px; text-align: center; pointer-events: none; }
+  .cell-title { font-family: var(--sans); font-size: 11.5px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; line-height: 1.5; text-shadow: 0 1px 10px rgba(0,0,0,0.55); }
+  @media (min-width: 900px) { .cell-title { font-size: 13px; } }
+  .cell-price { font-family: var(--serif); font-style: italic; font-size: 14px; opacity: 0; transform: translateY(4px); transition: opacity 0.4s ease, transform 0.4s ease; text-shadow: 0 1px 8px rgba(0,0,0,0.35); }
+  @media (hover: hover) and (pointer: fine) {
+    .catalogue-cell a:hover .cell-shade { background: rgba(0,0,0,0.3); }
+    .catalogue-cell a:hover .cell-price { opacity: 1; transform: none; }
+  }
+  .catalogue-cell a.tap-active .cell-shade { background: rgba(0,0,0,0.3); }
+  .catalogue-cell a.tap-active .cell-price { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { img.cell-media { animation: none; } .cell-media { transition: none; } }
 </style>
 </head>
 <body>
@@ -613,20 +611,59 @@
   })();
 </script>
 
+
 <script>
-  // Catalogue: a piece with a video previews its first 3 seconds on loop while hovered (or tapped once on touch screens).
+  // Catalogue motion: every few seconds ONE visible tile moves on to its next image or video, with a slow cross-fade.
+  // Tiles without more than one picture simply drift. Nothing moves for people who ask their device for less motion.
   (function () {
-    document.querySelectorAll('video.cell-video').forEach(function (v) {
-      var n = parseFloat(v.getAttribute('data-loop')) || 3;
-      var link = v.closest('a');
-      v.addEventListener('timeupdate', function () { if (v.currentTime >= n) { v.currentTime = 0; } });
-      function start() { v.currentTime = 0; v.play().catch(function () {}); }
-      function stop() { v.pause(); }
-      link.addEventListener('mouseenter', start);
-      link.addEventListener('mouseleave', stop);
-      new MutationObserver(function () { if (link.classList.contains('tap-active')) { start(); } else { stop(); } })
-        .observe(link, { attributes: true, attributeFilter: ['class'] });
-    });
+    var grid = document.getElementById('catalogueGrid');
+    if (!grid) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var cells = [].slice.call(grid.querySelectorAll('.catalogue-cell'));
+
+    // Keep the last row full: the last visible tile widens to fill any gap.
+    function fill() {
+      var visible = cells.filter(function (c) { return !c.classList.contains('filtered-out'); });
+      cells.forEach(function (c) { c.classList.remove('span-2', 'span-3'); });
+      var cols = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+      var r = visible.length % cols;
+      if (r && visible.length) visible[visible.length - 1].classList.add('span-' + Math.min(cols - r + 1, 3));
+    }
+    fill(); window.addEventListener('resize', fill);
+    // Re-fill only when the feelings filter shows or hides tiles.
+    new MutationObserver(function (ms) {
+      if (ms.some(function (m) { return m.target.classList.contains('catalogue-cell') && (/filtered-out/.test(m.oldValue || '') !== m.target.classList.contains('filtered-out')); })) fill();
+    }).observe(grid, { subtree: true, attributes: true, attributeFilter: ['class'], attributeOldValue: true });
+
+    if (reduce) return;
+    var onScreen = new Set();
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) onScreen.add(e.target); else onScreen.delete(e.target); }); }, { threshold: 0.4 });
+    cells.forEach(function (c) { io.observe(c); });
+
+    function step(cell) {
+      var media = [].slice.call(cell.querySelectorAll('.cell-media'));
+      if (media.length < 2) return false;
+      var i = media.findIndex(function (m) { return m.classList.contains('active'); });
+      var cur = media[i], next = media[(i + 1) % media.length];
+      var show = function () {
+        next.classList.add('active'); cur.classList.remove('active');
+        if (next.tagName === 'VIDEO') { next.currentTime = 0; next.play().catch(function () {}); }
+        if (cur.tagName === 'VIDEO') setTimeout(function () { cur.pause(); }, 1900);
+      };
+      if (next.dataset.src && !next.getAttribute('src')) {
+        next.addEventListener(next.tagName === 'VIDEO' ? 'loadeddata' : 'load', show, { once: true });
+        next.src = next.dataset.src;
+        if (next.tagName === 'VIDEO') next.load();
+      } else show();
+      return true;
+    }
+    var turn = 0;
+    setInterval(function () {
+      if (document.hidden) return;
+      var pool = cells.filter(function (c) { return onScreen.has(c) && !c.classList.contains('filtered-out') && c.querySelectorAll('.cell-media').length > 1 && !c.matches(':hover'); });
+      if (!pool.length) return;
+      step(pool[turn++ % pool.length]);
+    }, 2600);
   })();
 </script>
 </body>

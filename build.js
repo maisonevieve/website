@@ -552,28 +552,25 @@ async function main() {
   // first image to its second (if one exists) while a dark scrim and the title
   // fade in. Video cells skip the image crossfade (the video itself already
   // provides motion) but still get the scrim + title on hover.
-  function catalogueCellHtml(row) {
+  function catalogueCellHtml(row, lang) {
+    // A tile in the catalogue grid: a quiet stack of the piece's images (and its video),
+    // which the page cross-fades one tile at a time. Title in the middle, price on hover or first tap.
     const imgList = (row.images || '').split(',').map(s => s.trim()).filter(Boolean);
-    const primaryImg = row.featured || imgList[0] || '';
-    const secondaryImg = imgList.find(f => f !== primaryImg) || '';
-    const isVideo = /\.(mp4|mov|webm)$/i.test(primaryImg);
+    const first = row.featured || imgList[0] || '';
+    const video = (row.video || '').trim();
+    const others = imgList.filter(f => f !== first && !/\.(mp4|mov|webm)$/i.test(f)).slice(0, 2);
     const feelingsAttr = feelingsSlugs(row.feelings).join(' ');
-
-    let inner;
-    if (isVideo) {
-      inner = `<video autoplay muted loop playsinline><source src="/images/${primaryImg}" type="video/mp4"></video>`;
-    } else {
-      const video = (row.video || '').trim();
-      // A product with a video previews 3 seconds of it on loop (hover, or first tap on touch screens);
-      // otherwise the second image fades in.
-      const secondaryTag = video
-        ? `<video class="cell-img cell-img-secondary cell-video" muted playsinline loop preload="metadata" data-loop="3" src="/images/${video}#t=0.1"></video>`
-        : secondaryImg
-        ? `<img class="cell-img cell-img-secondary" src="/images/${secondaryImg}" alt="">`
-        : '';
-      inner = `<img class="cell-img cell-img-primary" src="/images/${primaryImg}" alt="${row.title}">${secondaryTag}`;
-    }
-    return `<div class="catalogue-cell" data-feelings="${feelingsAttr}"><a href="${row._href}">${inner}<div class="cell-overlay"><span class="cell-title">${row.title}</span></div></a></div>`;
+    const isSub = (row.type || '').toLowerCase() === 'subscription';
+    const isGiftRow = (row.type || '').toLowerCase() === 'gift';
+    const price = isGiftRow && row.yearly_price ? (lang === 'fr' ? `Dès ${row.yearly_price} €` : `From €${row.yearly_price}`)
+      : row.price ? (lang === 'fr' ? `${row.price} €${isSub ? ' par mois' : ''}` : `€${row.price}${isSub ? ' a month' : ''}`)
+      : (lang === 'fr' ? 'Prix sur demande' : 'Price on request');
+    const firstTag = /\.(mp4|mov|webm)$/i.test(first)
+      ? `<video class="cell-media active" muted playsinline loop autoplay src="/images/${first}"></video>`
+      : `<img class="cell-media active" src="/images/${first}" alt="${escapeAttrB(row.title)}">`;
+    const more = others.map(f => `<img class="cell-media" data-src="/images/${f}" alt="">`).join('')
+      + (video && video !== first ? `<video class="cell-media" muted playsinline loop preload="none" data-src="/images/${video}"></video>` : '');
+    return `<div class="catalogue-cell" data-feelings="${feelingsAttr}"><a href="${row._href}"><div class="cell-stack">${firstTag}${more}</div><div class="cell-shade"></div><div class="cell-label"><span class="cell-title">${row.title}</span><span class="cell-price">${price}</span></div></a></div>`;
   }
 
   // ---- Copy static pages through, injecting art cards + fixing asset paths ----
@@ -619,7 +616,8 @@ async function main() {
       // Inject full catalogue
       if (html.includes('ART_CARDS:all:START')) {
         const all = availableArt[lang];
-        const cellsHtml = all.map(r => catalogueCellHtml(r)).join('\n    ');
+        const cellsHtml = all.map(r => catalogueCellHtml(r, lang)).join('\n    ');
+        if (all.length >= 12) html = html.replace('class="catalogue-grid"', 'class="catalogue-grid many"');
         html = html.replace(
           /<!-- ART_CARDS:all:START -->[\s\S]*?<!-- ART_CARDS:all:END -->/,
           `<!-- ART_CARDS:all:START -->\n    ${cellsHtml}\n    <!-- ART_CARDS:all:END -->`
