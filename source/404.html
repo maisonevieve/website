@@ -132,15 +132,15 @@
 <div id="signupPopup" class="signup-popup">
   <button id="signupPopupClose" class="signup-popup-close" aria-label="Close">&times;</button>
   <div class="signup-popup-media">
-    <img src="images/art-meditation-letter-experience.jpg" alt="">
+    <img src="images/coffee-soft-pastel-sketches.jpg" alt="">
     <div class="signup-popup-scrim"></div>
     <div class="signup-popup-content">
-      <div class="popup-masthead long">A ritual you can flip through</div>
+      <div class="popup-masthead long">Pour a coffee, turn the page</div>
 
       <div class="popup-coverlines">
-        <p class="coverline-main">The welcome issue of “(meditating) On Art”</p>
-        <p class="coverline-kicker">Free, to read on screen</p>
-        <p class="coverline-sub">Plus the letter experience: a sensory meditation on receiving a letter, written and read aloud</p>
+        <p class="coverline-main">The welcome issue of “(meditating) On Art”, free to read on screen</p>
+        <p class="coverline-kicker">A ritual you can flip through</p>
+        <p class="coverline-sub">With the letter experience: a meditation on receiving a letter, written and read aloud</p>
       </div>
 
       <div class="popup-bottom">
@@ -219,14 +219,13 @@
   /* Submitted state: the enticing photo/headline hook disappears entirely, leaving
      just a simple, quiet thank-you on a plain dark ground -- no reason to keep
      selling once someone has already said yes. */
-  .signup-popup.submitted .signup-popup-media img { opacity: 0; transition: opacity 0.4s ease; }
-  .signup-popup.submitted .signup-popup-scrim { background: var(--black, #000); }
+  .signup-popup.submitted .signup-popup-scrim { background: rgba(0,0,0,0.62); transition: background 0.4s ease; }
   .signup-popup.submitted .popup-masthead,
   .signup-popup.submitted .popup-coverlines,
   .signup-popup.submitted .signup-popup-form,
   .signup-popup.submitted .signup-popup-privacy { display: none; }
   .signup-popup.submitted .signup-popup-content { justify-content: center; }
-  .signup-popup.submitted .signup-popup-confirm { font-size: 1.15rem; }
+  .signup-popup.submitted .signup-popup-confirm { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.35rem; line-height: 1.4; }
   .signup-popup-privacy { font-size: 10.5px; opacity: 0.65; margin-top: 12px; }
   @media (max-width: 700px) { .signup-popup { left: 16px; right: 16px; width: auto; top: auto; bottom: 80px; } }
   @media (min-width: 701px) {
