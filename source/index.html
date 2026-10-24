@@ -487,7 +487,31 @@
     </div>
   </section>
 
-  <section id="faq" class="bg-grey">
+  <section id="gifts" class="bg-cream">
+    <div class="wrap">
+      <p class="section-label">Gifts</p>
+      <h2>For the people who never ask for anything.</h2>
+      <p class="lede">Every gift is wrapped by hand in satin ribbon, with your words printed on a card. Months later, a second card follows with a few more words from you.</p>
+      <div class="art-grid">
+        <!-- ART_CARDS:gift:START -->
+        <!-- ART_CARDS:gift:END -->
+        <div class="art-card">
+          <div class="media"><a href="/en/catalogue.html?feeling=generosity"><img src="images/gift_letters_silver_plate.jpeg" alt="A gift wrapped in satin ribbon"></a></div>
+          <h4>Art to give</h4>
+          <div class="price">Prints wrapped by hand, with your card</div>
+          <a href="/en/catalogue.html?feeling=generosity" class="view-link">Find a gift</a>
+        </div>
+        <div class="art-card">
+          <div class="media"><a href="/en/art/letters-on-art-yearly.html"><img src="images/letters-flower-shadow.jpg" alt="Letters in the afternoon light"></a></div>
+          <h4>A gift to yourself</h4>
+          <div class="price">A year of letters, arriving on their own</div>
+          <a href="/en/art/letters-on-art-yearly.html" class="view-link">See the yearly plan</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="bg-white">
     <div class="wrap">
       <p class="section-label">FAQ</p>
       <h2>A few things people ask.</h2>
@@ -1021,6 +1045,20 @@
     document.addEventListener('click', function (e) {
       if (!e.target.closest('.sub-buttons')) btns.forEach(function (o) { o.classList.remove('tap-active'); });
     });
+  })();
+</script>
+
+<script>
+  // The popup takes turns between three covers (title, line and photo), one per visit.
+  (function () {
+    var V = [{"t": "Pour a coffee, turn the page", "m": "The welcome issue of “(meditating) On Art”, free to read on screen", "i": "/images/coffee-soft-pastel-sketches.jpg"}, {"t": "A quiet page for a loud week", "m": "The welcome issue of “(meditating) On Art”, free to read on screen", "i": "/images/reading-on-a-bench-paris.jpg"}, {"t": "Open me slowly", "m": "The welcome issue of “(meditating) On Art”, and a letter to open slowly, free", "i": "/images/letters-handwritten-red-ribbon.jpg"}];
+    var n;
+    try { n = (parseInt(localStorage.getItem('popupCover') || '-1', 10) + 1) % V.length; localStorage.setItem('popupCover', n); }
+    catch (e) { n = Math.floor(Math.random() * V.length); }
+    var p = document.getElementById('signupPopup'); if (!p) return;
+    var v = V[n];
+    var t = p.querySelector('.popup-masthead'), m = p.querySelector('.coverline-main'), img = p.querySelector('.signup-popup-media img');
+    if (t) t.textContent = v.t; if (m) m.textContent = v.m; if (img) img.src = v.i;
   })();
 </script>
 </body>

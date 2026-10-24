@@ -330,5 +330,19 @@
     }
   })();
 </script>
+
+<script>
+  // The popup takes turns between three covers (title, line and photo), one per visit.
+  (function () {
+    var V = [{"t": "Pour a coffee, turn the page", "m": "The welcome issue of “(meditating) On Art”, free to read on screen", "i": "/images/coffee-soft-pastel-sketches.jpg"}, {"t": "A quiet page for a loud week", "m": "The welcome issue of “(meditating) On Art”, free to read on screen", "i": "/images/reading-on-a-bench-paris.jpg"}, {"t": "Open me slowly", "m": "The welcome issue of “(meditating) On Art”, and a letter to open slowly, free", "i": "/images/letters-handwritten-red-ribbon.jpg"}];
+    var n;
+    try { n = (parseInt(localStorage.getItem('popupCover') || '-1', 10) + 1) % V.length; localStorage.setItem('popupCover', n); }
+    catch (e) { n = Math.floor(Math.random() * V.length); }
+    var p = document.getElementById('signupPopup'); if (!p) return;
+    var v = V[n];
+    var t = p.querySelector('.popup-masthead'), m = p.querySelector('.coverline-main'), img = p.querySelector('.signup-popup-media img');
+    if (t) t.textContent = v.t; if (m) m.textContent = v.m; if (img) img.src = v.i;
+  })();
+</script>
 </body>
 </html>

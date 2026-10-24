@@ -177,6 +177,8 @@
   </div>
 
   <div class="feelings-filter" id="feelingsFilter">
+    <button data-feeling="generosity">Générosité</button>
+    <span class="filter-divider"></span>
     <button data-feeling="fractured-focus">Esprit dispersé</button>
     <button data-feeling="quiet-burnout">Épuisement silencieux</button>
     <button data-feeling="urban-loneliness">Solitude urbaine</button>
@@ -663,6 +665,32 @@
       if (!pool.length) return;
       step(pool[turn++ % pool.length]);
     }, 2600);
+  })();
+</script>
+
+<script>
+  // A link such as catalogue.html?feeling=generosity opens the page already filtered.
+  (function () {
+    var f = new URLSearchParams(location.search).get('feeling');
+    if (!f) return;
+    var btn = document.querySelector('#feelingsFilter button[data-feeling="' + f + '"]');
+    var toggle = document.getElementById('feelingsFilterToggle');
+    if (toggle && !toggle.classList.contains('open')) toggle.click();
+    if (btn && !btn.classList.contains('active')) btn.click();
+  })();
+</script>
+
+<script>
+  // The popup takes turns between three covers (title, line and photo), one per visit.
+  (function () {
+    var V = [{"t": "Un café, une page à tourner", "m": "Le numéro de bienvenue de « (meditating) On Art », gratuit, à lire à l'écran", "i": "/images/coffee-soft-pastel-sketches.jpg"}, {"t": "Une page calme pour une semaine bruyante", "m": "Le numéro de bienvenue de « (meditating) On Art », gratuit, à lire à l'écran", "i": "/images/reading-on-a-bench-paris.jpg"}, {"t": "Ouvrez-moi lentement", "m": "Le numéro de bienvenue de « (meditating) On Art », et une lettre à ouvrir lentement, gratuits", "i": "/images/letters-handwritten-red-ribbon.jpg"}];
+    var n;
+    try { n = (parseInt(localStorage.getItem('popupCover') || '-1', 10) + 1) % V.length; localStorage.setItem('popupCover', n); }
+    catch (e) { n = Math.floor(Math.random() * V.length); }
+    var p = document.getElementById('signupPopup'); if (!p) return;
+    var v = V[n];
+    var t = p.querySelector('.popup-masthead'), m = p.querySelector('.coverline-main'), img = p.querySelector('.signup-popup-media img');
+    if (t) t.textContent = v.t; if (m) m.textContent = v.m; if (img) img.src = v.i;
   })();
 </script>
 </body>

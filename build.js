@@ -562,6 +562,22 @@ async function main() {
     return card.replace(/<div class="media">[\s\S]*?<\/div>/, media);
   }
 
+  // Homepage "Available art", first column: giving art. Uses the gift's video for now.
+  function giftArtCardHtml(gift, lang) {
+    const video = (gift && gift.video) || 'gift-portrait.mp4';
+    const poster = gift ? (gift.featured || (gift.images || '').split(',')[0].trim()) : '';
+    const href = `/${lang}/catalogue.html?feeling=generosity`;
+    const t = lang === 'fr'
+      ? { h: 'L\'art, emballé pour offrir', p: 'Emballage cadeau offert', a: 'Trouver un cadeau' }
+      : { h: 'Art, wrapped to give', p: 'Free gift wrapping', a: 'Find a gift' };
+    return `<div class="art-card">
+          <div class="media"><a href="${href}"><video class="home-loop" autoplay muted loop playsinline data-loop="4"${poster ? ` poster="/images/${poster}"` : ''} src="/images/${video}"></video></a></div>
+          <h4>${t.h}</h4>
+          <div class="price">${t.p}</div>
+          <a href="${href}" class="view-link">${t.a}</a>
+        </div>`;
+  }
+
   // Catalogue grid cell -- supports the hover treatment: fades from the piece's
   // first image to its second (if one exists) while a dark scrim and the title
   // fade in. Video cells skip the image crossfade (the video itself already
@@ -573,7 +589,9 @@ async function main() {
     const first = row.featured || imgList[0] || '';
     const video = (row.video || '').trim();
     const others = imgList.filter(f => f !== first && !/\.(mp4|mov|webm)$/i.test(f)).slice(0, 2);
-    const feelingsAttr = feelingsSlugs(row.feelings).join(' ');
+    // "Generosity" in the catalogue filter: the letters gift and every piece that can be sent wrapped as a gift.
+    const giftable = (row.type || '').toLowerCase() === 'gift' || !['subscription', 'yearly', 'magazine', 'bundle', 'letter'].includes((row.type || '').toLowerCase());
+    const feelingsAttr = feelingsSlugs(row.feelings).concat(giftable ? ['generosity'] : []).join(' ');
     const isSub = ['subscription', 'magazine'].includes((row.type || '').toLowerCase());
     const isYr = (row.type || '').toLowerCase() === 'yearly';
     const isGiftRow = (row.type || '').toLowerCase() === 'gift';
@@ -617,17 +635,28 @@ async function main() {
 
       // Inject latest-3 art cards
       if (html.includes('ART_CARDS:latest:START')) {
-        // Homepage: the gift is pinned first (its video loops in the first column), then the two newest pieces.
+        // Homepage "Available art": the first column is about giving art (gift video, free wrapping, link to the
+        // Generosity filter), then the two newest pieces. Other pages: the three newest pieces.
         const isGiftRow = r => (r.type || '').toLowerCase() === 'gift';
         const pool = listable(availableArt[lang]);
-        const latest = page === 'index.html'
-          ? [...pool.filter(isGiftRow), ...pool.filter(r => !isGiftRow(r)).slice(-2).reverse()].slice(0, 3)
-          : pool.slice(-3).reverse();
-        const cardsHtml = latest.map((r, i) => homeCardHtml(r, i, lang)).join('\n        ');
+        let cardsHtml;
+        if (page === 'index.html') {
+          const gift = pool.find(isGiftRow);
+          const newest = pool.filter(r => !isGiftRow(r) && !['subscription'].includes((r.type || '').toLowerCase())).slice(-2).reverse();
+          cardsHtml = [giftArtCardHtml(gift, lang), ...newest.map((r, i) => homeCardHtml(r, i + 1, lang))].join('\n        ');
+        } else {
+          cardsHtml = pool.slice(-3).reverse().map((r, i) => homeCardHtml(r, i, lang)).join('\n        ');
+        }
         html = html.replace(
           /<!-- ART_CARDS:latest:START -->[\s\S]*?<!-- ART_CARDS:latest:END -->/,
           `<!-- ART_CARDS:latest:START -->\n        ${cardsHtml}\n        <!-- ART_CARDS:latest:END -->`
         );
+      }
+      // Homepage "Gifts" section: its first column is the letters gift, as a product card with its video.
+      if (html.includes('ART_CARDS:gift:START')) {
+        const gift = listable(availableArt[lang]).find(r => (r.type || '').toLowerCase() === 'gift');
+        html = html.replace(/<!-- ART_CARDS:gift:START -->[\s\S]*?<!-- ART_CARDS:gift:END -->/,
+          `<!-- ART_CARDS:gift:START -->\n        ${gift ? homeCardHtml(gift, 0, lang) : ''}\n        <!-- ART_CARDS:gift:END -->`);
       }
       // Inject the "Browse the collection" carousel: the rest of the available
       // pieces, newest first, skipping the same 3 already shown in "Available Now"
