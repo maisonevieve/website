@@ -91,7 +91,7 @@
   .shop-hero h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.1; max-width: 900px; margin: 0 auto; }
   .shop-hero-full { height: 78vh; min-height: 480px; }
   .shop-hero-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 60%); }
-  .shop-hero-content { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; padding: 96px 32px; text-align: center; }
+  .shop-hero-content { position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 96px 32px; text-align: center; }
   .shop-hero-content h1 { color: var(--white); font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.15; max-width: 820px; }
 
   /* 2. One-line text */
@@ -172,7 +172,7 @@
   @media (max-width: 700px) { .video-hero video { display: none; } .video-hero .video-fallback-img { display: block; width: 100%; height: 100%; object-fit: cover; } }
   .video-hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; }
   .video-hero-overlay h2 { color: var(--white); font-weight: 400; }
-  .video-hero-overlay .btn { margin-top: 28px; }
+  .video-hero-overlay .btn, .shop-hero-content .btn { margin-top: 28px; }
 
   .video-modal .modal-box { padding: 0; background: black; max-width: 900px; }
   .video-modal video { width: 100%; display: block; }
@@ -271,13 +271,16 @@
 
 <main>
 
-  <!-- 1. Hero: full-bleed image -->
-  <section class="shop-hero-full media">
-    <!-- Placeholder image -- swap for real hero art -->
-    <img src="images/meditating_on_art_maison_evieve.jpg" alt="">
+  <!-- 1. Hero: full-bleed video (still image on phones) -->
+  <section class="shop-hero-full media video-hero">
+    <video autoplay muted loop playsinline poster="images/gallery_grame_art_as_souvenir_of_feeling.png">
+      <source src="images/art-meditation-trailer.mp4" type="video/mp4">
+    </video>
+    <img class="video-fallback-img" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="">
     <div class="shop-hero-scrim"></div>
     <div class="shop-hero-content">
       <h1>Art that becomes a ritual — original works and hand-finished, signed prints.</h1>
+      <button class="btn btn-light" id="openVideo">Watch video</button>
     </div>
   </section>
 
@@ -356,18 +359,6 @@
       <div class="carousel-see-more">
         <a href="catalogue.html" class="btn">See more</a>
       </div>
-    </div>
-  </section>
-
-  <!-- 5. Video hero -->
-  <section class="video-hero">
-    <video autoplay muted loop playsinline poster="images/gallery_grame_art_as_souvenir_of_feeling.png">
-      <source src="images/art-meditation-trailer.mp4" type="video/mp4">
-    </video>
-    <img class="video-fallback-img" src="images/gallery_grame_art_as_souvenir_of_feeling.png" alt="">
-    <div class="video-hero-overlay">
-      <h2>A ritual, in motion.</h2>
-      <button class="btn btn-light" id="openVideo">Watch video</button>
     </div>
   </section>
 
