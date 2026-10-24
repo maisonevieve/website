@@ -171,6 +171,9 @@
   .tier-carousel-dots button { width: 6px; height: 6px; border-radius: 50%; border: none; background: rgba(255,255,255,0.5); padding: 0; cursor: pointer; }
   .tier-carousel-dots button.active { background: var(--white); }
   .tier .btn-subscribe { margin-top: 28px; }
+  @media (min-width: 860px) { .tier-grid-two { grid-template-columns: repeat(2, 1fr); max-width: 860px; margin-left: auto; margin-right: auto; } }
+  .tier-note { margin-top: 16px; font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--charcoal); }
+  .tier-note a { color: var(--black); text-decoration: underline; text-underline-offset: 3px; }
   .compare-row { text-align: center; margin-top: 48px; }
   .compare-row .choose-link { margin-top: 18px; font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--charcoal); }
   .compare-row .choose-link a { color: var(--black); text-decoration: underline; text-underline-offset: 3px; }
@@ -388,46 +391,19 @@
 
   <section id="subscriptions" class="bg-cream">
     <div class="wrap">
-      <p class="section-label">Abonnements</p>
-      <h2>Trois façons de garder un peu plus de calme dans vos journées.</h2>
-      <p class="lede">Chaque formule repose sur la même idée — qu'un petit moment de calme récurrent vaut plus qu'une grande évasion ponctuelle.</p>
+      <p class="section-label">Abonnement</p>
+      <h2>Une lettre chaque mois. Un magazine chaque saison.</h2>
+      <p class="lede">Un petit moment de calme qui revient vaut plus qu'une grande évasion. Gardez-le pour vous, ou offrez-le, noué d'un ruban, à quelqu'un que vous aimez.</p>
 
-      <div class="tier-grid">
+      <div class="tier-grid tier-grid-two">
         <div class="tier">
-          <div class="tier-name">Digital</div>
-          <div class="tier-carousel">
-            <div class="tier-slide active">
-              <img src="images/slow-life-aesthetic-maison-evieve.jpg" alt="">
-              <div class="tier-slide-overlay">
-                <p class="tier-slide-kicker">Art &amp; Méditation :</p>
-                <h2 class="tier-slide-title">Du contenu en ligne qui vous rappelle de vivre hors ligne</h2>
-              </div>
-            </div>
-            <div class="tier-slide">
-              <img src="images/abstract_art_jardins_de_tuileries.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Tout ce que vous connaissez et aimez dans un abonnement numérique : le magazine page par page, vidéo, audio, récits en photos, coulisses — sans la précipitation.</h4></div>
-            </div>
-            <div class="tier-slide">
-              <img src="images/french-market-basket.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Vivre lentement, même à travers un écran, c'est possible. Rejoignez-nous pour le découvrir.</h4></div>
-            </div>
-            <div class="tier-carousel-dots">
-              <button class="active" aria-label="Diapositive 1"></button>
-              <button aria-label="Diapositive 2"></button>
-              <button aria-label="Diapositive 3"></button>
-            </div>
-          </div>
-          <div class="tier-price">€11 <span>/ mois</span></div>
-          <a href="https://buy.stripe.com/bJeeV58bgdOD516ciqgYU02" class="btn btn-subscribe" target="_blank" rel="noopener">S'abonner</a>
-        </div>
-        <div class="tier">
-          <div class="tier-name">Lettre &amp; Magazine</div>
+          <div class="tier-name">(letters) On Art</div>
           <div class="tier-carousel">
             <div class="tier-slide active">
               <img src="images/letters-in-transparent-bag-aesthetic.jpg" alt="">
               <div class="tier-slide-overlay">
                 <h2 class="tier-slide-title">Une retraite que l'on peut feuilleter.</h2>
-                <p class="tier-slide-rest">Chaque saison, un magazine complet, chaque mois, une lettre et une carte postale.</p>
+                <p class="tier-slide-rest">Chaque mois, une lettre et une carte postale, chaque saison, un magazine complet.</p>
               </div>
             </div>
             <div class="tier-slide">
@@ -436,7 +412,7 @@
             </div>
             <div class="tier-slide">
               <img src="images/meditating_on_art_welcome_cover.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Au fil des saisons, le magazine "(meditating) On Art" vous retrouve, avec des pratiques, de l'art, et une vraie correspondance.</h4></div>
+              <div class="tier-slide-overlay"><h4>Au fil des saisons, le magazine « (meditating) On Art » vous retrouve, avec des pratiques, de l'art, et une vraie correspondance.</h4></div>
             </div>
             <div class="tier-carousel-dots">
               <button class="active" aria-label="Diapositive 1"></button>
@@ -444,25 +420,26 @@
               <button aria-label="Diapositive 3"></button>
             </div>
           </div>
-          <div class="tier-price">€22 <span>/ mois</span></div>
+          <div class="tier-price">22 € <span>/ mois</span></div>
           <a href="https://buy.stripe.com/dRm9AL3V08uj9hm1DMgYU03" class="btn btn-subscribe" target="_blank" rel="noopener">S'abonner</a>
+          <p class="tier-note">ou <a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" target="_blank" rel="noopener">240 € par an</a></p>
         </div>
         <div class="tier">
-          <div class="tier-name">Les Deux</div>
+          <div class="tier-name">En cadeau</div>
           <div class="tier-carousel">
             <div class="tier-slide active">
-              <img src="images/letters-flower-shadow.jpg" alt="">
+              <img src="images/letter-wax-seal-aesthetic.jpg" alt="">
               <div class="tier-slide-overlay">
-                <h2 class="tier-slide-title">Votre boîte mail n'a pas à être jalouse de votre boîte aux lettres</h2>
+                <h2 class="tier-slide-title">Une année de lettres, nouée d'un ruban.</h2>
               </div>
             </div>
             <div class="tier-slide">
-              <img src="images/letter-wax-seal-aesthetic.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Du papier sur le paillasson et, entre deux lettres, un fil tranquille sur votre écran : vidéos, récits en photos, et le magazine numérique où que vous soyez.</h4></div>
+              <img src="images/letters-flower-shadow.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Un ruban de satin, vos mots imprimés sur une carte, et une seconde carte quelques mois plus tard. On pense à vous deux fois.</h4></div>
             </div>
             <div class="tier-slide">
-              <img src="images/baguette-book-cafe.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Lisez le magazine imprimé chez vous, et feuilletez l'édition numérique dans le métro. Le même calme, à deux endroits.</h4></div>
+              <img src="images/toile-flower-notebook.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Jusqu'au 24 décembre, la carte arrive dans sa version d'hiver.</h4></div>
             </div>
             <div class="tier-carousel-dots">
               <button class="active" aria-label="Diapositive 1"></button>
@@ -470,55 +447,13 @@
               <button aria-label="Diapositive 3"></button>
             </div>
           </div>
-          <div class="tier-price">€27 <span>/ mois</span></div>
-          <a href="https://buy.stripe.com/eVqaEPgHM9yn516dmugYU04" class="btn btn-subscribe" target="_blank" rel="noopener">S'abonner</a>
+          <div class="tier-price">240 € <span>/ an</span></div>
+          <a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" class="btn btn-subscribe" target="_blank" rel="noopener">Offrir</a>
+          <p class="tier-note">Emballage cadeau +6 €, à choisir au paiement</p>
         </div>
-      </div>
-      <div class="compare-row">
-        <button class="btn" id="openCompare">Comparer</button>
-        <p class="choose-link">Vous hésitez ? <a href="/fr/blog/choose_membership.html">Voici comment choisir</a></p>
       </div>
     </div>
   </section>
-
-  <!-- Compare modal -->
-  <div class="modal-overlay" id="compareModal">
-    <div class="modal-box">
-      <button class="modal-close" id="closeCompare">&times;</button>
-      <h2>Comparer les abonnements</h2>
-
-      <div class="billing-toggle">
-        <button class="toggle-btn active" data-billing="monthly">Mensuel</button>
-        <button class="toggle-btn" data-billing="yearly">Annuel <span class="save-badge">Économisez ~10%</span></button>
-      </div>
-
-      <div class="compare-table-wrap"><table class="compare-table">
-        <thead>
-          <tr><th>Inclus</th><th>Digital</th><th>Lettre &amp; Magazine</th><th>Les Deux</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Lettre de méditation mensuelle (courrier)</td><td>—</td><td>✓</td><td>✓</td></tr>
-          <tr><td>Carte postale</td><td>—</td><td>✓</td><td>✓</td></tr>
-          <tr><td>Vidéo et audio mensuels</td><td>✓</td><td>—</td><td>✓</td></tr>
-          <tr><td>"(meditating) On Art" — édition numérique</td><td>✓</td><td>—</td><td>✓</td></tr>
-          <tr><td>"(meditating) On Art" — édition imprimée</td><td>—</td><td>✓</td><td>✓</td></tr>
-          <tr><td>Notes des coulisses</td><td>✓</td><td>—</td><td>✓</td></tr>
-          <tr class="bonus-row" style="display:none;">
-            <td>Bonus annuel</td>
-            <td>Journal numérique</td>
-            <td>Encart journal imprimé</td>
-            <td>Les deux journaux</td>
-          </tr>
-          <tr>
-            <td>Prix</td>
-            <td><span class="price-monthly"><a href="https://buy.stripe.com/bJeeV58bgdOD516ciqgYU02" target="_blank" rel="noopener">€11 / mois</a></span><span class="price-yearly" style="display:none;"><a href="https://buy.stripe.com/8x2aEPezEbGvgJOdmugYU09" target="_blank" rel="noopener">€120 / an</a></span></td>
-            <td><span class="price-monthly"><a href="https://buy.stripe.com/dRm9AL3V08uj9hm1DMgYU03" target="_blank" rel="noopener">€22 / mois</a></span><span class="price-yearly" style="display:none;"><a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" target="_blank" rel="noopener">€240 / an</a></span></td>
-            <td><span class="price-monthly"><a href="https://buy.stripe.com/eVqaEPgHM9yn516dmugYU04" target="_blank" rel="noopener">€27 / mois</a></span><span class="price-yearly" style="display:none;"><a href="https://buy.stripe.com/00w7sD8bg9ynbpu6Y6gYU0b" target="_blank" rel="noopener">€290 / an</a></span></td>
-          </tr>
-        </tbody>
-      </table></div>
-    </div>
-  </div>
 
   <section id="art" class="bg-white">
     <div class="wrap">
@@ -562,7 +497,7 @@
       <div class="faq-list">
         <details class="faq-item">
           <summary>Que recevez-vous réellement par la poste ?</summary>
-          <p>Selon votre formule, vous recevrez une lettre tapée à la machine avec quelques lignes manuscrites et de petits croquis, une carte postale, et — chaque trimestre — un exemplaire imprimé de "(meditating) On Art," notre magazine bilingue anglais/français.</p>
+          <p>Chaque mois, vous recevrez une lettre tapée à la machine avec quelques lignes manuscrites et de petits croquis, une carte postale, et — chaque trimestre — un exemplaire imprimé de "(meditating) On Art," notre magazine bilingue anglais/français.</p>
         </details>
         <details class="faq-item">
           <summary>Est-ce que chaque œuvre vient vraiment avec une lettre de méditation ?</summary>
@@ -575,6 +510,10 @@
         <details class="faq-item">
           <summary>Le magazine est-il vraiment en deux langues ?</summary>
           <p>Oui — chaque numéro de "(meditating) On Art" est écrit et imprimé en anglais et en français, côte à côte.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Puis-je l'offrir en cadeau ?</summary>
+          <p>Oui. Choisissez l'abonnement annuel et cochez l'option cadeau au moment du paiement, avec l'adresse de la personne qui le recevra. Pour 6 €, le premier envoi arrive noué d'un ruban de satin, avec votre message imprimé sur une carte, et une seconde carte suit quelques mois plus tard, avec une petite pratique et quelques mots de plus de votre part.</p>
         </details>
         <details class="faq-item">
           <summary>Puis-je annuler mon abonnement ?</summary>
@@ -711,20 +650,6 @@
     document.getElementById(closeId).addEventListener('click', function () { overlay.classList.remove('open'); if (onClose) onClose(); });
     overlay.addEventListener('click', function (e) { if (e.target === overlay) { overlay.classList.remove('open'); if (onClose) onClose(); } });
   }
-  (function () {
-    var buttons = document.querySelectorAll('.toggle-btn');
-    buttons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        buttons.forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        var yearly = btn.getAttribute('data-billing') === 'yearly';
-        document.querySelectorAll('.price-monthly').forEach(function (el) { el.style.display = yearly ? 'none' : 'inline'; });
-        document.querySelectorAll('.price-yearly').forEach(function (el) { el.style.display = yearly ? 'inline' : 'none'; });
-        document.querySelector('.bonus-row').style.display = yearly ? 'table-row' : 'none';
-      });
-    });
-  })();
-  wireModal('openCompare', 'closeCompare', 'compareModal');
 </script>
 
 

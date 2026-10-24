@@ -131,6 +131,9 @@
   .tier-carousel-dots button { width: 6px; height: 6px; border-radius: 50%; border: none; background: rgba(255,255,255,0.5); padding: 0; cursor: pointer; }
   .tier-carousel-dots button.active { background: var(--white); }
   .tier .btn-subscribe { margin-top: 28px; }
+  @media (min-width: 860px) { .tier-grid-two { grid-template-columns: repeat(2, 1fr); max-width: 860px; margin-left: auto; margin-right: auto; } }
+  .tier-note { margin-top: 16px; font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--charcoal); }
+  .tier-note a { color: var(--black); text-decoration: underline; text-underline-offset: 3px; }
   .compare-row { text-align: center; margin-top: 48px; }
   .compare-row .choose-link { margin-top: 18px; font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--charcoal); }
   .compare-row .choose-link a { color: var(--black); text-decoration: underline; text-underline-offset: 3px; }
@@ -283,44 +286,19 @@
   <!-- 4. Subscriptions + compare -->
   <section class="bg-cream">
     <div class="wrap">
-      <p class="section-label">Subscriptions</p>
-      <h2>Three ways to keep a little more calm in your days.</h2>
-      <div class="tier-grid">
+      <p class="section-label">Subscription</p>
+      <h2>A letter every month. A magazine every season.</h2>
+      <p class="lede">One small, recurring moment of quiet is worth more than one big escape. Keep it for yourself, or wrap it for someone you love.</p>
+
+      <div class="tier-grid tier-grid-two">
         <div class="tier">
-          <div class="tier-name">Digital</div>
-          <div class="tier-carousel">
-            <div class="tier-slide active">
-              <img src="images/slow-life-aesthetic-maison-evieve.jpg" alt="">
-              <div class="tier-slide-overlay">
-                <p class="tier-slide-kicker">Art &amp; Meditation:</p>
-                <h2 class="tier-slide-title">Online content reminding you to live offline</h2>
-              </div>
-            </div>
-            <div class="tier-slide">
-              <img src="images/abstract_art_jardins_de_tuileries.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Everything you've known and love in a digital subscription: magazine flip-through, video, audio, photo stories, behind the scenes — without the rush.</h4></div>
-            </div>
-            <div class="tier-slide">
-              <img src="images/french-market-basket.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Slow living even through a screen is possible. Join and find out.</h4></div>
-            </div>
-            <div class="tier-carousel-dots">
-              <button class="active" aria-label="Slide 1"></button>
-              <button aria-label="Slide 2"></button>
-              <button aria-label="Slide 3"></button>
-            </div>
-          </div>
-          <div class="tier-price">€11 <span>/ month</span></div>
-          <a href="https://buy.stripe.com/bJeeV58bgdOD516ciqgYU02" class="btn btn-subscribe" target="_blank" rel="noopener">Subscribe</a>
-        </div>
-        <div class="tier">
-          <div class="tier-name">Letter &amp; Magazine</div>
+          <div class="tier-name">(letters) On Art</div>
           <div class="tier-carousel">
             <div class="tier-slide active">
               <img src="images/letters-in-transparent-bag-aesthetic.jpg" alt="">
               <div class="tier-slide-overlay">
                 <h2 class="tier-slide-title">A retreat you can flip through.</h2>
-                <p class="tier-slide-rest">Every season a full magazine, every month a letter and a postcard.</p>
+                <p class="tier-slide-rest">Every month a letter and a postcard, every season a full magazine.</p>
               </div>
             </div>
             <div class="tier-slide">
@@ -329,7 +307,7 @@
             </div>
             <div class="tier-slide">
               <img src="images/meditating_on_art_welcome_cover.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>As the seasons change, "(meditating) On Art" magazine finds you with practices, art, and real correspondence.</h4></div>
+              <div class="tier-slide-overlay"><h4>As the seasons change, "(meditating) On Art" finds you with practices, art, and real correspondence.</h4></div>
             </div>
             <div class="tier-carousel-dots">
               <button class="active" aria-label="Slide 1"></button>
@@ -339,23 +317,24 @@
           </div>
           <div class="tier-price">€22 <span>/ month</span></div>
           <a href="https://buy.stripe.com/dRm9AL3V08uj9hm1DMgYU03" class="btn btn-subscribe" target="_blank" rel="noopener">Subscribe</a>
+          <p class="tier-note">or <a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" target="_blank" rel="noopener">€240 a year</a></p>
         </div>
         <div class="tier">
-          <div class="tier-name">Both</div>
+          <div class="tier-name">As a gift</div>
           <div class="tier-carousel">
             <div class="tier-slide active">
-              <img src="images/letters-flower-shadow.jpg" alt="">
+              <img src="images/letter-wax-seal-aesthetic.jpg" alt="">
               <div class="tier-slide-overlay">
-                <h2 class="tier-slide-title">Your inbox doesn't have to be jealous of your mailbox</h2>
+                <h2 class="tier-slide-title">A year of letters, wrapped.</h2>
               </div>
             </div>
             <div class="tier-slide">
-              <img src="images/letter-wax-seal-aesthetic.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Paper on the doormat, and a quiet thread on your screen in between: videos, photo stories, and the digital magazine wherever you are.</h4></div>
+              <img src="images/letters-flower-shadow.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Satin ribbon, your words printed on a card, and a second card some months later. They hear from you twice.</h4></div>
             </div>
             <div class="tier-slide">
-              <img src="images/baguette-book-cafe.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Read the magazine in print at home, and flip through the digital edition on the metro. The same calm, in two places.</h4></div>
+              <img src="images/toile-flower-notebook.jpg" alt="">
+              <div class="tier-slide-overlay"><h4>Until 24 December, the card comes in a winter design.</h4></div>
             </div>
             <div class="tier-carousel-dots">
               <button class="active" aria-label="Slide 1"></button>
@@ -363,55 +342,13 @@
               <button aria-label="Slide 3"></button>
             </div>
           </div>
-          <div class="tier-price">€27 <span>/ month</span></div>
-          <a href="https://buy.stripe.com/eVqaEPgHM9yn516dmugYU04" class="btn btn-subscribe" target="_blank" rel="noopener">Subscribe</a>
+          <div class="tier-price">€240 <span>/ year</span></div>
+          <a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" class="btn btn-subscribe" target="_blank" rel="noopener">Give a year</a>
+          <p class="tier-note">Gift wrapping +€6, chosen at checkout</p>
         </div>
-      </div>
-      <div class="compare-row">
-        <button class="btn" id="openCompare">Compare</button>
-        <p class="choose-link">Not sure which one is yours? <a href="/en/blog/choose_membership.html">Here's how to choose</a></p>
       </div>
     </div>
   </section>
-
-  <!-- Compare modal -->
-  <div class="modal-overlay" id="compareModal">
-    <div class="modal-box">
-      <button class="modal-close" id="closeCompare">&times;</button>
-      <h2>Compare subscriptions</h2>
-
-      <div class="billing-toggle">
-        <button class="toggle-btn active" data-billing="monthly">Monthly</button>
-        <button class="toggle-btn" data-billing="yearly">Yearly <span class="save-badge">Save ~10%</span></button>
-      </div>
-
-      <div class="compare-table-wrap"><table class="compare-table">
-        <thead>
-          <tr><th>Includes</th><th>Digital</th><th>Letter &amp; Magazine</th><th>Both</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Monthly meditation letter (post)</td><td>—</td><td>✓</td><td>✓</td></tr>
-          <tr><td>Postcard</td><td>—</td><td>✓</td><td>✓</td></tr>
-          <tr><td>Monthly video &amp; audio piece</td><td>✓</td><td>—</td><td>✓</td></tr>
-          <tr><td>"(meditating) On Art" — digital edition</td><td>✓</td><td>—</td><td>✓</td></tr>
-          <tr><td>"(meditating) On Art" — printed edition</td><td>—</td><td>✓</td><td>✓</td></tr>
-          <tr><td>Behind-the-scenes notes</td><td>✓</td><td>—</td><td>✓</td></tr>
-          <tr class="bonus-row" style="display:none;">
-            <td>Yearly bonus</td>
-            <td>Digital journal</td>
-            <td>Printed journal insert</td>
-            <td>Both journals</td>
-          </tr>
-          <tr>
-            <td>Price</td>
-            <td><span class="price-monthly"><a href="https://buy.stripe.com/bJeeV58bgdOD516ciqgYU02" target="_blank" rel="noopener">€11 / month</a></span><span class="price-yearly" style="display:none;"><a href="https://buy.stripe.com/8x2aEPezEbGvgJOdmugYU09" target="_blank" rel="noopener">€120 / year</a></span></td>
-            <td><span class="price-monthly"><a href="https://buy.stripe.com/dRm9AL3V08uj9hm1DMgYU03" target="_blank" rel="noopener">€22 / month</a></span><span class="price-yearly" style="display:none;"><a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" target="_blank" rel="noopener">€240 / year</a></span></td>
-            <td><span class="price-monthly"><a href="https://buy.stripe.com/eVqaEPgHM9yn516dmugYU04" target="_blank" rel="noopener">€27 / month</a></span><span class="price-yearly" style="display:none;"><a href="https://buy.stripe.com/00w7sD8bg9ynbpu6Y6gYU0b" target="_blank" rel="noopener">€290 / year</a></span></td>
-          </tr>
-        </tbody>
-      </table></div>
-    </div>
-  </div>
 
   <!-- 5. Video hero -->
   <section class="video-hero">
@@ -552,21 +489,7 @@
     document.getElementById(closeId).addEventListener('click', function () { overlay.classList.remove('open'); if (onClose) onClose(); });
     overlay.addEventListener('click', function (e) { if (e.target === overlay) { overlay.classList.remove('open'); if (onClose) onClose(); } });
   }
-  (function () {
-    var buttons = document.querySelectorAll('.toggle-btn');
-    buttons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        buttons.forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        var yearly = btn.getAttribute('data-billing') === 'yearly';
-        document.querySelectorAll('.price-monthly').forEach(function (el) { el.style.display = yearly ? 'none' : 'inline'; });
-        document.querySelectorAll('.price-yearly').forEach(function (el) { el.style.display = yearly ? 'inline' : 'none'; });
-        document.querySelector('.bonus-row').style.display = yearly ? 'table-row' : 'none';
-      });
-    });
-  })();
 
-  wireModal('openCompare', 'closeCompare', 'compareModal');
   wireModal('openVideo', 'closeVideo', 'videoModal', function () {
     var v = document.getElementById('popupVideo');
     v.pause(); v.currentTime = 0;

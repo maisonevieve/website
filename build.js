@@ -305,6 +305,9 @@ async function main() {
       const row = langs[lang];
       if (!row) continue;
       if (!row.slug) { console.warn(`Skipping Art row with no slug (post_id: ${postId}, lang: ${lang})`); continue; }
+      // "paused" keeps a row in the Sheet (e.g. the Digital and Both subscriptions,
+      // parked until 2027) without building a page or listing it anywhere.
+      if ((row.status || '').toLowerCase() === 'paused') continue;
 
       const images = (row.images || '').split(',').map(s => s.trim()).filter(Boolean);
       const video = (row.video || '').trim();
