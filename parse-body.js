@@ -82,7 +82,7 @@ function renderEmbed(kind, arg, lang) {
     const languageValue = lang === 'fr' ? 'Français' : 'English';
     const t = lang === 'fr'
       ? { placeholder: 'Votre e-mail', button: "Je m'inscris", confirm: 'Merci, regardez votre boîte de réception dans quelques instants.' }
-      : { placeholder: 'Your email', button: 'Sign up', confirm: 'Thank you — check your inbox shortly.' };
+      : { placeholder: 'Your email', button: 'Sign up', confirm: 'Thank you. Check your inbox in a few minutes.' };
     return `<div class="embed-signup">
     <p class="embed-signup-title">${headline}</p>
     <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/${ACCOUNT_ID}/forms/${formId}/subscribe" method="post" target="ml_hidden_iframe">

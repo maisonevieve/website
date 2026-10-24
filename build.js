@@ -10,6 +10,7 @@ const { parseCSV } = require('./parse-csv');
 const { blogCategory } = require('./blog-category');
 const { parseBody } = require('./parse-body');
 const { giftBlock, festiveSections } = require('./gift-block');
+const { addBanner } = require('./banner');
 
 // ---------------------------------------------------------------------------
 // CONFIG -- fill these in with your real values (see the README for how to find them)
@@ -110,6 +111,7 @@ function ensureDir(p) {
 }
 
 function writeFile(relPath, content) {
+  if (/\.html$/.test(relPath) && typeof content === 'string') content = addBanner(content, /^fr[\\/]/.test(relPath) ? 'fr' : 'en');
   const fullPath = path.join(DIST, relPath);
   ensureDir(path.dirname(fullPath));
   fs.writeFileSync(fullPath, content, 'utf-8');
@@ -243,7 +245,7 @@ async function main() {
     <input type="hidden" name="fields[language]" value="English">
     <button type="submit">Send it to me</button>
   </form>
-  <p class="embed-signup-confirm">Thank you — check your inbox shortly.</p>
+  <p class="embed-signup-confirm">Thank you. Check your inbox in a few minutes.</p>
 </div>`);
       const html = localizeTemplate(fillTemplate(blogTemplate, {
         LANG: lang,
@@ -337,18 +339,18 @@ async function main() {
       // types below) is correct in both languages from the start.
       const L = lang === 'fr' ? {
         subscription: 'Abonnement', original: 'Œuvre originale',
-        limitedNumbered: 'Tirage limité — signé et numéroté', handFinished: 'Fini à la main — signé',
+        limitedNumbered: 'Tirage limité, signé et numéroté', handFinished: 'Fini à la main et signé',
         bundle: 'Coffret', letter: 'Lettre à l\'aveugle',
-        edition: (size, remaining) => `Édition de ${size} — ${remaining} restants`,
+        edition: (size, remaining) => `Édition de ${size}, ${remaining} restants`,
         medium: 'Support', size: 'Dimensions', material: 'Matériau', theme: 'Thème',
         unframed: 'Cette pièce est livrée sans cadre.',
         purchase: 'Acheter', subscribe: 'S\'abonner',
         galleryPrev: 'Précédent', galleryNext: 'Suivant',
       } : {
         subscription: 'Subscription', original: 'Original Work',
-        limitedNumbered: 'Limited Print — Signed & Numbered', handFinished: 'Hand-Finished — Signed',
+        limitedNumbered: 'Limited print, signed and numbered', handFinished: 'Hand-finished and signed',
         bundle: 'Bundle', letter: 'Blind-Date Letter',
-        edition: (size, remaining) => `Edition of ${size} — ${remaining} remaining`,
+        edition: (size, remaining) => `Edition of ${size}, ${remaining} remaining`,
         medium: 'Medium', size: 'Size', material: 'Material', theme: 'Theme',
         unframed: 'This piece comes unframed.',
         purchase: 'Purchase', subscribe: 'Subscribe',
@@ -646,7 +648,7 @@ async function main() {
       <a href="/${lang}/blog/${row.slug}.html" class="read-link">${lang === 'fr' ? "Lire l'article" : 'Read the post'}</a>
     </div>`).join('\n    ');
     html = html.replace(/<div class="post-grid">[\s\S]*?<\/div>\s*<\/div>/, `<div class="post-grid">\n    ${cardsHtml}\n  </div>\n</div>`);
-    fs.writeFileSync(distBlogPath, html, 'utf-8');
+    fs.writeFileSync(distBlogPath, addBanner(html, lang), 'utf-8');
   }
 
   // ---- Root-level 404 fallback: Cloudflare's not_found_handling looks for the

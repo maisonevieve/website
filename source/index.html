@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maison Eviève — a souvenir of a feeling</title>
+<title>Maison Eviève · a souvenir of a feeling</title>
 <meta name="description" content="Monthly letters by post, a seasonal art magazine and hand-finished prints from a Paris artist. Small rituals of art and meditation for a calmer everyday.">
 <meta property="og:site_name" content="Maison Eviève">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Maison Eviève — a souvenir of a feeling">
+<meta property="og:title" content="Maison Eviève · a souvenir of a feeling">
 <meta property="og:description" content="Monthly letters by post, a seasonal art magazine and hand-finished prints from a Paris artist. Small rituals of art and meditation for a calmer everyday.">
 <meta property="og:url" content="https://maisonevieve.com/en/">
 <meta property="og:image" content="https://maisonevieve.com/images/og/art-meditation-letter-experience.jpg">
@@ -46,7 +46,7 @@
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
   .btn { display: inline-block; font-family: var(--serif); text-transform: capitalize; font-size: 15px; background: transparent; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
-  .btn:hover { background: var(--black); color: var(--white); }
+  .btn:hover { background: var(--black); color: var(--white); font-style: italic; }
   .btn-subscribe { border-left: none; border-right: none; border-top: 2px solid var(--black); border-bottom: 2px solid var(--black); width: 100%; text-align: center; padding: 13px 0; }
 
   header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: transparent; border-bottom: 1px solid transparent; transition: background-color 0.3s ease, border-color 0.3s ease; animation: headerFadeIn 0.6s ease both; animation-delay: 0.15s; }
@@ -67,7 +67,7 @@
   .lang-switch a { text-decoration: none; }
   .lang-switch a.active { color: var(--black); font-weight: 600; }
   .header-letter { display: none; font-family: var(--serif); font-size: 13.5px; color: var(--black); border: 1px solid var(--black); padding: 6px 14px; text-decoration: none; white-space: nowrap; transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
-  .header-letter:hover { background: var(--black); color: var(--white); }
+  .header-letter:hover { background: var(--black); color: var(--white); font-style: italic; }
   @media (min-width: 1100px) { .header-letter { display: inline-block; } }
   .signed-up .header-letter, .signed-up .mobile-letter { display: none !important; }
   .menu-toggle { background: none; border: none; cursor: pointer; width: 26px; height: 18px; position: relative; padding: 0; }
@@ -95,7 +95,7 @@
   .hero-intro p { max-width: 480px; margin-top: 28px; font-size: 1.05rem; color: #2b2b2b; }
   .hero-intro p.hero-offer { margin-top: 18px; font-family: var(--serif); font-size: 1.15rem; color: var(--black); }
   .hero-cta { display: inline-block; margin-top: 26px; font-family: var(--serif); font-size: 15px; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
-  .hero-cta:hover { background: var(--black); color: var(--white); }
+  .hero-cta:hover { background: var(--black); color: var(--white); font-style: italic; }
   .gallery-tags { display: flex; flex-direction: column; }
   .gallery-tag { min-height: 130vh; display: flex; flex-direction: column; justify-content: center; padding: 40px 0; opacity: 0.3; transition: opacity 1.4s ease; }
   .gallery-tag.active { opacity: 1; }
@@ -128,7 +128,7 @@
 
   /* ---------- About: magazine-style text-on-slideshow ---------- */
   #about { padding: 0; }
-  .about-slideshow { position: relative; width: 100%; height: 92vh; min-height: 620px; overflow: hidden; }
+  .about-slideshow { cursor: pointer; position: relative; width: 100%; height: 92vh; min-height: 620px; overflow: hidden; }
   .about-slideshow .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
   .about-slideshow .slide.active { opacity: 1; }
   .about-slideshow .slide img { width: 100%; height: 100%; object-fit: cover; }
@@ -288,7 +288,21 @@
   .media-hover.in-view .home-hover { opacity: 1; }
 
   /* Buttons on video backgrounds: frosted glass on hover, no border, white text */
-  .sub-buttons .btn:hover, .video-hero .btn:hover, .btn-light:hover { background: rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-color: transparent; color: var(--white); }
+  .sub-buttons .btn:hover, .video-hero .btn:hover, .btn-light:hover { background: rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-color: transparent; color: var(--white); font-style: italic; }
+
+  /* Touch screens: first tap on a subscription button shows the price, second tap opens it */
+  .sub-buttons .btn.tap-active { background: rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-color: transparent; color: var(--white); font-style: italic; }
+  .sub-buttons .btn.tap-active .lbl { opacity: 0; }
+  .sub-buttons .btn.tap-active .prc { opacity: 1; }
+
+  /* About: text set further in from the left; small dots at the top centre instead of arrows */
+  @media (min-width: 900px) { .about-slideshow .slide-overlay { padding-left: 14vw; padding-right: 14vw; } }
+  .slide-dots { position: absolute; top: calc(112px + var(--banner-h, 0px)); left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 3; }
+  .slide-dots button { width: 7px; height: 7px; border-radius: 50%; border: none; padding: 0; background: rgba(255,255,255,0.45); cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; }
+  .slide-dots button.active { background: var(--white); transform: scale(1.25); }
+  .slide-dots button::after { content: ""; position: absolute; inset: -10px; }
+  .slide-dots button { position: relative; }
+  .about-slideshow .slide-overlay { padding-top: calc(150px + var(--banner-h, 0px)); }
 </style>
 </head>
 <body>
@@ -332,8 +346,8 @@
         <div class="hero-intro">
           <div class="eyebrow-line">meditating on</div>
           <div class="big-word">ART</div>
-          <p>Art as a souvenir of a feeling — a small world of art collections, letters, and a slow, museum-aesthetic practice, built to help you keep your calm close.</p>
-          <p class="hero-offer">A letter in your mailbox each month, a seasonal magazine to keep, and hand-finished art, each with its own small practice.</p>
+          <p>Art as a souvenir of a feeling.</p>
+          <p class="hero-offer">A letter in your mailbox every month, a magazine each season, and art finished by hand, each with its own small practice.</p>
           <a href="/en/blog/the-first-letter.html" class="hero-cta" data-open-signup>A ritual you can flip through</a>
         </div>
 
@@ -341,23 +355,23 @@
           <div class="gallery-tag" data-stage="1">
             <div class="tag-label">About</div>
             <h3>Rituals of art, made small enough for every day</h3>
-            <p class="tag-italic">Art as a souvenir of a feeling</p>
-            <p>Maison Eviève combines art and meditation into a single, quiet practice — a piece to look at, a letter to hold, a moment to actually stop in. Each work comes with a ritual, not just a frame.</p>
-            <a href="art.html" class="tag-link">Discover the art meditations</a>
+            <p class="tag-italic">A piece, a letter, a pause</p>
+            <p>Art and meditation folded into one quiet habit: a piece to look at, a letter to hold, a moment where you actually stop. Every work arrives with a practice of its own.</p>
+            <a href="art.html" class="tag-link">See the art</a>
           </div>
           <div class="gallery-tag" data-stage="2">
-            <div class="tag-label">The Letter &amp; Magazine</div>
+            <div class="tag-label">(letters) On Art</div>
             <h3>Open an envelope, and let art in</h3>
-            <p class="tag-italic">A tactile moment, month after month</p>
-            <p>A monthly meditation letter and, quarterly, "(meditating) On Art" — a bilingual magazine built slowly, the old way. A small, recurring souvenir of a feeling, delivered to your door.</p>
-            <a href="#subscriptions" class="tag-link">See the subscriptions</a>
+            <p class="tag-italic">Paper in your hands, once a month</p>
+            <p>A meditation letter every month and, each season, "(meditating) On Art", a bilingual magazine made slowly, the old way. It arrives at your door, addressed to you.</p>
+            <a href="#subscriptions" class="tag-link">See the subscription</a>
           </div>
           <div class="gallery-tag" data-stage="3">
-            <div class="tag-label">Available Art</div>
-            <h3>A small, ever-changing collection</h3>
-            <p class="tag-italic">Original works and hand-finished, signed prints</p>
-            <p>Each piece merges art and meditation and comes with its own meditation letter — a quiet, museum-aesthetic moment, and a genuine collectable to add to your own collection.</p>
-            <a href="#art" class="tag-link">Browse the collection</a>
+            <div class="tag-label">Gifts</div>
+            <h3>A gift that keeps arriving</h3>
+            <p class="tag-italic">Wrapped in satin ribbon, with your words on a card</p>
+            <p>Give six or twelve months of letters, paid once, nothing renewing. The first package arrives wrapped, with your message printed on a card. Months later a second card follows, with a small practice and a few more words from you. Prints can be given too, wrapped the same way.</p>
+            <a href="/en/art/letters-on-art-gift.html" class="tag-link">See the gift</a>
           </div>
         </div>
       </div>
@@ -383,31 +397,30 @@
         <img src="images/tuileries-detail.jpg" alt="">
         <div class="slide-overlay">
           <p class="mag-lead">Art as a souvenir of a feeling</p>
-          <p class="mag-body">Objects that bear special meaning and purpose become reminders and symbols, and that is why at Maison Eviève, Evi creates art as a ritual. It initiates, connects deeply to the piece, and makes it a part of one's personal practice.</p>
+          <p class="mag-body">An object with meaning becomes a reminder. That's why Evi makes art as a ritual: something you return to, connect with, and fold into your own practice.</p>
           <p class="mag-hint">Keep going for the story &#8594;</p>
         </div>
       </div>
       <div class="slide">
         <img src="images/evi-michailidou-artist.jpg" alt="">
         <div class="slide-overlay">
-          <p class="mag-body">Evi Michailidou, the artist behind Maison Eviève, creates meditative art using mixed media: pastels, paint, thread, plaster, words, poetry. She finds inspiration in exploring the self and one's place in the world. Using gestural painting and abstract strokes, or detailed inking and embroidery, she expresses a fusion of elements often in the same piece.</p>
+          <p class="mag-body">Evi Michailidou, the artist behind Maison Eviève, works in mixed media: pastel, paint, thread, plaster, words. She is drawn to the self and our place in the world, and often brings loose, gestural strokes and fine ink or embroidery into the same piece.</p>
         </div>
       </div>
       <div class="slide">
         <img src="images/mesdames_art_collection_meditation.jpg" alt="">
         <div class="slide-overlay">
-          <p class="mag-body">After 12 years of experience as a makeup artist and further study in yoga, Evi learned to remove herself from her art and focus on the person experiencing it. This approach is evident in her work at Maison Eviève, whether creating meditation letters, original art and art prints, or her magazine "(meditating) On Art".</p>
+          <p class="mag-body">Twelve years as a makeup artist, then the study of yoga, taught her to step back from the work and think of the person who lives with it. You'll find that in everything here: the meditation letters, the originals and prints, and her magazine "(meditating) On Art".</p>
         </div>
       </div>
       <div class="slide">
         <img src="images/flowers_artwork_maison_evieve.jpg" alt="">
         <div class="slide-overlay">
-          <p class="mag-body">The art collections and subscriptions are created with you in mind. You that don't need an escape from your life. You need one more calming moment to keep not needing an escape.</p>
-          <h3 class="mag-h3">Welcome to Maison Eviève, where we interpret art as a souvenir of a feeling.</h3>
+          <p class="mag-body">You don't need an escape from the life you've built. You need one more calm moment, and then another, so you never do.</p>
+          <h3 class="mag-h3">Welcome to Maison Eviève.</h3>
         </div>
       </div>
-      <button class="slide-arrow prev" aria-label="Previous image">&#8249;</button>
-      <button class="slide-arrow next" aria-label="Next image">&#8250;</button>
+      <div class="slide-dots"><button aria-label="Show image 1" class="active"></button><button aria-label="Show image 2"></button><button aria-label="Show image 3"></button><button aria-label="Show image 4"></button></div>
     </div>
   </section>
 
@@ -415,8 +428,8 @@
     <div class="wrap magazine-grid">
       <div class="magazine-text">
         <p class="section-label">Magazine</p>
-        <p class="magazine-statement">As the seasons change, the monthly mail club grows to a bilingual magazine about paintings, music, places, and rituals worth slowing down for. Art interpreted as a souvenir of a feeling. A guide-meditation next to an aria. A recipe as a ritual, a page just for you to write on.</p>
-        <a href="blog/meditating-on-art-magazine.html" class="magazine-learn-more">Learn more</a>
+        <p class="magazine-statement">Every season, the monthly letters grow into a magazine in English and French, about paintings, music, places and rituals worth slowing down for. A meditation beside an aria. A recipe written as a ritual. A page left blank for you.</p>
+        <a href="blog/meditating-on-art-magazine.html" class="magazine-learn-more">Inside the magazine</a>
       </div>
       <div class="magazine-image">
         <img src="images/meditating_on_art_welcome_cover.jpg" alt="&quot;(meditating) On Art&quot; magazine">
@@ -430,7 +443,7 @@
     <div class="wrap sub-video-inner">
       <p class="section-label">Subscription</p>
       <h2>A letter every month. A magazine every season.</h2>
-      <p class="lede">One small, recurring moment of quiet is worth more than one big escape. Keep it for yourself, or wrap it for someone you love.</p>
+      <p class="lede">A small moment of quiet that comes back every month is worth more than one big escape. Keep it for yourself, or give it to someone you love.</p>
       <div class="sub-buttons">
         <a href="https://buy.stripe.com/dRm9AL3V08uj9hm1DMgYU03" class="btn" target="_blank" rel="noopener"><span class="lbl">Monthly subscription</span><span class="prc">€22 a month</span></a>
         <a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" class="btn" target="_blank" rel="noopener"><span class="lbl">Yearly subscription</span><span class="prc">€240 a year</span></a>
@@ -443,14 +456,14 @@
     <div class="wrap">
       <p class="section-label">Available Art</p>
       <h2>Where art and meditation become one piece.</h2>
-      <p class="lede">Every piece merges art and a meditative practice, and arrives with its own meditation letter. Each is either an original work or a print I finish by hand and sign, so no two are quite alike. A genuine collectable, not a reproduction you'll see everywhere.</p>
+      <p class="lede">Every piece arrives with its own meditation letter. Originals are signed. Prints are finished by hand and signed, so no two are quite alike.</p>
 
       <div class="art-grid">
         <!-- ART_CARDS:latest:START -->
         <div class="art-card">
           <div class="media"><img src="images/art_galler_frame_meditation.png" alt="Placeholder — art piece 1"></div>
           <h4>Original work</h4>
-          <div class="price">Signed original — price on request</div>
+          <div class="price">Signed original, price on request</div>
           <a href="#" class="view-link">View piece</a>
         </div>
         <div class="art-card">
@@ -477,23 +490,23 @@
   <section id="faq" class="bg-grey">
     <div class="wrap">
       <p class="section-label">FAQ</p>
-      <h2>A few things people usually ask.</h2>
+      <h2>A few things people ask.</h2>
       <div class="faq-list">
         <details class="faq-item">
-          <summary>What actually arrives in the post?</summary>
-          <p>Each month you'll receive a typed letter with a few handwritten lines and small sketches, a postcard, and — quarterly — a printed copy of "(meditating) On Art," our bilingual English/French magazine.</p>
+          <summary>What arrives in the post?</summary>
+          <p>Every month, a typed letter with a few handwritten lines and small sketches, and a postcard. Every season, the printed issue of "(meditating) On Art", our magazine in English and French.</p>
         </details>
         <details class="faq-item">
           <summary>Does every piece of art really come with a meditation letter?</summary>
-          <p>Yes — each piece is meant to be a ritual, not just an object. It arrives with its own meditation letter, so the art becomes part of your personal practice from the moment it reaches you.</p>
+          <p>Yes. Every piece arrives with its own meditation letter, so living with it becomes a small practice from the first day.</p>
         </details>
         <details class="faq-item">
           <summary>Are the art pieces original or prints?</summary>
-          <p>Both exist in the collection: some pieces are signed originals, others are prints I finish by hand and sign, so each one is slightly different from the next. When a print belongs to a limited, numbered edition, its page says so and shows the edition size.</p>
+          <p>Both. Originals are signed. Prints are finished by hand and signed, so each one differs slightly. When a print belongs to a limited, numbered edition, its page says so and shows the edition size.</p>
         </details>
         <details class="faq-item">
           <summary>Is the magazine really in two languages?</summary>
-          <p>Yes — every issue of "(meditating) On Art" is written and printed in both English and French, side by side.</p>
+          <p>Yes. Every issue of "(meditating) On Art" is written and printed in English and French, side by side.</p>
         </details>
         <details class="faq-item">
           <summary>Can I give it as a gift?</summary>
@@ -501,15 +514,15 @@
         </details>
         <details class="faq-item">
           <summary>Can I cancel my subscription?</summary>
-          <p>Yes, any time, entirely on your own — no need to email me. Your welcome email includes a link to manage your subscription, where you can update your details or cancel whenever it no longer fits your life.</p>
+          <p>Yes, any time, on your own. Your welcome email has a link to manage your subscription, where you can update your details or cancel.</p>
         </details>
         <details class="faq-item">
           <summary>What makes this different from just buying art online?</summary>
-          <p>Maison Eviève treats art as a souvenir of a feeling, not decoration. Every piece, letter, and issue is built around a slow, museum-aesthetic moment of stillness — a ritual you keep coming back to, not a one-time purchase.</p>
+          <p>Each piece comes with a meditation letter, so you don't only hang it, you come back to it. It stays a souvenir of a feeling rather than a decoration.</p>
         </details>
         <details class="faq-item">
           <summary>Where are you based, and where do you ship?</summary>
-          <p>Maison Eviève is based in Paris. Letters and art ship internationally — postage is calculated to keep each letter light and simple to send.</p>
+          <p>Maison Eviève is in Paris. Letters and art ship internationally.</p>
         </details>
       </div>
     </div>
@@ -519,7 +532,7 @@
     <div class="wrap">
       <p class="section-label">Contact</p>
       <h2>Say hello.</h2>
-      <p class="lede">The easiest way to reach me directly is by email — I read and answer everything myself.</p>
+      <p class="lede">Email is the easiest way to reach me. I read and answer every message myself.</p>
       <a href="mailto:bonjour@maisonevieve.com" class="contact-email">bonjour@maisonevieve.com</a>
       <div class="social-row">
         <a href="https://www.instagram.com/maisonevieve" target="_blank" rel="noopener">Instagram</a>
@@ -594,9 +607,15 @@
       slides[current].classList.remove('active');
       current = (i + slides.length) % slides.length;
       slides[current].classList.add('active');
+      document.querySelectorAll('.slide-dots button').forEach(function (d, i) { d.classList.toggle('active', i === current); });
     }
-    document.querySelector('.slide-arrow.prev').addEventListener('click', function () { show(current - 1); });
-    document.querySelector('.slide-arrow.next').addEventListener('click', function () { show(current + 1); });
+    var dots = document.querySelectorAll('.slide-dots button');
+    dots.forEach(function (d, i) { d.addEventListener('click', function () { show(i); }); });
+    // A click or tap on the image moves on; a swipe goes either way.
+    var box = document.querySelector('.about-slideshow'), x0 = null;
+    box.addEventListener('click', function (e) { if (!e.target.closest('.slide-dots, a')) show(current + 1); });
+    box.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    box.addEventListener('touchend', function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) { show(current + (dx < 0 ? 1 : -1)); e.preventDefault(); } x0 = null; });
   })();
 
   (function () {
@@ -777,9 +796,9 @@
           <input type="hidden" name="fields[language]" value="English">
           <button type="submit">Send it to me</button>
         </form>
-        <p class="signup-popup-confirm" id="signupPopupConfirm">Thank you — check your inbox shortly.</p>
+        <p class="signup-popup-confirm" id="signupPopupConfirm">Thank you. Check your inbox in a few minutes.</p>
 
-        <p class="signup-popup-privacy">We respect your privacy. Unsubscribe anytime.</p>
+        <p class="signup-popup-privacy">Unsubscribe in one click, any time.</p>
       </div>
     </div>
   </div>
@@ -982,6 +1001,26 @@
           });
         }, { threshold: [0, 0.6] }).observe(box);
       }
+    });
+  })();
+</script>
+
+<script>
+  // Touch screens: the first tap on a subscription button shows its price, the second follows the link (as on the catalogue).
+  (function () {
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var btns = document.querySelectorAll('.sub-buttons .btn');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        if (!b.classList.contains('tap-active')) {
+          e.preventDefault();
+          btns.forEach(function (o) { o.classList.remove('tap-active'); });
+          b.classList.add('tap-active');
+        }
+      });
+    });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.sub-buttons')) btns.forEach(function (o) { o.classList.remove('tap-active'); });
     });
   })();
 </script>
