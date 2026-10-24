@@ -646,7 +646,6 @@ async function main() {
         const src = availableArt[lang];
         const all = [...src.filter(isPinned), ...src.filter(r => !isPinned(r) && !isLast(r)), ...src.filter(isLast)];
         const cellsHtml = all.map(r => catalogueCellHtml(r, lang, isPinned(r))).join('\n    ');
-        if (all.length >= 12) html = html.replace('class="catalogue-grid"', 'class="catalogue-grid many"');
         html = html.replace(
           /<!-- ART_CARDS:all:START -->[\s\S]*?<!-- ART_CARDS:all:END -->/,
           `<!-- ART_CARDS:all:START -->\n    ${cellsHtml}\n    <!-- ART_CARDS:all:END -->`

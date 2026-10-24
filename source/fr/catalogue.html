@@ -102,11 +102,10 @@
   .footer-col a:hover { opacity: 1; text-decoration: underline; }
   .footer-bottom { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 12.5px; color: rgba(255,255,255,0.55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 
-  /* Catalogue grid: edge to edge, thin white gutters, 2 columns on phones, 3 on desktop (4 from 12 pieces on wide screens).
+  /* Catalogue grid: edge to edge, thin white gutters, 2 columns on phones, 3 on desktop.
      Each tile slowly cross-fades through its images and video, one tile at a time, so the page moves without pulling at the eye. */
   .catalogue-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--white); }
   @media (min-width: 760px) { .catalogue-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width: 1400px) { .catalogue-grid.many { grid-template-columns: repeat(4, 1fr); } }
   .catalogue-cell { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #e9e4dc; }
   .catalogue-cell.span-2 { grid-column: span 2; aspect-ratio: 8 / 5; }
   .catalogue-cell.span-3 { grid-column: span 3; aspect-ratio: 12 / 5; }
