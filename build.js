@@ -422,15 +422,16 @@ async function main() {
         DESCRIPTION: (isGift || isSubscription) ? festiveSections(parseBody(row.description, lang)) : toParagraphs(row.description),
         PRICE_LINE: isGift
           ? `<div class="price-line">${lang === 'fr' ? 'Dès ' + row.yearly_price + ' €' : 'From €' + row.yearly_price}</div>`
-          : `<div class="price-line">${lang === 'fr' ? row.price + ' €' : '€' + row.price}${priceSuffix}</div>`,
-        BUY_BLOCK: giftBlock({ row, lang, isGift, isSubscription, giftable: isPhysicalSingleItem, purchaseLabel }),
+          : `<div class="price-line">${lang === 'fr' ? row.price + ' €' : '€' + row.price}${priceSuffix}</div>`
+            + (isMagazine ? `<p class="price-note">${lang === 'fr' ? '1 lettre chaque mois, 1 magazine chaque saison' : '1 letter every month, 1 magazine every season'}</p>` : ''),
+        BUY_BLOCK: giftBlock({ row, lang, isGift, isSubscription, giftable: isPhysicalSingleItem, purchaseLabel, noGiftLine: isMagazine }),
         PRICE_SUFFIX: priceSuffix,
         SIZE_ROW: sizeRow,
         MATERIAL_ROW: materialRow,
         MEDIUM_ROW: mediumRow,
         THEME_ROW: themeRow,
         UNFRAMED_NOTE: unframedNote,
-        YEARLY_LINE: isGift ? '' : yearlyLine,
+        YEARLY_LINE: (isGift || isMagazine) ? '' : yearlyLine,
         GALLERY_SLIDES: slides,
         GALLERY_DOTS: dots,
         GALLERY_PREV_LABEL: L.galleryPrev,

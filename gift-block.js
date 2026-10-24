@@ -250,11 +250,12 @@ function script(t, lang, slug) {
 </script>`;
 }
 
-function giftBlock({ row, lang, isGift, isSubscription, giftable, purchaseLabel }) {
+function giftBlock({ row, lang, isGift, isSubscription, giftable, purchaseLabel, noGiftLine }) {
   const t = T[lang] || T.en;
   if (isSubscription) {
-    return `${CSS}<a href="${esc(row.stripe_link)}" class="btn" target="_blank" rel="noopener" style="margin-top:28px;width:100%;text-align:center">${purchaseLabel}</a>
-      <p class="gift-link-line">${t.giving} <a href="/${lang}/art/${GIFT_PAGE_SLUG}.html">${t.seeGift}</a></p>`;
+    return `${CSS}<a href="${esc(row.stripe_link)}" class="btn" target="_blank" rel="noopener" style="margin-top:28px;width:100%;text-align:center">${purchaseLabel}</a>`
+      + (noGiftLine ? '' : `
+      <p class="gift-link-line">${t.giving} <a href="/${lang}/art/${GIFT_PAGE_SLUG}.html">${t.seeGift}</a></p>`);
   }
   if (isGift) {
     const p12 = lang === 'fr' ? `${row.price} €` : `€${row.price}`;
