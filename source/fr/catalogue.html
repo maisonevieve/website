@@ -611,5 +611,22 @@
     });
   })();
 </script>
+
+<script>
+  // Catalogue: a piece with a video previews its first 3 seconds on loop while hovered (or tapped once on touch screens).
+  (function () {
+    document.querySelectorAll('video.cell-video').forEach(function (v) {
+      var n = parseFloat(v.getAttribute('data-loop')) || 3;
+      var link = v.closest('a');
+      v.addEventListener('timeupdate', function () { if (v.currentTime >= n) { v.currentTime = 0; } });
+      function start() { v.currentTime = 0; v.play().catch(function () {}); }
+      function stop() { v.pause(); }
+      link.addEventListener('mouseenter', start);
+      link.addEventListener('mouseleave', stop);
+      new MutationObserver(function () { if (link.classList.contains('tap-active')) { start(); } else { stop(); } })
+        .observe(link, { attributes: true, attributeFilter: ['class'] });
+    });
+  })();
+</script>
 </body>
 </html>

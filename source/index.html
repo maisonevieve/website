@@ -253,6 +253,34 @@
     .magazine-image img { height: 360px; }
     .magazine-statement { font-size: 1.35rem; }
   }
+
+  /* Subscription: video background with three buttons */
+  .sub-video { position: relative; overflow: hidden; min-height: 78vh; display: flex; align-items: center; padding: 96px 0; color: var(--white); background: #2b2b2b; }
+  .sub-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sub-video-shade { position: absolute; inset: 0; background: rgba(0,0,0,0.42); }
+  .sub-video-inner { position: relative; z-index: 1; text-align: center; max-width: 980px; }
+  .sub-video .lede { max-width: 640px; }
+  .sub-video .section-label, .sub-video h2, .sub-video .lede { color: var(--white); }
+  .sub-video .lede { margin-left: auto; margin-right: auto; opacity: 0.92; }
+  .sub-buttons { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+  .sub-buttons .btn { color: var(--white); border-color: var(--white); text-transform: none; min-width: 230px; text-align: center; }
+  .sub-buttons .btn:hover { background: var(--white); color: var(--black); }
+  .sub-prices { margin-top: 22px; font-family: var(--serif); font-style: italic; font-size: 0.98rem; opacity: 0.85; }
+  @media (max-width: 600px) { .sub-buttons .btn { width: 100%; min-width: 0; } }
+  @media (prefers-reduced-motion: reduce) { .sub-video-bg { display: none; } .sub-video { background: #2b2b2b url(images/subscription-background-poster.jpg) center / cover; } }
+
+  /* Available art: per-column treatments */
+  .media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .media-carousel .tier-carousel { position: absolute; inset: 0; aspect-ratio: auto; margin: 0; }
+  .media-carousel .tier-slide-overlay h4 { font-size: 1.05rem; }
+  .media-carousel .tier-slide-overlay { background: rgba(0,0,0,0.38); }
+  .media-hover .home-hover { opacity: 0; transition: opacity 0.5s ease; }
+  .media-hover img:first-child { transition: opacity 0.5s ease; }
+  @media (hover: hover) and (pointer: fine) {
+    .media-hover:hover .home-hover { opacity: 1; }
+    .media-hover:hover img:first-child { opacity: 0; }
+  }
+  .media-hover.in-view .home-hover { opacity: 1; }
 </style>
 </head>
 <body>
@@ -388,69 +416,19 @@
     </div>
   </section>
 
-  <section id="subscriptions" class="bg-cream">
-    <div class="wrap">
+  <section id="subscriptions" class="sub-video">
+    <video class="sub-video-bg" autoplay muted loop playsinline preload="auto" poster="images/subscription-background-poster.jpg" aria-hidden="true"><source src="images/subscription-background.mp4" type="video/mp4"></video>
+    <div class="sub-video-shade"></div>
+    <div class="wrap sub-video-inner">
       <p class="section-label">Subscription</p>
       <h2>A letter every month. A magazine every season.</h2>
       <p class="lede">One small, recurring moment of quiet is worth more than one big escape. Keep it for yourself, or wrap it for someone you love.</p>
-
-      <div class="tier-grid tier-grid-two">
-        <div class="tier">
-          <div class="tier-name">(letters) On Art</div>
-          <div class="tier-carousel">
-            <div class="tier-slide active">
-              <img src="images/letters-in-transparent-bag-aesthetic.jpg" alt="">
-              <div class="tier-slide-overlay">
-                <h2 class="tier-slide-title">A retreat you can flip through.</h2>
-                <p class="tier-slide-rest">Every month a letter and a postcard, every season a full magazine.</p>
-              </div>
-            </div>
-            <div class="tier-slide">
-              <img src="images/mailbox-letter-paris.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Remember the joy of receiving. Every month, know that someone has thought of you…</h4></div>
-            </div>
-            <div class="tier-slide">
-              <img src="images/meditating_on_art_welcome_cover.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>As the seasons change, "(meditating) On Art" finds you with practices, art, and real correspondence.</h4></div>
-            </div>
-            <div class="tier-carousel-dots">
-              <button class="active" aria-label="Slide 1"></button>
-              <button aria-label="Slide 2"></button>
-              <button aria-label="Slide 3"></button>
-            </div>
-          </div>
-          <div class="tier-price">€22 <span>/ month</span></div>
-          <a href="https://buy.stripe.com/dRm9AL3V08uj9hm1DMgYU03" class="btn btn-subscribe" target="_blank" rel="noopener">Subscribe</a>
-          <p class="tier-note">or <a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" target="_blank" rel="noopener">€240 a year</a></p>
-        </div>
-        <div class="tier">
-          <div class="tier-name">As a gift</div>
-          <div class="tier-carousel">
-            <div class="tier-slide active">
-              <img src="images/letter-wax-seal-aesthetic.jpg" alt="">
-              <div class="tier-slide-overlay">
-                <h2 class="tier-slide-title">A year of letters, wrapped.</h2>
-              </div>
-            </div>
-            <div class="tier-slide">
-              <img src="images/letters-flower-shadow.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>Satin ribbon, your words printed on a card, and a second card some months later. They hear from you twice.</h4></div>
-            </div>
-            <div class="tier-slide">
-              <img src="images/toile-flower-notebook.jpg" alt="">
-              <div class="tier-slide-overlay"><h4>This Christmas only, the card is printed on a winter toile, retired after the holidays.</h4></div>
-            </div>
-            <div class="tier-carousel-dots">
-              <button class="active" aria-label="Slide 1"></button>
-              <button aria-label="Slide 2"></button>
-              <button aria-label="Slide 3"></button>
-            </div>
-          </div>
-          <div class="tier-price">From €132</div>
-          <a href="/en/art/letters-on-art-gift.html" class="btn btn-subscribe">Give it</a>
-          <p class="tier-note">6 or 12 months, paid once, wrapped by hand</p>
-        </div>
+      <div class="sub-buttons">
+        <a href="https://buy.stripe.com/dRm9AL3V08uj9hm1DMgYU03" class="btn" target="_blank" rel="noopener">Monthly subscription</a>
+        <a href="https://buy.stripe.com/dRm14fajo39Z2SY96egYU0a" class="btn" target="_blank" rel="noopener">Yearly subscription</a>
+        <a href="/en/art/letters-on-art-gift.html" class="btn">Give it as a gift</a>
       </div>
+      <p class="sub-prices">€22 a month · €240 a year · from €132 as a gift</p>
     </div>
   </section>
 
@@ -540,6 +518,7 @@
         <a href="https://www.instagram.com/maisonevieve" target="_blank" rel="noopener">Instagram</a>
         <a href="https://www.tiktok.com/@maisonevieve" target="_blank" rel="noopener">TikTok</a>
         <a href="https://pinterest.com/maisonevieve" target="_blank" rel="noopener">Pinterest</a>
+        <a href="https://www.youtube.com/@meditatingonart" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>
   </section>
@@ -968,6 +947,33 @@
       if (frame) frame.addEventListener('load', go, { once: true });
       setTimeout(go, 4000);
     }
+  })();
+</script>
+
+<script>
+  // Short video loops: a video with data-loop="N" plays only its first N seconds, again and again.
+  // Hover previews (.home-hover, .cell-video) play while hovered, or while on screen on touch devices.
+  (function () {
+    document.querySelectorAll('video[data-loop]').forEach(function (v) {
+      var n = parseFloat(v.getAttribute('data-loop')) || 3;
+      v.addEventListener('timeupdate', function () { if (v.currentTime >= n) { v.currentTime = 0; } });
+    });
+    var hoverable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    document.querySelectorAll('.media-hover').forEach(function (box) {
+      var v = box.querySelector('video.home-hover');
+      if (hoverable) {
+        if (!v) return;
+        box.addEventListener('mouseenter', function () { v.currentTime = 0; v.play().catch(function () {}); });
+        box.addEventListener('mouseleave', function () { v.pause(); });
+      } else if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            box.classList.toggle('in-view', e.isIntersecting && e.intersectionRatio > 0.6);
+            if (v) { if (e.isIntersecting && e.intersectionRatio > 0.6) { v.play().catch(function () {}); } else { v.pause(); } }
+          });
+        }, { threshold: [0, 0.6] }).observe(box);
+      }
+    });
   })();
 </script>
 </body>

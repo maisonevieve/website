@@ -317,7 +317,7 @@ async function main() {
         const isVideo = /\.(mp4|mov|webm)$/i.test(f);
         const active = i === 0 ? ' active' : '';
         return isVideo
-          ? `<div class="slide${active}"><video controls poster=""><source src="/videos/${f}" type="video/mp4"></video></div>`
+          ? `<div class="slide${active}"><video controls poster=""><source src="/images/${f}" type="video/mp4"></video></div>`
           : `<div class="slide${active}"><img src="/images/${f}" alt=""></div>`;
       }).join('\n  ');
       const dots = galleryFiles.map((_, i) => `<span${i === 0 ? ' class="active"' : ''}></span>`).join('');
@@ -479,6 +479,56 @@ async function main() {
         </div>`;
   }
 
+  // Homepage "Available art": three columns, three treatments.
+  //   1st: the product's video plays 4 seconds on loop, muted (its image if there is no video).
+  //   2nd: a carousel. First slide the image alone, then two slides with lines from the description.
+  //   3rd: the image, and on hover 3 seconds of the video on loop (or the second image).
+  function descriptionLines(text) {
+    const plain = (text || '')
+      .split('\n')
+      .filter(l => !/^\s*(#|-|\d+\.|type\s*:|dimensions\s*:|material\s*:|practice\s*:|matériau|pratique|dimensions)/i.test(l))
+      .join(' ')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[*_]/g, '').replace(/\s+/g, ' ').trim();
+    const sentences = plain.match(/[^.!?…]+[.!?…]+["»”]?/g) || (plain ? [plain] : []);
+    const lines = [];
+    let cur = '';
+    for (const sRaw of sentences) {
+      const sent = sRaw.trim();
+      if ((cur + ' ' + sent).trim().length > 150 && cur) { lines.push(cur.trim()); cur = ''; if (lines.length === 2) break; }
+      cur += ' ' + sent;
+    }
+    if (lines.length < 2 && cur.trim()) lines.push(cur.trim());
+    return lines.slice(0, 2).map(l => l.length > 180 ? l.slice(0, 177).replace(/\s+\S*$/, '') + '…' : l);
+  }
+  function homeCardHtml(row, index, lang) {
+    if (index !== 0 && index !== 1 && index !== 2) return artCardHtml(row, null, lang);
+    const card = artCardHtml(row, null, lang);
+    const imgs = (row.images || '').split(',').map(x => x.trim()).filter(Boolean);
+    const first = row.featured || imgs[0] || '';
+    const video = (row.video || '').trim();
+    let media;
+    if (index === 0) {
+      media = video
+        ? `<div class="media"><a href="${row._href}"><video class="home-loop" autoplay muted loop playsinline data-loop="4" poster="/images/${first}" src="/images/${video}"></video></a></div>`
+        : `<div class="media"><a href="${row._href}"><img src="/images/${first}" alt="${row.title}"></a></div>`;
+    } else if (index === 1) {
+      const lines = descriptionLines(row.description);
+      const others = imgs.filter(f => f !== first);
+      const pick = (k) => others[k] || others[0] || first;
+      const slide = (img, text, active) => `<div class="tier-slide${active ? ' active' : ''}"><img src="/images/${img}" alt="">${text ? `<div class="tier-slide-overlay"><h4>${text}</h4></div>` : ''}</div>`;
+      const slides = [slide(first, '', true)].concat(lines.map((l, k) => slide(pick(k), l, false)));
+      const dots = slides.map((_, k) => `<button${k === 0 ? ' class="active"' : ''} aria-label="${lang === 'fr' ? 'Diapositive' : 'Slide'} ${k + 1}"></button>`).join('');
+      media = `<div class="media media-carousel"><div class="tier-carousel">${slides.join('')}<div class="tier-carousel-dots">${dots}</div></div></div>`;
+    } else {
+      const second = imgs.find(f => f !== first) || '';
+      const preview = video
+        ? `<video class="home-hover cell-video" muted playsinline loop preload="metadata" data-loop="3" src="/images/${video}#t=0.1"></video>`
+        : second ? `<img class="home-hover" src="/images/${second}" alt="">` : '';
+      media = `<div class="media media-hover"><a href="${row._href}"><img src="/images/${first}" alt="${row.title}">${preview}</a></div>`;
+    }
+    return card.replace(/<div class="media">[\s\S]*?<\/div>/, media);
+  }
+
   // Catalogue grid cell -- supports the hover treatment: fades from the piece's
   // first image to its second (if one exists) while a dark scrim and the title
   // fade in. Video cells skip the image crossfade (the video itself already
@@ -492,9 +542,14 @@ async function main() {
 
     let inner;
     if (isVideo) {
-      inner = `<video autoplay muted loop playsinline><source src="/videos/${primaryImg}" type="video/mp4"></video>`;
+      inner = `<video autoplay muted loop playsinline><source src="/images/${primaryImg}" type="video/mp4"></video>`;
     } else {
-      const secondaryTag = secondaryImg
+      const video = (row.video || '').trim();
+      // A product with a video previews 3 seconds of it on loop (hover, or first tap on touch screens);
+      // otherwise the second image fades in.
+      const secondaryTag = video
+        ? `<video class="cell-img cell-img-secondary cell-video" muted playsinline loop preload="metadata" data-loop="3" src="/images/${video}#t=0.1"></video>`
+        : secondaryImg
         ? `<img class="cell-img cell-img-secondary" src="/images/${secondaryImg}" alt="">`
         : '';
       inner = `<img class="cell-img cell-img-primary" src="/images/${primaryImg}" alt="${row.title}">${secondaryTag}`;
@@ -525,7 +580,7 @@ async function main() {
       // Inject latest-3 art cards
       if (html.includes('ART_CARDS:latest:START')) {
         const latest = availableArt[lang].slice(-3).reverse();
-        const cardsHtml = latest.map(r => artCardHtml(r, null, lang)).join('\n        ');
+        const cardsHtml = latest.map((r, i) => homeCardHtml(r, i, lang)).join('\n        ');
         html = html.replace(
           /<!-- ART_CARDS:latest:START -->[\s\S]*?<!-- ART_CARDS:latest:END -->/,
           `<!-- ART_CARDS:latest:START -->\n        ${cardsHtml}\n        <!-- ART_CARDS:latest:END -->`
