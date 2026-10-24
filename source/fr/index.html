@@ -304,6 +304,11 @@
   .slide-dots button::after { content: ""; position: absolute; inset: -10px; }
   .slide-dots button { position: relative; }
   .about-slideshow .slide-overlay { padding-top: calc(150px + var(--banner-h, 0px)); }
+
+  /* Gifts: the three columns line up, links on one line at the bottom */
+  #gifts .art-card { display: flex; flex-direction: column; }
+  #gifts .art-card .price { line-height: 1.55; min-height: 4.65em; }
+  #gifts .art-card .view-link { margin-top: auto; padding-top: 14px; align-self: flex-start; }
 </style>
 </head>
 <body>
@@ -492,20 +497,20 @@
     <div class="wrap">
       <p class="section-label">Cadeaux</p>
       <h2>Pour celles et ceux qui ne demandent jamais rien.</h2>
-      <p class="lede">Chaque cadeau quitte Paris noué à la main d'un ruban de satin, qu'il s'agisse d'une année de lettres ou d'un tirage pour son mur.</p>
+      <p class="lede">Chaque cadeau arrive noué à la main d'un ruban de satin, avec vos mots sur une carte. Rien à emballer, rien à poster : il suffit de choisir et d'écrire.</p>
       <div class="art-grid">
         <!-- ART_CARDS:gift:START -->
         <!-- ART_CARDS:gift:END -->
         <div class="art-card">
           <div class="media"><a href="/fr/art/letters-on-art-gift.html"><img src="images/cards_writing_pen_envelopes.jpeg" alt="Des cartes et des enveloppes sur une table, avec un stylo"></a></div>
           <h4>Deux fois de vos nouvelles</h4>
-          <div class="price">Vos mots sur une carte dans le premier envoi, puis une seconde carte quelques mois plus tard, avec une petite pratique et quelques mots de plus de votre part</div>
+          <div class="price">Vos mots sur une carte dans le premier envoi, puis une seconde carte quelques mois plus tard, avec une petite pratique.</div>
           <a href="/fr/art/letters-on-art-gift.html" class="view-link">Comment fonctionnent les cartes</a>
         </div>
         <div class="art-card">
           <div class="media"><a href="/fr/art/letters-on-art-yearly.html"><img src="images/letters-flower-shadow.jpg" alt="Des lettres dans la lumière de l'après-midi"></a></div>
           <h4>Un cadeau à soi-même</h4>
-          <div class="price">Une année de lettres, qui arrivent d'elles-mêmes</div>
+          <div class="price">Parce que vous non plus, vous ne demandez rien. Une année de lettres qui arrivent d'elles-mêmes, avec un encart de journal.</div>
           <a href="/fr/art/letters-on-art-yearly.html" class="view-link">Voir l'abonnement annuel</a>
         </div>
       </div>

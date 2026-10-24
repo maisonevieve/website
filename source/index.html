@@ -303,6 +303,11 @@
   .slide-dots button::after { content: ""; position: absolute; inset: -10px; }
   .slide-dots button { position: relative; }
   .about-slideshow .slide-overlay { padding-top: calc(150px + var(--banner-h, 0px)); }
+
+  /* Gifts: the three columns line up, links on one line at the bottom */
+  #gifts .art-card { display: flex; flex-direction: column; }
+  #gifts .art-card .price { line-height: 1.55; min-height: 4.65em; }
+  #gifts .art-card .view-link { margin-top: auto; padding-top: 14px; align-self: flex-start; }
 </style>
 </head>
 <body>
@@ -491,20 +496,20 @@
     <div class="wrap">
       <p class="section-label">Gifts</p>
       <h2>For the people who never ask for anything.</h2>
-      <p class="lede">Every gift leaves Paris wrapped by hand in satin ribbon, whether it's a year of letters or a print for her wall.</p>
+      <p class="lede">Every gift arrives wrapped by hand in satin ribbon, with your words on a card. Nothing to wrap, nothing to post: just choose and write.</p>
       <div class="art-grid">
         <!-- ART_CARDS:gift:START -->
         <!-- ART_CARDS:gift:END -->
         <div class="art-card">
           <div class="media"><a href="/en/art/letters-on-art-gift.html"><img src="images/cards_writing_pen_envelopes.jpeg" alt="Cards and envelopes on a table, with a pen"></a></div>
           <h4>They'll hear from you twice</h4>
-          <div class="price">Your words on a card in the first package, then a second card months later, with a small practice and a few more words from you</div>
+          <div class="price">Your words on a card in the first package, then a second card months later, with a small practice and more of your words.</div>
           <a href="/en/art/letters-on-art-gift.html" class="view-link">How the cards work</a>
         </div>
         <div class="art-card">
           <div class="media"><a href="/en/art/letters-on-art-yearly.html"><img src="images/letters-flower-shadow.jpg" alt="Letters in the afternoon light"></a></div>
           <h4>A gift to yourself</h4>
-          <div class="price">A year of letters, arriving on their own</div>
+          <div class="price">Because you rarely ask either. A year of letters that arrive on their own, plus a printed journal insert just for you.</div>
           <a href="/en/art/letters-on-art-yearly.html" class="view-link">See the yearly plan</a>
         </div>
       </div>

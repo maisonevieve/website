@@ -562,6 +562,14 @@ async function main() {
     return card.replace(/<div class="media">[\s\S]*?<\/div>/, media);
   }
 
+  // Homepage "Gifts", first column: the letters gift card with its own title and a line as long as its neighbours'.
+  function giftSectionCard(card, lang) {
+    const t = lang === 'fr'
+      ? { h: 'Une année de lettres', p: 'Une lettre chaque mois et le magazine à chaque saison, pour six mois ou un an. Un seul paiement, sans renouvellement.' }
+      : { h: 'A year of letters', p: 'A letter every month and the magazine each season, for six months or a year. Paid once, nothing renews.' };
+    return card.replace(/<h4>[\s\S]*?<\/h4>/, `<h4>${t.h}</h4>`).replace(/<div class="price">[\s\S]*?<\/div>/, `<div class="price">${t.p}</div>`);
+  }
+
   // Homepage "Available art", first column: giving art. Uses the gift's video for now.
   function giftArtCardHtml(gift, lang) {
     const video = (gift && gift.video) || 'gift-portrait.mp4';
@@ -656,7 +664,7 @@ async function main() {
       if (html.includes('ART_CARDS:gift:START')) {
         const gift = listable(availableArt[lang]).find(r => (r.type || '').toLowerCase() === 'gift');
         html = html.replace(/<!-- ART_CARDS:gift:START -->[\s\S]*?<!-- ART_CARDS:gift:END -->/,
-          `<!-- ART_CARDS:gift:START -->\n        ${gift ? homeCardHtml(gift, 0, lang) : ''}\n        <!-- ART_CARDS:gift:END -->`);
+          `<!-- ART_CARDS:gift:START -->\n        ${gift ? giftSectionCard(homeCardHtml(gift, 0, lang), lang) : ''}\n        <!-- ART_CARDS:gift:END -->`);
       }
       // Inject the "Browse the collection" carousel: the rest of the available
       // pieces, newest first, skipping the same 3 already shown in "Available Now"
