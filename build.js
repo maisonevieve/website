@@ -423,7 +423,8 @@ async function main() {
         PRICE_LINE: isGift
           ? `<div class="price-line">${lang === 'fr' ? 'Dès ' + row.yearly_price + ' €' : 'From €' + row.yearly_price}</div>`
           : `<div class="price-line">${lang === 'fr' ? row.price + ' €' : '€' + row.price}${priceSuffix}</div>`
-            + (isMagazine ? `<p class="price-note">${lang === 'fr' ? '1 lettre chaque mois, 1 magazine chaque saison' : '1 letter every month, 1 magazine every season'}</p>` : ''),
+            + (isMagazine ? `<p class="price-note">${lang === 'fr' ? '1 lettre chaque mois, 1 magazine chaque saison' : '1 letter every month, 1 magazine every season'}</p>` : '')
+            + (isYearly ? `<p class="price-note">${lang === 'fr' ? '12 lettres, 4 numéros du magazine' : '12 letters, 4 magazine issues'}</p>` : ''),
         BUY_BLOCK: giftBlock({ row, lang, isGift, isSubscription, giftable: isPhysicalSingleItem, purchaseLabel, noGiftLine: isMagazine }),
         PRICE_SUFFIX: priceSuffix,
         SIZE_ROW: sizeRow,
