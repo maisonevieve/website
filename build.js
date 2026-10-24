@@ -615,7 +615,12 @@ async function main() {
 
       // Inject latest-3 art cards
       if (html.includes('ART_CARDS:latest:START')) {
-        const latest = listable(availableArt[lang]).slice(-3).reverse();
+        // Homepage: the gift is pinned first (its video loops in the first column), then the two newest pieces.
+        const isGiftRow = r => (r.type || '').toLowerCase() === 'gift';
+        const pool = listable(availableArt[lang]);
+        const latest = page === 'index.html'
+          ? [...pool.filter(isGiftRow), ...pool.filter(r => !isGiftRow(r)).slice(-2).reverse()].slice(0, 3)
+          : pool.slice(-3).reverse();
         const cardsHtml = latest.map((r, i) => homeCardHtml(r, i, lang)).join('\n        ');
         html = html.replace(
           /<!-- ART_CARDS:latest:START -->[\s\S]*?<!-- ART_CARDS:latest:END -->/,
