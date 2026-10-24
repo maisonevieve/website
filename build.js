@@ -175,6 +175,19 @@ function ogTags({ title, description, image, path: pagePath, lang, type }) {
   ].filter(Boolean).join('\n');
 }
 
+// Blog posts: a full-height hero with the title at its foot, or a plain title when there's no image.
+function postHero(row) {
+  if (!row.image) {
+    return `<div class="post-header-plain" style="padding-top:112px"><p class="post-category">${row._category}</p><h1>${row.title}</h1></div>`;
+  }
+  return `<section class="post-hero">
+  <img src="/images/${row.image}" alt="${escapeAttrB(row.title)}">
+  <div class="post-hero-scrim"></div>
+  <div class="post-hero-title"><p class="post-category">${row._category}</p><h1>${row.title}</h1></div>
+</section>`;
+}
+function escapeAttrB(s) { return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+
 function heroImageBlock(row) {
   if (!row.image) {
     console.warn(`No image set for "${row.title}" (slug: ${row.slug}) -- showing a plain placeholder block instead of a broken image.`);
@@ -253,7 +266,8 @@ async function main() {
         OG_TAGS: ogTags({ title: row.title, description: row.excerpt || row.body, image: row.image, path: `${lang}/blog/${row.slug}`, lang }),
         CATEGORY: row._category,
         DATE_META: dateMeta(row),
-        POST_HERO_IMAGE: heroImageBlock(row),
+        POST_HERO: postHero(row),
+        BODY_CLASS: row.image ? 'hero-dark' : '',
         BODY_HTML: bodyHtml,
         POST_CTA: ctaHtml,
         END_SIGNUP: endSignup,
@@ -314,12 +328,15 @@ async function main() {
 
       const images = (row.images || '').split(',').map(s => s.trim()).filter(Boolean);
       const video = (row.video || '').trim();
-      const galleryFiles = video ? [...images, video] : images;
+      // A product video is the featured slide: first, playing silently on a loop.
+      const galleryFiles = video ? [video, ...images] : images;
       const slides = galleryFiles.map((f, i) => {
         const isVideo = /\.(mp4|mov|webm)$/i.test(f);
         const active = i === 0 ? ' active' : '';
+        const posterFile = f.replace(/\.[^.]+$/, '') + '-poster.jpg';
+        const poster = fs.existsSync(path.join(__dirname, 'images', posterFile)) ? `/images/${posterFile}` : '';
         return isVideo
-          ? `<div class="slide${active}"><video controls poster=""><source src="/images/${f}" type="video/mp4"></video></div>`
+          ? `<div class="slide${active}"><video autoplay muted loop playsinline preload="auto"${poster ? ` poster="${poster}"` : ''}><source src="/images/${f}" type="video/mp4"></video></div>`
           : `<div class="slide${active}"><img src="/images/${f}" alt=""></div>`;
       }).join('\n  ');
       const dots = galleryFiles.map((_, i) => `<span${i === 0 ? ' class="active"' : ''}></span>`).join('');

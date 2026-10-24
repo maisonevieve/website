@@ -49,7 +49,13 @@ function inlineFormat(text) {
 function renderEmbed(kind, arg, lang) {
   if (kind === 'image') {
     // A single standalone image: [image: filename.jpg]
-    return `<div class="embed-image"><img src="/images/${arg}" alt=""></div>`;
+    // With a caption: [image: filename.jpg | Artist, *Title*, date. Museum, City]
+    const [file, ...cap] = String(arg).split('|');
+    const caption = cap.join('|').trim();
+    const alt = caption.replace(/\*/g, '').replace(/"/g, '&quot;');
+    return caption
+      ? `<figure class="embed-image"><img src="/images/${file.trim()}" alt="${alt}" loading="lazy"><figcaption>${inlineFormat(caption)}</figcaption></figure>`
+      : `<div class="embed-image"><img src="/images/${file.trim()}" alt="" loading="lazy"></div>`;
   }
   if (kind === 'signup') {
     // [signup] -> the original "First Letter" form, default headline.
