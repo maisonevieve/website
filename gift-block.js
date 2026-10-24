@@ -34,6 +34,30 @@ const STANDARD = {
   },
 };
 
+// Standard messages for the second card, some months later.
+const FOLLOWUP = {
+  letters: {
+    en: [
+      'Halfway through, and still thinking of you. I hope the letters have found you on the right days.',
+      'A small note to say I haven\'t forgotten. Keep taking your quiet moments; they suit you.',
+    ],
+    fr: [
+      'À mi-chemin, et je pense toujours à toi. J\'espère que les lettres sont arrivées les bons jours.',
+      'Un petit mot pour te dire que je ne t\'oublie pas. Continue de prendre tes moments de calme : ils te vont bien.',
+    ],
+  },
+  art: {
+    en: [
+      'Some months on, I hope it still catches your eye in the morning light. Thinking of you.',
+      'A little note to say I\'m still thinking of you, and of the corner where it hangs.',
+    ],
+    fr: [
+      'Quelques mois plus tard, j\'espère qu\'il attire encore ton regard dans la lumière du matin. Je pense à toi.',
+      'Un petit mot pour te dire que je pense encore à toi, et au coin où il est accroché.',
+    ],
+  },
+};
+
 const T = {
   en: {
     isGift: 'This is a gift',
@@ -88,30 +112,34 @@ const CSS = `<style>
   .buy-block .btn { width: 100%; text-align: center; cursor: pointer; text-transform: none; }
   .gift-toggle { display: flex; align-items: center; gap: 10px; margin: 0 0 18px; font-family: var(--serif); font-size: 1.05rem; cursor: pointer; }
   .gift-toggle input { width: 18px; height: 18px; accent-color: #000; }
-  .gift-form { display: none; border: 1px solid rgba(0,0,0,0.15); background: var(--cream); padding: 22px 20px; margin-bottom: 20px; }
+  .gift-form { display: none; background: var(--cream); padding: 24px 22px; margin-bottom: 20px; }
   .gift-form.open { display: block; }
   .gift-form label { display: block; font-size: 0.85rem; color: var(--charcoal); margin: 14px 0 6px; }
   .gift-form label:first-of-type { margin-top: 0; }
-  .gift-form input[type=text], .gift-form textarea { width: 100%; font: inherit; font-size: 0.95rem; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.25); background: #fff; border-radius: 0; }
+  .gift-form input[type=text], .gift-form textarea { width: 100%; font-family: var(--serif); font-size: 1rem; padding: 11px 14px; border: 0; background: #fff; border-radius: 0; outline: none; transition: box-shadow 0.2s ease; }
+  .gift-form input[type=text]:focus, .gift-form textarea:focus { box-shadow: 0 0 0 1px rgba(0,0,0,0.35); }
   .gift-form textarea { min-height: 96px; resize: vertical; font-family: var(--serif); }
   .gift-std { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
-  .gift-std button { font: inherit; font-size: 0.8rem; background: #fff; border: 1px solid rgba(0,0,0,0.3); padding: 5px 12px; cursor: pointer; }
-  .gift-std button.active { background: #000; color: #fff; border-color: #000; }
+  .gift-std button { font: inherit; font-size: 0.8rem; background: transparent; border: 0; border-bottom: 1px solid rgba(0,0,0,0.25); padding: 4px 2px; margin-right: 10px; cursor: pointer; color: var(--charcoal); }
+  .gift-std button.active { color: #000; border-bottom-color: #000; }
   .gift-count { font-size: 0.75rem; color: var(--charcoal); text-align: right; margin-top: 4px; }
   .gift-note { font-size: 0.85rem; color: var(--charcoal); font-style: italic; margin-top: 14px; line-height: 1.5; }
   .gift-hp { position: absolute; left: -9999px; }
   .gift-msg { margin-top: 12px; font-size: 0.9rem; color: #a0342c; min-height: 1em; }
   .gift-options { display: grid; gap: 10px; margin-bottom: 20px; }
-  .gift-option { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 12px; align-items: center; border: 1px solid rgba(0,0,0,0.25); padding: 14px 16px; cursor: pointer; }
+  .gift-option { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 12px; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.15); padding: 16px 4px; cursor: pointer; }
   .gift-option input { accent-color: #000; width: 18px; height: 18px; grid-row: span 2; }
   .gift-option .go-name { font-family: var(--serif); font-size: 1.15rem; }
   .gift-option .go-price { font-family: var(--serif); font-size: 1.15rem; text-align: right; }
   .gift-option .go-detail { grid-column: 2 / 4; font-size: 0.85rem; color: var(--charcoal); }
-  .gift-option:has(input:checked) { border-color: #000; background: var(--cream); }
+  .gift-option:has(input:checked) .go-name { font-style: italic; }
   .gift-link-line { margin-top: 16px; font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--charcoal); }
   .gift-link-line a { color: var(--black); text-decoration: underline; text-underline-offset: 3px; }
+  @media (min-width: 900px) { .specs-box { position: sticky; top: 96px; align-self: start; } }
+  .festive-box { background: var(--cream); border: 2px solid #9e2a2b; box-shadow: inset 0 0 0 5px #fff, inset 0 0 0 6px #9e2a2b; padding: 30px 30px 26px; margin: 40px 0 8px; }
+  .festive-box h3 { margin-top: 0 !important; color: #9e2a2b; }
   .product-desc h3 { font-family: var(--serif); font-weight: 500; font-size: 1.3rem; margin: 36px 0 12px; }
-  .product-desc ol, .product-desc ul { margin: 12px 0 0 1.2em; }
+  .product-desc ol, .product-desc ul { margin: 12px 0 18px 1.2em; }
   .product-desc li + li { margin-top: 8px; }
 </style>`;
 
@@ -131,11 +159,17 @@ function formHtml(t, lang, kind, alwaysOpen) {
         <textarea id="giftCard" maxlength="320">${esc(std[0])}</textarea>
         <div class="gift-count"><span id="giftCardCount">320</span> ${t.chars}</div>
         <label for="giftFollowup">${t.followup}</label>
+        <div class="gift-std gift-std-follow">
+          <button type="button" data-fstd="0">${t.std1}</button>
+          <button type="button" data-fstd="1">${t.std2}</button>
+          <button type="button" class="active" data-fstd="own">${t.own}</button>
+        </div>
         <textarea id="giftFollowup" maxlength="320" placeholder="${esc(t.followupPh)}"></textarea>
         <input type="text" class="gift-hp" id="giftHp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <p class="gift-note">${t.wrapNote} ${t.addressNote}</p>
       </div>
-      <script type="application/json" id="giftStd">${JSON.stringify(std).replace(/</g, '\\u003c')}</script>`;
+      <script type="application/json" id="giftStd">${JSON.stringify(std).replace(/</g, '\\u003c')}</script>
+      <script type="application/json" id="giftFollowStd">${JSON.stringify(FOLLOWUP[kind][lang]).replace(/</g, '\\u003c')}</script>`;
 }
 
 function script(t, lang, slug) {
@@ -162,9 +196,20 @@ function script(t, lang, slug) {
   }
   function updateCount() { count.textContent = String(320 - card.value.length); }
   card.addEventListener('input', updateCount); updateCount();
-  block.querySelectorAll('.gift-std button').forEach(function (b) {
+  var fstd = JSON.parse(document.getElementById('giftFollowStd').textContent);
+  var follow = document.getElementById('giftFollowup');
+  block.querySelectorAll('.gift-std-follow button').forEach(function (b) {
     b.addEventListener('click', function () {
-      block.querySelectorAll('.gift-std button').forEach(function (x) { x.classList.remove('active'); });
+      block.querySelectorAll('.gift-std-follow button').forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      var k = b.getAttribute('data-fstd');
+      follow.value = k === 'own' ? '' : fstd[Number(k)];
+      follow.focus();
+    });
+  });
+  block.querySelectorAll('.gift-std:not(.gift-std-follow) button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      block.querySelectorAll('.gift-std:not(.gift-std-follow) button').forEach(function (x) { x.classList.remove('active'); });
       b.classList.add('active');
       var k = b.getAttribute('data-std');
       card.value = k === 'own' ? '' : std[Number(k)];
@@ -236,4 +281,9 @@ function giftBlock({ row, lang, isGift, isSubscription, giftable, purchaseLabel 
   return `<a href="${esc(row.stripe_link)}" class="btn" target="_blank" rel="noopener">${purchaseLabel}</a>`;
 }
 
-module.exports = { giftBlock, STANDARD };
+// Wraps a description section whose heading mentions Christmas (or Noël) in the festive box.
+function festiveSections(html) {
+  return html.replace(/(<h3[^>]*>[^<]*(?:Christmas|Noël)[^<]*<\/h3>)([\s\S]*?)(?=<h3|$)/g, '<div class="festive-box">$1$2</div>\n  ');
+}
+
+module.exports = { giftBlock, STANDARD, FOLLOWUP, festiveSections };

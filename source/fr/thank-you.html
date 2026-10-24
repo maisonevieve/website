@@ -58,10 +58,10 @@
   </svg>
 
   <p class="not-found-label">Merci</p>
-  <h1 id="tyHeadline">Elle est en chemin.</h1>
+  <h1 id="tyHeadline">Il est en chemin.</h1>
 
   <div class="ty-body">
-    <p id="tyFirst">La Première Lettre voyage vers votre boîte de réception, accompagnée d'un numéro d'essai de « (meditating) On Art ». Elle arrive en général en quelques minutes.</p>
+    <p id="tyFirst">Le numéro de bienvenue de « (meditating) On Art » voyage vers votre boîte de réception, avec l'expérience de la lettre glissée à ses côtés. Il arrive en général en quelques minutes.</p>
     <p>Si l'e-mail se cache, jetez un œil dans les onglets Promotions ou Spam, et déplacez-le dans votre boîte principale pour que les prochaines lettres vous trouvent.</p>
     <p>En attendant : répondez à mon premier e-mail avec un mot pour dire comment se passe votre semaine. Je lis chaque réponse moi-même.</p>
   </div>
@@ -74,7 +74,7 @@
   // Shows the right gift (?gift=letter|diary|other) and points the button back
   // to the page she signed up from (?from=), staying on this site only.
   (function () {
-    var t = {"h_letter": "Elle est en chemin.", "h_diary": "Votre Journal de la Collectionneuse est en chemin.", "h_other": "Vous êtes bien inscrite.", "p1_letter": "La Première Lettre voyage vers votre boîte de réception, accompagnée d'un numéro d'essai de « (meditating) On Art ». Elle arrive en général en quelques minutes.", "p1_diary": "Le Journal de la Collectionneuse voyage vers votre boîte de réception. Imprimez-le, glissez-le dans votre sac, et emportez-le à votre prochaine visite au musée.", "p1_other": "Votre confirmation voyage vers votre boîte de réception. Elle arrive en général en quelques minutes."};
+    var t = {"h_letter": "Il est en chemin.", "h_diary": "Votre Journal de la Collectionneuse est en chemin.", "h_other": "Vous êtes bien inscrite.", "p1_letter": "Le numéro de bienvenue de « (meditating) On Art » voyage vers votre boîte de réception, avec l'expérience de la lettre glissée à ses côtés. Il arrive en général en quelques minutes.", "p1_diary": "Le Journal de la Collectionneuse voyage vers votre boîte de réception. Imprimez-le, glissez-le dans votre sac, et emportez-le à votre prochaine visite au musée.", "p1_other": "Votre confirmation voyage vers votre boîte de réception. Elle arrive en général en quelques minutes."};
     var q = new URLSearchParams(window.location.search);
     var gift = q.get('gift');
     if (gift === 'diary' || gift === 'other') {

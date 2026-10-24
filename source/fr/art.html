@@ -244,14 +244,14 @@
       <a href="index.html#home">Accueil</a>
       <a href="index.html#about">À propos</a>
       <a href="index.html#magazine">Magazine</a>
-      <a href="index.html#subscriptions">Abonnements</a>
+      <a href="index.html#subscriptions">Abonnement</a>
       <a href="art.html">Art</a>
     </nav>
     <a href="index.html" class="logo-mark">
       <img src="images/maisonevieve_logo_meditation_art.png" alt="Maison Eviève">
     </a>
     <div class="header-right">
-      <a href="/fr/blog/the-first-letter.html" class="header-letter" data-open-signup>Recevoir la Première Lettre</a>
+      <a href="/fr/blog/the-first-letter.html" class="header-letter" data-open-signup>Un rituel à feuilleter</a>
       <div class="lang-switch">
         <a href="/en/art.html">EN</a><span>/</span><a href="/fr/art.html" class="active">FR</a>
       </div>
@@ -262,9 +262,9 @@
     <a href="index.html#home">Accueil</a>
     <a href="index.html#about">À propos</a>
     <a href="index.html#magazine">Magazine</a>
-    <a href="index.html#subscriptions">Abonnements</a>
+    <a href="index.html#subscriptions">Abonnement</a>
     <a href="art.html">Art</a>
-    <a href="/fr/blog/the-first-letter.html" class="mobile-letter" data-open-signup>Recevoir la Première Lettre</a>
+    <a href="/fr/blog/the-first-letter.html" class="mobile-letter" data-open-signup>Un rituel à feuilleter</a>
   </div>
 </header>
 
@@ -557,7 +557,7 @@
 <!-- Editorial-style signup popup: click-to-open tab, gentle exit-intent pulse only -->
 <iframe name="ml_hidden_iframe" style="display:none;"></iframe>
 
-<button id="signupTab" class="signup-tab" aria-label="Ouvrir l'inscription à la première lettre">
+<button id="signupTab" class="signup-tab" aria-label="Ouvrir l'inscription à Un rituel à feuilleter">
   <svg viewBox="0 0 26 20" xmlns="http://www.w3.org/2000/svg" width="24" height="18">
     <path d="M2 4 C1.8 2.3 3 1.6 4.6 1.8 L21.2 1.5 C22.8 1.6 23.2 2.6 23.1 4.2 L22.8 15.4 C22.9 16.9 21.7 17.5 20.1 17.3 L4.3 17.5 C2.7 17.4 2 16.5 2.1 15 Z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M3 4.2 C7.5 8.6 10.3 10.9 13 11.1 C15.6 10.8 18.7 8.4 22.2 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -571,12 +571,12 @@
     <img src="images/art-meditation-letter-experience.jpg" alt="">
     <div class="signup-popup-scrim"></div>
     <div class="signup-popup-content">
-      <div class="popup-masthead">La première lettre</div>
+      <div class="popup-masthead long">Un rituel à feuilleter</div>
 
       <div class="popup-coverlines">
-        <p class="coverline-main">Une méditation sensorielle sur la réception d'une lettre</p>
-        <p class="coverline-kicker">Écrite et lue à voix haute</p>
-        <p class="coverline-sub">Et aussi, un numéro d'essai du magazine</p>
+        <p class="coverline-main">Le numéro de bienvenue de « (meditating) On Art »</p>
+        <p class="coverline-kicker">Gratuit, à lire à l'écran</p>
+        <p class="coverline-sub">Et l'expérience de la lettre : une méditation sensorielle sur la réception d'une lettre, écrite et lue à voix haute</p>
       </div>
 
       <div class="popup-bottom">
@@ -584,7 +584,7 @@
         <form id="signupPopupForm" class="signup-popup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
           <input type="email" name="fields[email]" placeholder="Votre email" required>
           <input type="hidden" name="fields[language]" value="Français">
-          <button type="submit">Envoyez-la-moi</button>
+          <button type="submit">Envoyez-le-moi</button>
         </form>
         <p class="signup-popup-confirm" id="signupPopupConfirm">Merci — vérifiez votre boîte de réception sous peu.</p>
 
@@ -633,6 +633,8 @@
   .signup-popup-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75) 20%, rgba(0,0,0,0.25) 65%, rgba(0,0,0,0.1) 100%); }
   .signup-popup-content { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: 40px 20px 18px; color: #fff; text-align: center; }
   .popup-masthead { font-family: 'Fraunces', serif; font-weight: 600; font-size: 2.75rem; letter-spacing: -0.01em; line-height: 0.92; text-transform: uppercase; text-shadow: 0 2px 14px rgba(0,0,0,0.4); }
+  .popup-masthead.long { font-size: 2rem; line-height: 1; }
+  @media (min-width: 700px) { .popup-masthead.long { font-size: 2.6rem !important; } }
   .popup-coverlines { margin-top: 8px; }
   .coverline-main { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: 1.15rem; line-height: 1.3; }
   .coverline-kicker { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; margin-top: 14px; }

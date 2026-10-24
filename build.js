@@ -9,7 +9,7 @@ const path = require('path');
 const { parseCSV } = require('./parse-csv');
 const { blogCategory } = require('./blog-category');
 const { parseBody } = require('./parse-body');
-const { giftBlock } = require('./gift-block');
+const { giftBlock, festiveSections } = require('./gift-block');
 
 // ---------------------------------------------------------------------------
 // CONFIG -- fill these in with your real values (see the README for how to find them)
@@ -60,10 +60,10 @@ function readHeaderPartial(lang, alt = {}) {
     .split('{{LANG}}').join(lang)
     .split('{{ALT_EN}}').join(alt.en || '/en/')
     .split('{{ALT_FR}}').join(alt.fr || '/fr/')
-    .split('{{FIRST_LETTER}}').join(lang === 'fr' ? 'Recevoir la Première Lettre' : 'Receive the First Letter')
+    .split('{{FIRST_LETTER}}').join(lang === 'fr' ? 'Un rituel à feuilleter' : 'A ritual you can flip through')
     .replace(/>Home</g, lang === 'fr' ? '>Accueil<' : '>Home<')
     .replace(/>About</g, lang === 'fr' ? '>À propos<' : '>About<')
-    .replace(/>Subscriptions</g, lang === 'fr' ? '>Abonnements<' : '>Subscriptions<');
+    .replace(/>Subscriptions?</g, lang === 'fr' ? '>Abonnement<' : '>Subscription<');
 }
 
 // Interface words written in English inside the post/product templates.
@@ -228,7 +228,7 @@ async function main() {
       const hasOwnSignup = /\[signup/i.test(row.body || '');
       const endSignup = hasOwnSignup ? '' : (lang === 'fr'
         ? `<div class="wrap end-signup">
-  <p class="end-signup-line">Avant de partir : La Première Lettre, une courte méditation sur la réception d'une lettre, à lire ou à écouter.</p>
+  <p class="end-signup-line">Avant de partir : Un rituel à feuilleter, le numéro de bienvenue de « (meditating) On Art », avec une méditation sur la réception d'une lettre, à lire ou à écouter.</p>
   <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
     <input type="email" name="fields[email]" placeholder="Votre e-mail" required>
     <input type="hidden" name="fields[language]" value="Français">
@@ -237,7 +237,7 @@ async function main() {
   <p class="embed-signup-confirm">Merci, regardez votre boîte de réception dans quelques instants.</p>
 </div>`
         : `<div class="wrap end-signup">
-  <p class="end-signup-line">Before you go: The First Letter, a short meditation on receiving a letter, to read or to listen to.</p>
+  <p class="end-signup-line">Before you go: A ritual you can flip through, the welcome issue of “(meditating) On Art”, with a meditation on receiving a letter to read or listen to.</p>
   <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
     <input type="email" name="fields[email]" placeholder="Your email" required>
     <input type="hidden" name="fields[language]" value="English">
@@ -391,7 +391,7 @@ async function main() {
         OG_TAGS: ogTags({ title: row.title, description: row.description, image: images[0], path: `${lang}/art/${row.slug}`, lang, type: 'product' }),
         TYPE_LABEL: typeLabel,
         EDITION_LINE: editionLine,
-        DESCRIPTION: isGift ? parseBody(row.description, lang) : toParagraphs(row.description),
+        DESCRIPTION: isGift ? festiveSections(parseBody(row.description, lang)) : toParagraphs(row.description),
         PRICE_LINE: isGift
           ? `<div class="price-line">${lang === 'fr' ? 'Dès ' + row.yearly_price + ' €' : 'From €' + row.yearly_price}</div>`
           : `<div class="price-line">€${row.price}${priceSuffix}</div>`,

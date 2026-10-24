@@ -59,7 +59,7 @@ function renderEmbed(kind, arg, lang) {
     // Find a form's ID in MailerLite: Forms -> open the form -> Embed -> the number
     // after /forms/ in the code shown there.
     const DEFAULT_FORM_ID = '198581432152491948';
-    const DEFAULT_HEADLINE = 'Get "The First Letter," free.';
+    const DEFAULT_HEADLINE = lang === 'fr' ? 'Recevoir « Un rituel à feuilleter », gratuitement.' : 'Get "A ritual you can flip through," free.';
     const ACCOUNT_ID = '2634193';
 
     let formId = DEFAULT_FORM_ID;
@@ -136,6 +136,14 @@ function parseBody(raw, lang) {
     const embedMatch = block.match(/^\[(video|audio|youtube|flipbook|pdf-flipbook|signup|image)(?:\s*:\s*(.*))?\]$/i);
     if (embedMatch) {
       return renderEmbed(embedMatch[1].toLowerCase(), embedMatch[2], lang);
+    }
+    // Markdown lists: every line starts with "- " (bullets) or "1. " (numbered).
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if (lines.length && lines.every(l => /^[-•]\s+/.test(l))) {
+      return `<ul>${lines.map(l => `<li>${inlineFormat(l.replace(/^[-•]\s+/, ''))}</li>`).join('')}</ul>`;
+    }
+    if (lines.length && lines.every(l => /^\d+[.)]\s+/.test(l))) {
+      return `<ol>${lines.map(l => `<li>${inlineFormat(l.replace(/^\d+[.)]\s+/, ''))}</li>`).join('')}</ol>`;
     }
     const headingMatch = block.match(/^###\s+(.+)$/);
     if (headingMatch) {
