@@ -234,9 +234,25 @@
 
   /* Buttons on video backgrounds: frosted glass on hover, no border, white text */
   .sub-buttons .btn:hover, .video-hero .btn:hover, .btn-light:hover { background: rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-color: transparent; color: var(--white); }
+
+  /* Pages with a full-bleed hero: white logo and navigation until the header turns solid on scroll */
+  body.hero-dark header:not(.scrolled) nav.links a,
+  body.hero-dark header:not(.scrolled) .lang-switch,
+  body.hero-dark header:not(.scrolled) .lang-switch a,
+  body.hero-dark header:not(.scrolled) .lang-switch a.active { color: var(--white); }
+  body.hero-dark header:not(.scrolled) nav.links a:hover { border-color: var(--white); }
+  body.hero-dark header:not(.scrolled) .logo-mark img { filter: brightness(0) invert(1); }
+  body.hero-dark header:not(.scrolled) .menu-toggle span { background: var(--white); }
+  body.hero-dark header:not(.scrolled) .header-letter { color: var(--white); border-color: var(--white); }
+  body.hero-dark header:not(.scrolled) .header-letter:hover { background: rgba(255,255,255,0.14); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-color: transparent; color: var(--white); }
+  body.hero-dark header:has(.mobile-nav.open) { background: var(--white); }
+  body.hero-dark header:has(.mobile-nav.open) .logo-mark img { filter: none; }
+  body.hero-dark header:has(.mobile-nav.open) .menu-toggle span { background: var(--black); }
+  body.hero-dark header:has(.mobile-nav.open) .lang-switch, body.hero-dark header:has(.mobile-nav.open) .lang-switch a { color: var(--charcoal); }
+  body.hero-dark header:has(.mobile-nav.open) .lang-switch a.active { color: var(--black); }
 </style>
 </head>
-<body>
+<body class="hero-dark">
 <div id="scrollSentinel" style="position:absolute; top:0; height:1px; width:1px;"></div>
 
 <header>
