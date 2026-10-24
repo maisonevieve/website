@@ -9,6 +9,7 @@ const path = require('path');
 const { parseCSV } = require('./parse-csv');
 const { blogCategory } = require('./blog-category');
 const { parseBody } = require('./parse-body');
+const { giftBlock } = require('./gift-block');
 
 // ---------------------------------------------------------------------------
 // CONFIG -- fill these in with your real values (see the README for how to find them)
@@ -325,6 +326,9 @@ async function main() {
       const isSubscription = (row.type || '').toLowerCase() === 'subscription';
       const isBundle = (row.type || '').toLowerCase() === 'bundle';
       const isLetter = (row.type || '').toLowerCase() === 'letter';
+      // The gift page for "(letters) On Art": a one-time 12 or 6 month package, sold only as a gift.
+      // Sheet columns for this row: price + stripe_link = 12 months, yearly_price + yearly_stripe_link = 6 months.
+      const isGift = (row.type || '').toLowerCase() === 'gift';
       const isNumberedEdition = !isOriginal && !isSubscription && !isBundle && !isLetter && row.edition_size;
 
       // Product-page labels, by language -- previously hardcoded in English only,
@@ -351,7 +355,8 @@ async function main() {
         galleryPrev: 'Previous', galleryNext: 'Next',
       };
 
-      const typeLabel = isSubscription ? L.subscription
+      const typeLabel = isGift ? (lang === 'fr' ? 'À offrir' : 'A gift')
+        : isSubscription ? L.subscription
         : isBundle ? L.bundle
         : isLetter ? L.letter
         : isOriginal ? L.original
@@ -361,7 +366,7 @@ async function main() {
       const mediumRow = (isOriginal && row.medium) ? `<tr><td>${L.medium}</td><td>${row.medium}</td></tr>` : '';
       // Size/material only apply to physical, individually-crafted pieces -- not
       // subscriptions, bundles (a curated set, not one object), or letters.
-      const isPhysicalSingleItem = !isSubscription && !isBundle && !isLetter;
+      const isPhysicalSingleItem = !isSubscription && !isBundle && !isLetter && !isGift;
       const sizeRow = (isPhysicalSingleItem && row.size) ? `<tr><td>${L.size}</td><td>${row.size}</td></tr>` : '';
       const materialRow = (isPhysicalSingleItem && row.material) ? `<tr><td>${L.material}</td><td>${row.material}</td></tr>` : '';
       // Theme is optional and only meaningful for bundles for now (e.g. a seasonal
@@ -386,17 +391,18 @@ async function main() {
         OG_TAGS: ogTags({ title: row.title, description: row.description, image: images[0], path: `${lang}/art/${row.slug}`, lang, type: 'product' }),
         TYPE_LABEL: typeLabel,
         EDITION_LINE: editionLine,
-        DESCRIPTION: toParagraphs(row.description),
-        PRICE: row.price,
+        DESCRIPTION: isGift ? parseBody(row.description, lang) : toParagraphs(row.description),
+        PRICE_LINE: isGift
+          ? `<div class="price-line">${lang === 'fr' ? 'Dès ' + row.yearly_price + ' €' : 'From €' + row.yearly_price}</div>`
+          : `<div class="price-line">€${row.price}${priceSuffix}</div>`,
+        BUY_BLOCK: giftBlock({ row, lang, isGift, isSubscription, giftable: isPhysicalSingleItem, purchaseLabel }),
         PRICE_SUFFIX: priceSuffix,
         SIZE_ROW: sizeRow,
         MATERIAL_ROW: materialRow,
         MEDIUM_ROW: mediumRow,
         THEME_ROW: themeRow,
         UNFRAMED_NOTE: unframedNote,
-        STRIPE_LINK: row.stripe_link,
-        PURCHASE_LABEL: purchaseLabel,
-        YEARLY_LINE: yearlyLine,
+        YEARLY_LINE: isGift ? '' : yearlyLine,
         GALLERY_SLIDES: slides,
         GALLERY_DOTS: dots,
         GALLERY_PREV_LABEL: L.galleryPrev,
@@ -451,13 +457,16 @@ async function main() {
     const isSubscription = (row.type || '').toLowerCase() === 'subscription';
     const priceUnknownText = lang === 'fr' ? 'Prix sur demande' : 'Price upon inquiry';
     const monthSuffix = lang === 'fr' ? ' / mois' : ' / mo';
-    const priceText = row.price ? `€${row.price}${isSubscription ? monthSuffix : ''}` : priceUnknownText;
+    const isGiftRow = (row.type || '').toLowerCase() === 'gift';
+    const priceText = isGiftRow && row.yearly_price ? (lang === 'fr' ? `Dès ${row.yearly_price} €` : `From €${row.yearly_price}`)
+      : row.price ? `€${row.price}${isSubscription ? monthSuffix : ''}` : priceUnknownText;
     // "View piece" only makes sense for art; subscriptions, bundles and letters get their own words.
     const type = (row.type || '').toLowerCase();
     const viewLabels = {
       subscription: ['See the subscription', 'Voir l\'abonnement'],
       bundle: ['See the bundle', 'Voir le coffret'],
       letter: ['See the letter', 'Voir la lettre'],
+      gift: ['See the gift', 'Voir le cadeau'],
     };
     const [enLabel, frLabel] = viewLabels[type] || ['View piece', 'Voir l\'œuvre'];
     const viewLinkText = lang === 'fr' ? frLabel : enLabel;
@@ -494,7 +503,7 @@ async function main() {
   }
 
   // ---- Copy static pages through, injecting art cards + fixing asset paths ----
-  const staticPages = ['index.html', 'art.html', 'catalogue.html', 'blog.html', 'legal.html', '404.html', 'links.html', 'thank-you.html'];
+  const staticPages = ['index.html', 'art.html', 'catalogue.html', 'blog.html', 'legal.html', '404.html', 'links.html', 'thank-you.html', 'gift-card.html'];
 
   for (const lang of ['en', 'fr']) {
     for (const page of staticPages) {
