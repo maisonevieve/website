@@ -34,7 +34,7 @@
   .lang-switch { display: flex; gap: 6px; font-size: 13px; color: var(--charcoal); }
   .lang-switch a { text-decoration: none; }
   .lang-switch a.active { color: var(--black); font-weight: 600; }
-  .header-letter { display: none; font-family: var(--serif); font-size: 13.5px; color: var(--black); border: 1px solid var(--black); padding: 6px 14px; text-decoration: none; white-space: nowrap; transition: background 0.25s ease, color 0.25s ease; }
+  .header-letter { display: none; font-family: var(--serif); font-size: 13.5px; color: var(--black); border: 1px solid var(--black); padding: 6px 14px; text-decoration: none; white-space: nowrap; transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
   .header-letter:hover { background: var(--black); color: var(--white); }
   @media (min-width: 1100px) { .header-letter { display: inline-block; } }
   .signed-up .header-letter, .signed-up .mobile-letter { display: none !important; }
@@ -58,8 +58,8 @@
   .post-hero-image { width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--charcoal); margin-bottom: 48px; }
   .post-hero-image img { width: 100%; height: 100%; object-fit: cover; }
 
-  .btn { display: inline-block; font-family: var(--serif); text-transform: capitalize; font-size: 15px; background: transparent; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease; }
-  .btn:hover { background: rgba(0,0,0,0.6); color: var(--white); }
+  .btn { display: inline-block; font-family: var(--serif); text-transform: capitalize; font-size: 15px; background: transparent; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
+  .btn:hover { background: var(--black); color: var(--white); }
   .post-cta { margin-top: 8px; padding-bottom: 56px; }
   .end-signup { text-align: center; padding: 8px 0 40px; }
   .end-signup-line { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: #2b2b2b; max-width: 480px; margin: 0 auto 14px; }
