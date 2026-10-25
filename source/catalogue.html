@@ -112,9 +112,9 @@
   .cell-stack, .cell-media { position: absolute; inset: 0; width: 100%; height: 100%; }
   .cell-media { object-fit: cover; opacity: 0; transition: opacity 1.8s ease; }
   .cell-media.active { opacity: 1; }
-  img.cell-media { animation: cellDrift 26s ease-in-out infinite alternate; }
-  .catalogue-cell:nth-child(3n+2) img.cell-media { animation-delay: -9s; }
-  .catalogue-cell:nth-child(3n) img.cell-media { animation-delay: -17s; animation-direction: alternate-reverse; }
+  /* Only a few tiles move on their own (desktop: row 1 column 1, row 2 column 3, row 3 column 2...; phones: every other row);
+     the others stay on their featured image and come alive on hover, or on the first tap on phones. */
+  .catalogue-cell.moving img.cell-media { animation: cellDrift 26s ease-in-out infinite alternate; }
   @keyframes cellDrift { from { transform: scale(1); } to { transform: scale(1.06); } }
   .cell-shade { position: absolute; inset: 0; background: rgba(0,0,0,0.22); transition: background 0.4s ease; }
   .cell-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 16px; text-align: center; pointer-events: none; }
@@ -628,6 +628,10 @@
       var cols = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
       var r = visible.length % cols;
       if (r && visible.length) visible[visible.length - 1].classList.add('span-' + Math.min(cols - r + 1, 3));
+      // one moving tile per row on a diagonal (columns 1, 3, 2) on desktop; one every other row on phones
+      var pattern = cols >= 3 ? [0, 2, 1] : [0, -1, 1, -1];
+      cells.forEach(function (c) { c.classList.remove('moving'); });
+      visible.forEach(function (c, i) { var row = Math.floor(i / cols), col = i % cols; if (col === pattern[row % pattern.length]) c.classList.add('moving'); });
     }
     fill(); window.addEventListener('resize', fill);
     // Re-fill only when the feelings filter shows or hides tiles.
@@ -660,7 +664,7 @@
     var turn = 0;
     setInterval(function () {
       if (document.hidden) return;
-      var pool = cells.filter(function (c) { return onScreen.has(c) && !c.classList.contains('filtered-out') && c.querySelectorAll('.cell-media').length > 1 && !c.matches(':hover'); });
+      var pool = cells.filter(function (c) { return c.classList.contains('moving') && onScreen.has(c) && !c.classList.contains('filtered-out') && c.querySelectorAll('.cell-media').length > 1 && !c.matches(':hover'); });
       if (!pool.length) return;
       step(pool[turn++ % pool.length]);
     }, 2600);
@@ -690,6 +694,35 @@
     var v = V[n];
     var t = p.querySelector('.popup-masthead'), m = p.querySelector('.coverline-main'), img = p.querySelector('.signup-popup-media img');
     if (t) t.textContent = v.t; if (m) m.textContent = v.m; if (img) img.src = v.i;
+  })();
+</script>
+
+<script>
+  // Still tiles: on hover (or the first tap on phones) play the video, or step through the pictures; back to the featured image after.
+  (function () {
+    var cells = [].slice.call(document.querySelectorAll('#catalogueGrid .catalogue-cell'));
+    function media(c) { return [].slice.call(c.querySelectorAll('.cell-media')); }
+    function load(m) { if (m.dataset.src && !m.getAttribute('src')) { m.src = m.dataset.src; if (m.tagName === 'VIDEO') m.load(); } }
+    function show(c, m) { media(c).forEach(function (x) { x.classList.toggle('active', x === m); if (x.tagName === 'VIDEO' && x !== m) x.pause(); }); if (m.tagName === 'VIDEO') { m.currentTime = 0; m.play().catch(function () {}); } }
+    function start(c) {
+      if (c.classList.contains('moving') || c.classList.contains('pinned')) return;
+      var ms = media(c); if (ms.length < 2) return;
+      var vid = ms.filter(function (m) { return m.tagName === 'VIDEO'; })[0];
+      if (vid) { load(vid); show(c, vid); return; }
+      var k = 0; ms.forEach(load);
+      c._t = setInterval(function () { k = (k + 1) % ms.length; show(c, ms[k]); }, 1400);
+      k = 1; show(c, ms[1]);
+    }
+    function stop(c) {
+      if (c.classList.contains('moving') || c.classList.contains('pinned')) return;
+      clearInterval(c._t); var ms = media(c); if (ms.length) show(c, ms[0]); ms.forEach(function (m) { if (m.tagName === 'VIDEO') m.pause(); });
+    }
+    cells.forEach(function (c) {
+      var a = c.querySelector('a');
+      c.addEventListener('mouseenter', function () { start(c); });
+      c.addEventListener('mouseleave', function () { stop(c); });
+      if (a) new MutationObserver(function () { if (a.classList.contains('tap-active')) start(c); else stop(c); }).observe(a, { attributes: true, attributeFilter: ['class'] });
+    });
   })();
 </script>
 </body>
