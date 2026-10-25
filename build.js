@@ -112,6 +112,10 @@ function ensureDir(p) {
 
 function writeFile(relPath, content) {
   if (/\.html$/.test(relPath) && typeof content === 'string') content = addBanner(content, /^fr[\\/]/.test(relPath) ? 'fr' : 'en');
+  // Phones: a tap shows the finished hover (solid black, white italic) at once. With the fade, the next page
+  // loaded mid-fade and the button looked grey and blurred.
+  if (/\.html$/.test(relPath) && typeof content === 'string' && !content.includes('id="touchButtons"'))
+    content = content.replace('</head>', '<style id="touchButtons">@media (hover: none) { a, button, .btn, .hero-cta, .postcard, .postcard-btn { transition: none !important; } }</style>\n</head>');
   const fullPath = path.join(DIST, relPath);
   ensureDir(path.dirname(fullPath));
   fs.writeFileSync(fullPath, content, 'utf-8');
