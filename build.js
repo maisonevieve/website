@@ -247,7 +247,7 @@ async function main() {
   <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
     <input type="email" name="fields[email]" placeholder="Votre e-mail" required>
     <input type="hidden" name="fields[language]" value="Français">
-    <button type="submit">Envoyez-la-moi</button>
+    <button type="submit">Envoyez-le-moi</button>
   </form>
   <p class="embed-signup-confirm">Merci, regardez votre boîte de réception dans quelques instants.</p>
 </div>`
