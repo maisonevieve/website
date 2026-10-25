@@ -579,7 +579,7 @@ async function main() {
       ? { h: 'L\'art, emballé pour offrir', p: 'Emballage cadeau offert', a: 'Trouver un cadeau' }
       : { h: 'Art, wrapped to give', p: 'Free gift wrapping', a: 'Find a gift' };
     return `<div class="art-card">
-          <div class="media"><a href="${href}"><video class="home-loop" autoplay muted loop playsinline data-loop="4"${poster ? ` poster="/images/${poster}"` : ''} src="/images/${video}"></video></a></div>
+          <div class="media"><a href="${href}"><video class="home-loop" autoplay muted loop playsinline${poster ? ` poster="/images/${poster}"` : ''} src="/images/${video}"></video></a></div>
           <h4>${t.h}</h4>
           <div class="price">${t.p}</div>
           <a href="${href}" class="view-link">${t.a}</a>
