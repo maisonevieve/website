@@ -570,10 +570,10 @@ async function main() {
     return card.replace(/<h4>[\s\S]*?<\/h4>/, `<h4>${t.h}</h4>`).replace(/<div class="price">[\s\S]*?<\/div>/, `<div class="price">${t.p}</div>`);
   }
 
-  // Homepage "Available art", first column: giving art. Uses the gift's video for now.
+  // Homepage "Available art", first column: giving art, with the red-ribbon print video.
   function giftArtCardHtml(gift, lang) {
-    const video = (gift && gift.video) || 'gift-portrait.mp4';
-    const poster = gift ? (gift.featured || (gift.images || '').split(',')[0].trim()) : '';
+    const video = 'art-print-gift-red-ribbon-web.mp4';
+    const poster = 'art-print-gift-red-ribbon-web-poster.jpg';
     const href = `/${lang}/catalogue.html?feeling=generosity`;
     const t = lang === 'fr'
       ? { h: 'L\'art, emballé pour offrir', p: 'Emballage cadeau offert', a: 'Trouver un cadeau' }
