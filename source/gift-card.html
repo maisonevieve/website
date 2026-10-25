@@ -63,14 +63,14 @@
       <p class="body" id="gcBody"></p>
       <p class="from">With love,<span id="gcGiver"></span></p>
     </div>
-    <p class="brand">Maison Eviève · Paris</p>
+    <p class="brand">Maison Eviève</p>
   </div>
 
   <p class="signoff">Remember to take as much time as you need, and meet me at the next one.<span>Love,<br>Evi</span></p>
 
 <script>
   (function () {
-    var T = {"title": "Your gift card", "loading": "Finding your order…", "thanks_h": "Thank you.", "thanks_p": "Your order is confirmed. A receipt from Stripe is on its way to your inbox, and I'll pack everything by hand.", "gift_h": "Your gift card is ready.", "gift_p": "Print it at home on A5 or A4 paper, fold it if you like, and give it on the day. The wrapped package travels separately, to her door.", "print": "Print the card", "back": "Return to Maison Eviève", "for_": "For", "from_": "With love,", "l12": "A year of “(letters) On Art”", "l6": "Six months of “(letters) On Art”", "art": "A piece of art, on its way to you", "body_letters": "A letter every month, and each season the magazine “(meditating) On Art”, sent from Paris to your door.", "body_art": "Hand-finished and signed in Paris, wrapped in satin ribbon, with a meditation letter of its own.", "xmas": "Merry Christmas", "err": "I couldn't find this order. If you've just paid, wait a minute and reload the page, or write to bonjour@maisonevieve.com and I'll send your card by email.", "signoff": "Remember to take as much time as you need, and meet me at the next one.", "love": "Love,"};
+    var T = {"title": "Your gift card", "loading": "Finding your order…", "thanks_h": "Thank you.", "thanks_p": "Your order is confirmed. A receipt from Stripe is on its way to your inbox, and I'll pack everything by hand.", "gift_h": "Your gift card is ready.", "gift_p": "Print it at home on A5 or A4 paper, fold it if you like, and give it on the day. The wrapped package travels separately, to her door.", "print": "Print the card", "back": "Return to Maison Eviève", "for_": "For", "from_": "With love,", "l12": "A year of “(letters) On Art”", "l6": "Six months of “(letters) On Art”", "art": "A piece of art, on its way to you", "body_letters": "A letter every month, and each season the magazine “(meditating) On Art”, sent to your door.", "body_art": "Hand-finished and signed, wrapped in satin ribbon, with a meditation letter of its own.", "xmas": "Merry Christmas", "err": "I couldn't find this order. If you've just paid, wait a minute and reload the page, or write to bonjour@maisonevieve.com and I'll send your card by email.", "signoff": "Remember to take as much time as you need, and meet me at the next one.", "love": "Love,"};
     var API = 'https://studio.maisonevieve.com/gift-card';
     var q = new URLSearchParams(window.location.search);
     var sid = q.get('session_id') || '';
