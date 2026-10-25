@@ -190,6 +190,30 @@ function escapeAttrB(s) { return String(s || '').replace(/&/g, '&amp;').replace(
 
 
 // ---- End-of-post "postcard": the post's call to action as a small card with a picture of where it leads ----
+// The envelope tab and sign-up popup on blog posts, taken from the Journal page so the two never drift apart.
+// On a post it never opens by itself: it waits for a click, steps aside while the in-post sign-up is on screen,
+// and disappears once she has signed up.
+const postPopupCache = {};
+function postPopup(lang) {
+  if (postPopupCache[lang]) return postPopupCache[lang];
+  const src = fs.readFileSync(path.join(__dirname, 'source', lang === 'fr' ? 'fr/blog.html' : 'blog.html'), 'utf8');
+  const start = src.indexOf('<!-- Editorial-style signup popup');
+  const end = src.lastIndexOf('</body>');
+  if (start < 0 || end < 0) return '';
+  let block = src.slice(start, end)
+    .replace(/<iframe name="ml_hidden_iframe"[^>]*><\/iframe>\s*/, '')
+    .replace(/\/\/ Auto-open once[\s\S]*?\}, 20000\);\s*\}\s*/, '');
+  block += `<style>.signup-tab.aside { opacity: 0 !important; pointer-events: none; }</style>
+<script>
+  (function () {
+    var tab = document.getElementById('signupTab'), mid = document.querySelector('.mid-signup');
+    if (!tab || !mid || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (e) { tab.classList.toggle('aside', e[0].isIntersecting); }).observe(mid);
+  })();
+</script>`;
+  return (postPopupCache[lang] = block);
+}
+
 function postcardCta(row, lang, artRows, blogRows) {
   artRows = artRows || postcardCta.art || []; blogRows = blogRows || postcardCta.blog || [];
   const link = row.cta_link;
@@ -333,7 +357,7 @@ async function main() {
         FOOTER: readPartial('footer-minimal.html'),
       }), lang);
       const relPath = `${lang}/blog/${row.slug}.html`;
-      writeFile(relPath, html);
+      writeFile(relPath, html.replace('</body>', postPopup(lang) + '\n</body>'));
       langPaths[lang] = relPath;
       blogIndexByLang[lang].push(row);
     }
