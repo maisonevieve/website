@@ -53,7 +53,7 @@
   .mobile-nav a { font-family: var(--serif); font-size: 1.1rem; padding: 14px 0; text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.08); color: var(--black); }
   @media (min-width: 860px) { .mobile-nav { display: none !important; } }
 
-  .back-link-row { padding: 96px 0 0; }
+  .back-link-row { padding-top: 96px; }
   .back-link { text-decoration: none; font-size: 14px; color: var(--charcoal); }
   .back-link:hover { color: var(--black); }
 
@@ -67,7 +67,7 @@
   .gallery-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.5); }
   .gallery-dots span.active { background: var(--white); }
 
-  .product-body { padding: 56px 0 100px; }
+  .product-body { padding-top: 56px; padding-bottom: 100px; }
   .product-grid { display: grid; grid-template-columns: 1fr; gap: 48px; }
   @media (min-width: 900px) { .product-grid { grid-template-columns: 1.3fr 1fr; gap: 72px; } }
   .product-title-row .type-badge { font-family: var(--sans); font-size: 13px; color: var(--charcoal); }
@@ -135,6 +135,8 @@
 
   /* Images inside a sales page, to break up the text */
   .product-desc .embed-image { margin: 32px 0; }
+  /* Text keeps the page's side margins; pictures and videos in the description still run edge to edge on phones. */
+  @media (max-width: 899px) { .product-desc .embed-image, .product-desc .embed-video, .product-desc .embed-flipbook, .product-desc .embed-youtube { margin-left: -32px; margin-right: -32px; } .product-desc .embed-image figcaption { padding: 0 32px; } }
   .product-desc .embed-image img { width: 100%; height: auto; display: block; }
   .product-desc .embed-image figcaption { font-size: 13px; color: var(--charcoal); font-style: italic; text-align: center; margin-top: 10px; line-height: 1.5; }
   .price-note { font-family: var(--serif); font-style: italic; color: var(--charcoal); margin-top: 6px; }

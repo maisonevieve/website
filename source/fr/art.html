@@ -101,7 +101,17 @@
   /* 3. 3 products / masonry on mobile */
   .art-grid { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 56px; }
   @media (min-width: 760px) { .art-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 759px) { .art-grid { display: block; column-count: 2; column-gap: 16px; margin-top: 40px; } .art-grid .art-card { break-inside: avoid; margin-bottom: 16px; } }
+  /* Phones: one piece at a time, swiped or turned with the arrows. */
+  .grid-pager { display: none; }
+  @media (max-width: 759px) {
+    .art-grid { display: flex; gap: 0; margin-top: 40px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .art-grid::-webkit-scrollbar { display: none; }
+    .art-grid .art-card { flex: 0 0 100%; scroll-snap-align: start; }
+    .grid-pager { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 24px; font-family: var(--serif); font-size: 14px; color: var(--charcoal); }
+    .grid-pager button { width: 44px; height: 44px; display: grid; place-items: center; background: none; border: 1px solid var(--black); border-radius: 50%; cursor: pointer; color: var(--black); }
+    .grid-pager button:disabled { opacity: .25; cursor: default; }
+    .grid-pager svg { width: 16px; height: 16px; }
+  }
   .art-card .media { aspect-ratio: 3/4; }
   .art-card h4 { font-family: var(--serif); font-size: 1.2rem; margin-top: 18px; }
   .art-card .price { color: var(--charcoal); font-size: 0.9rem; margin-top: 4px; }
@@ -339,6 +349,7 @@
         </div>
         <!-- ART_CARDS:latest:END -->
       </div>
+      <div class="grid-pager" data-pager-for="latest"><button type="button" class="gp-prev" aria-label="Œuvre précédente"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M10 3 5 8l5 5"/></svg></button><span class="gp-count">1 / 3</span><button type="button" class="gp-next" aria-label="Œuvre suivante"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 3l5 5-5 5"/></svg></button></div>
     </div>
   </section>
 
@@ -838,6 +849,22 @@
     var v = V[n];
     var t = p.querySelector('.popup-masthead'), m = p.querySelector('.coverline-main'), img = p.querySelector('.signup-popup-media img');
     if (t) t.textContent = v.t; if (m) m.textContent = v.m; if (img) img.src = v.i;
+  })();
+</script>
+<script>
+  // Available now on phones: arrows and a count for the one-piece-at-a-time row.
+  (function () {
+    var pager = document.querySelector('[data-pager-for="latest"]'); if (!pager) return;
+    var grid = pager.previousElementSibling; if (!grid || !grid.classList.contains('art-grid')) return;
+    var prev = pager.querySelector('.gp-prev'), next = pager.querySelector('.gp-next'), count = pager.querySelector('.gp-count');
+    function n() { return grid.querySelectorAll('.art-card').length; }
+    function at() { return Math.round(grid.scrollLeft / (grid.clientWidth || 1)); }
+    function update() { var i = at(), t = n(); count.textContent = (i + 1) + ' / ' + t; prev.disabled = i <= 0; next.disabled = i >= t - 1; pager.style.visibility = t > 1 ? '' : 'hidden'; }
+    function go(d) { grid.scrollTo({ left: (at() + d) * grid.clientWidth, behavior: 'smooth' }); }
+    prev.addEventListener('click', function () { go(-1); });
+    next.addEventListener('click', function () { go(1); });
+    grid.addEventListener('scroll', function () { window.requestAnimationFrame(update); }, { passive: true });
+    window.addEventListener('resize', update); update();
   })();
 </script>
 </body>

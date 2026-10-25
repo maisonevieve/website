@@ -97,6 +97,10 @@
   .hero-intro p.hero-offer { margin-top: 18px; font-family: var(--serif); font-size: 1.15rem; color: var(--black); }
   .hero-cta { display: inline-block; margin-top: 26px; font-family: var(--serif); font-size: 15px; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
   .hero-cta:hover { background: var(--black); color: var(--white); font-style: italic; }
+  .hero-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .hero-buttons .hero-cta { margin-top: 0; }
+  .hero-cta-main { background: var(--black); color: var(--white); }
+  .hero-cta-main:hover { background: transparent; color: var(--black); }
   .gallery-tags { display: flex; flex-direction: column; }
   .gallery-tag { min-height: 130vh; display: flex; flex-direction: column; justify-content: center; padding: 40px 0; opacity: 0.3; transition: opacity 1.4s ease; }
   .gallery-tag.active { opacity: 1; }
@@ -120,6 +124,22 @@
   /* artwork window, sized smaller/tighter to stay safely inside the frame's true opening */
   .frame-stage > img.frame-art { position: absolute; top: 18%; left: 37%; width: 45%; height: 67%; object-fit: cover; opacity: 0; transition: opacity 1.3s ease; z-index: 1; }
   .frame-stage > img.frame-art.active { opacity: 1; }
+
+  /* Phones: the frame comes right after the title, then the offer and the buttons; the three stories follow without long gaps. */
+  @media (max-width: 959px) {
+    .hero-scroll .wrap > div:first-child, .hero-intro { display: contents; }
+    .hero-head { order: 1; padding-top: 84px; }
+    .frame-column { order: 2; }
+    .hero-actions { order: 3; padding-bottom: 24px; }
+    .gallery-tags { order: 4; }
+    .hero-intro p { margin-top: 14px; }
+    .hero-intro p.hero-offer { margin-top: 4px; }
+    .hero-buttons { margin-top: 20px; }
+    .hero-buttons .hero-cta { flex: 1 1 100%; text-align: center; }
+    .frame-sticky { position: static; height: auto; padding: 18px 0 22px; }
+    .gallery-tag { min-height: 0; opacity: 1; padding: 22px 0; }
+    .gallery-tag p { margin-top: 10px; }
+  }
 
   /* ---------- Section basics ---------- */
   section { padding: 110px 0; }
@@ -350,11 +370,18 @@
     <div class="wrap">
       <div>
         <div class="hero-intro">
-          <div class="eyebrow-line">méditer sur</div>
-          <div class="big-word">L'ART</div>
-          <p>L'art comme souvenir d'une émotion.</p>
-          <p class="hero-offer">Une lettre dans votre boîte aux lettres chaque mois, un magazine à chaque saison, et des œuvres finies à la main, chacune avec sa petite pratique.</p>
-          <a href="/fr/blog/the-first-letter.html" class="hero-cta" data-open-signup>Un rituel à feuilleter</a>
+          <div class="hero-head">
+            <div class="eyebrow-line">méditer sur</div>
+            <div class="big-word">L'ART</div>
+            <p>L'art comme souvenir d'une émotion.</p>
+          </div>
+          <div class="hero-actions">
+            <p class="hero-offer">Une lettre dans votre boîte aux lettres chaque mois, un magazine à chaque saison, et des œuvres finies à la main, chacune avec sa petite pratique.</p>
+            <div class="hero-buttons">
+              <a href="#subscriptions" class="hero-cta hero-cta-main">Découvrir l’abonnement</a>
+              <a href="/fr/blog/the-first-letter.html" class="hero-cta" data-open-signup>Lire le numéro gratuit</a>
+            </div>
+          </div>
         </div>
 
         <div class="gallery-tags">
@@ -615,6 +642,13 @@
   (function () {
     var tags = document.querySelectorAll('.gallery-tag');
     var arts = document.querySelectorAll('.frame-art');
+    // On phones the frame is not pinned beside the stories, so its artworks simply take turns.
+    if (arts.length > 1 && window.matchMedia('(max-width: 959px)').matches) {
+      var k = 0;
+      setInterval(function () { k = (k + 1) % arts.length; arts.forEach(function (a, i) { a.classList.toggle('active', i === k); }); }, 4500);
+      tags.forEach(function (t) { t.classList.add('active'); });
+      return;
+    }
     if (tags.length) {
       var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
