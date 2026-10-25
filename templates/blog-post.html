@@ -60,7 +60,40 @@
 
   .btn { display: inline-block; font-family: var(--serif); text-transform: capitalize; font-size: 15px; background: transparent; color: var(--black); border: 2px solid var(--black); padding: 12px 28px; text-decoration: none; transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
   .btn:hover { background: var(--black); color: var(--white); font-style: italic; }
-  .post-cta { margin-top: 8px; padding-bottom: 56px; }
+  .post-cta { margin-top: 24px; padding-bottom: 72px; }
+  /* End-of-post postcard: image on the left, the message on the right, a postmark in the corner. */
+  .postcard { position: relative; display: grid; grid-template-columns: 1fr 1fr; max-width: 760px; margin: 0 auto; background: #f6f1e9; color: #000; text-decoration: none; border: 1px solid rgba(0,0,0,.18); outline: 1px solid rgba(0,0,0,.18); outline-offset: -8px; box-shadow: 0 18px 40px -24px rgba(0,0,0,.35); transform: rotate(-0.6deg); transition: transform .5s ease, box-shadow .5s ease; }
+  .postcard:hover { transform: rotate(0deg) translateY(-3px); box-shadow: 0 26px 50px -24px rgba(0,0,0,.4); }
+  .postcard.no-img { grid-template-columns: 1fr; }
+  .postcard-img { display: block; overflow: hidden; margin: 16px 0 16px 16px; aspect-ratio: 4 / 5; }
+  .postcard-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s ease; }
+  .postcard:hover .postcard-img img { transform: scale(1.03); }
+  .postcard-text { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 48px 40px; border-left: 1px dashed rgba(0,0,0,.25); margin: 16px 0; }
+  .postcard.no-img .postcard-text { border-left: none; align-items: center; text-align: center; }
+  .postcard-mark { position: absolute; top: 10px; right: 14px; width: 74px; height: 74px; opacity: .55; transform: rotate(12deg); }
+  .postcard-mark svg { width: 100%; height: 100%; overflow: visible; }
+  .postcard-mark circle { fill: none; stroke: #000; stroke-width: 1; }
+  .postcard-mark text { font-family: var(--sans, 'Inter', sans-serif); font-size: 7.4px; letter-spacing: .14em; fill: #000; }
+  .postcard-kicker { font-family: var(--sans, 'Inter', sans-serif); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #6b6259; margin-bottom: 16px; }
+  .postcard-headline { font-family: var(--serif); font-size: 1.7rem; line-height: 1.2; font-weight: 400; margin-bottom: 10px; }
+  .postcard-name { font-family: var(--serif); font-style: italic; font-size: 1rem; color: #4a433c; margin-bottom: 26px; }
+  .postcard-btn { display: inline-block; margin-top: 4px; padding: 12px 26px; border: 1px solid #000; font-family: var(--sans, 'Inter', sans-serif); font-size: 13px; letter-spacing: .06em; transition: background .3s, color .3s; }
+  .postcard:hover .postcard-btn { background: #000; color: #fff; font-style: italic; }
+  @media (max-width: 680px) {
+    .postcard { grid-template-columns: 1fr; transform: none; }
+    .postcard-img { margin: 14px 14px 0; aspect-ratio: 4 / 3; }
+    .postcard-text { border-left: none; border-top: 1px dashed rgba(0,0,0,.25); margin: 14px; padding: 32px 22px 26px; }
+    .postcard-mark { width: 60px; height: 60px; top: 8px; right: 8px; }
+    .postcard-headline { font-size: 1.4rem; padding-right: 50px; }
+  }
+  /* Welcome-issue sign-up placed inside the post. */
+  .mid-signup { text-align: center; margin: 48px auto; padding: 34px 26px; border-top: 1px solid rgba(0,0,0,.15); border-bottom: 1px solid rgba(0,0,0,.15); }
+  .mid-signup .end-signup-line { margin-bottom: 18px; }
+  .mid-signup .embed-signup-form { max-width: 340px; margin: 0 auto; }
+  .signed-up .mid-signup { display: none; }
+  /* Sign-off with Evi's handwritten signature. */
+  .post-signoff { margin-top: 32px; }
+  .post-signature { display: block; width: 130px; height: auto; margin-top: 8px; }
   .end-signup { text-align: center; padding: 8px 0 40px; }
   .end-signup-line { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: #2b2b2b; max-width: 480px; margin: 0 auto 14px; }
   .end-signup .embed-signup-form { max-width: 340px; }

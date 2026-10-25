@@ -188,6 +188,52 @@ function postHero(row) {
 }
 function escapeAttrB(s) { return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
 
+
+// ---- End-of-post "postcard": the post's call to action as a small card with a picture of where it leads ----
+function postcardCta(row, lang, artRows, blogRows) {
+  artRows = artRows || postcardCta.art || []; blogRows = blogRows || postcardCta.blog || [];
+  const link = row.cta_link;
+  const fr = lang === 'fr';
+  let img = '', name = '', kicker = fr ? 'À garder' : 'To keep', action = fr ? 'Découvrir' : 'Discover';
+  const art = (link.match(/\/art\/([a-z0-9-]+)/i) || [])[1];
+  const blog = (link.match(/\/blog\/([a-z0-9-]+)/i) || [])[1];
+  const pick = (rows, slug) => rows.find(r => r.slug === slug && r.lang === lang) || rows.find(r => r.slug === slug);
+  if (art) {
+    const r = pick(artRows, art);
+    if (r) {
+      img = r.featured || (r.images || '').split(',')[0].trim(); name = r.title;
+      const t = (r.type || '').toLowerCase();
+      if (t === 'gift') kicker = fr ? 'À offrir' : 'To give';
+      else if (['subscription', 'yearly', 'magazine'].includes(t)) kicker = fr ? 'Par la poste' : 'By post';
+      action = t === 'gift' ? (fr ? 'Voir le cadeau' : 'See the gift')
+        : ['subscription', 'yearly', 'magazine'].includes(t) ? (fr ? 'Voir l\'abonnement' : 'See the subscription')
+        : (fr ? 'Voir l\'œuvre' : 'See the piece');
+    }
+  } else if (blog) {
+    const r = pick(blogRows, blog);
+    if (r) { img = r.image; name = r.title; kicker = fr ? 'Gratuit' : 'Free'; action = fr ? 'Le recevoir' : 'Receive it'; }
+  } else if (/#subscriptions/.test(link)) {
+    const r = pick(artRows, 'letter-magazine');
+    if (r) { img = r.featured; name = r.title; kicker = fr ? 'Par la poste' : 'By post'; action = fr ? 'Voir l\'abonnement' : 'See the subscription'; }
+  }
+  if (/^\/?images\//.test(img)) img = img.replace(/^\/?images\//, '');
+  const external = /^https?:/.test(link) && !/maisonevieve\.com/.test(link);
+  const target = external ? ' target="_blank" rel="noopener"' : '';
+  const headline = row.cta_label || name;
+  return `<div class="wrap post-cta">
+  <a class="postcard${img ? '' : ' no-img'}" href="${link}"${target}>
+    ${img ? `<span class="postcard-img"><img src="/images/${img}" alt="" loading="lazy"></span>` : ''}
+    <span class="postcard-text">
+      <span class="postcard-mark" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="36"/><path id="pm" d="M50 14 a36 36 0 1 1 -0.1 0" fill="none"/><text><textPath href="#pm" startOffset="2%">MAISON EVIÈVE · ON ART · MAISON EVIÈVE · ON ART ·</textPath></text></svg></span>
+      <span class="postcard-kicker">${kicker}</span>
+      <span class="postcard-headline">${headline}</span>
+      ${name && name !== headline ? `<span class="postcard-name">${name}</span>` : ''}
+      <span class="postcard-btn">${action}</span>
+    </span>
+  </a>
+</div>`;
+}
+
 function heroImageBlock(row) {
   if (!row.image) {
     console.warn(`No image set for "${row.title}" (slug: ${row.slug}) -- showing a plain placeholder block instead of a broken image.`);
@@ -224,6 +270,7 @@ async function main() {
 
   // ---- Blog (public) ----
   const blogTemplate = readTemplate('blog-post.html');
+  postcardCta.art = artRows; postcardCta.blog = blogRows;
   const blogGroups = groupByPostId(blogRows.filter(r => r.status === 'published'));
   const blogIndexByLang = { en: [], fr: [] };
 
@@ -235,15 +282,13 @@ async function main() {
       if (!row.slug) { console.warn(`Skipping Blog row with no slug (post_id: ${postId}, lang: ${lang})`); continue; }
       row._category = blogCategory(langs, lang);
       const bodyHtml = parseBody(row.body, lang);
-      const ctaHtml = row.cta_link
-        ? `<div class="wrap post-cta"><a href="${row.cta_link}" class="btn" target="_blank" rel="noopener">${row.cta_label || 'Subscribe'}</a></div>`
-        : '';
+      const ctaHtml = row.cta_link ? postcardCta(row, lang) : '';
       // A single quiet First Letter line before the closing button -- skipped when the
       // post already has its own sign-up form (e.g. The First Letter, The Collector's Diary).
-      const hasOwnSignup = /\[signup/i.test(row.body || '');
+      const hasOwnSignup = /\[signup/i.test(row.body || '') || /the-first-letter/.test(row.cta_link || '');
       const endSignup = hasOwnSignup ? '' : (lang === 'fr'
         ? `<div class="wrap end-signup">
-  <p class="end-signup-line">Avant de partir : Un rituel à feuilleter, le numéro de bienvenue de « (meditating) On Art », avec une méditation sur la réception d'une lettre, à lire ou à écouter.</p>
+  <p class="end-signup-line">Si vous aimez lire lentement, vous aimerez le numéro de bienvenue de « (meditating) On Art » : gratuit, à lire à l'écran, avec une méditation sur la réception d'une lettre.</p>
   <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
     <input type="email" name="fields[email]" placeholder="Votre e-mail" required>
     <input type="hidden" name="fields[language]" value="Français">
@@ -252,7 +297,7 @@ async function main() {
   <p class="embed-signup-confirm">Merci, regardez votre boîte de réception dans quelques instants.</p>
 </div>`
         : `<div class="wrap end-signup">
-  <p class="end-signup-line">Before you go: A ritual you can flip through, the welcome issue of “(meditating) On Art”, with a meditation on receiving a letter to read or listen to.</p>
+  <p class="end-signup-line">If you like reading slowly, you'll like the welcome issue of “(meditating) On Art”: free to read on screen, with a meditation on receiving a letter.</p>
   <form class="embed-signup-form" action="https://assets.mailerlite.com/jsonp/2634193/forms/198581432152491948/subscribe" method="post" target="ml_hidden_iframe">
     <input type="email" name="fields[email]" placeholder="Your email" required>
     <input type="hidden" name="fields[language]" value="English">
@@ -260,6 +305,18 @@ async function main() {
   </form>
   <p class="embed-signup-confirm">Thank you. Check your inbox in a few minutes.</p>
 </div>`);
+      // The sign-up sits inside the post (before its third section, or halfway), not at the very end;
+      // the sign-off ends with Evi's signature; the post closes on the postcard.
+      let bodyWithSignup = bodyHtml;
+      if (endSignup) {
+        const marks = [...bodyHtml.matchAll(/<h3[\s>]/g)].map(m => m.index);
+        let at = marks.length >= 3 ? marks[2] : marks.length === 2 ? marks[1] : -1;
+        if (at < 0) { const ps = [...bodyHtml.matchAll(/<\/p>/g)].map(m => m.index + 4); at = ps.length > 2 ? ps[Math.floor(ps.length / 2)] : -1; }
+        const block = endSignup.replace('class="wrap end-signup"', 'class="mid-signup"');
+        bodyWithSignup = at >= 0 ? bodyHtml.slice(0, at) + block + '\n' + bodyHtml.slice(at) : bodyHtml + block;
+      }
+      bodyWithSignup = bodyWithSignup.replace(/<p>((?:Love|Avec tendresse),)\s*\n?\s*Evi\s*<\/p>\s*$/,
+        '<p class="post-signoff">$1<img class="post-signature" src="/images/evi-signature.png" alt="Evi"></p>');
       const html = localizeTemplate(fillTemplate(blogTemplate, {
         LANG: lang,
         TITLE: row.title,
@@ -268,9 +325,9 @@ async function main() {
         DATE_META: dateMeta(row),
         POST_HERO: postHero(row),
         BODY_CLASS: row.image ? 'hero-dark' : '',
-        BODY_HTML: bodyHtml,
+        BODY_HTML: bodyWithSignup,
         POST_CTA: ctaHtml,
-        END_SIGNUP: endSignup,
+        END_SIGNUP: '',
         HEADER: readHeaderPartial(lang, altPaths(langs, 'blog')),
         FOOTER: readPartial('footer-minimal.html'),
       }), lang);
