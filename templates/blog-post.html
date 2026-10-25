@@ -70,10 +70,20 @@
   .postcard:hover .postcard-img img { transform: scale(1.03); }
   .postcard-text { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 48px 40px; border-left: 1px dashed rgba(0,0,0,.25); margin: 16px 0; }
   .postcard.no-img .postcard-text { border-left: none; align-items: center; text-align: center; }
-  .postcard-mark { position: absolute; top: 10px; right: 14px; width: 74px; height: 74px; opacity: .55; transform: rotate(12deg); }
-  .postcard-mark svg { width: 100%; height: 100%; overflow: visible; }
-  .postcard-mark circle { fill: none; stroke: #000; stroke-width: 1; }
-  .postcard-mark text { font-family: var(--sans, 'Inter', sans-serif); font-size: 7.4px; letter-spacing: .14em; fill: #000; }
+  /* Stamp: perforated edges cut with a mask, a soft shadow that follows them, and a postmark inked over its corner. */
+  .postcard-stamp { position: absolute; top: 22px; right: 24px; width: 80px; transform: rotate(4deg); filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.22)); }
+  .stamp-paper { display: block; position: relative; box-sizing: border-box; width: 80px; height: 100px; padding: 7px; background: #fffdf8;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, radial-gradient(circle at 5px 5px, transparent 3px, #000 3.5px) -5px -5px / 10px 10px;
+            mask: linear-gradient(#000 0 0) content-box, radial-gradient(circle at 5px 5px, transparent 3px, #000 3.5px) -5px -5px / 10px 10px;
+    -webkit-mask-composite: source-over; mask-composite: add; }
+  .stamp-paper img { width: 100%; height: 100%; object-fit: cover; display: block; outline: 1px solid rgba(0,0,0,.08); }
+  .stamp-value { position: absolute; left: 7px; right: 7px; bottom: 7px; padding: 3px 0 2px; text-align: center; font-family: var(--serif); font-style: italic; font-size: 9px; color: #fff; background: linear-gradient(transparent, rgba(0,0,0,.45)); }
+  .postcard-mark { position: absolute; z-index: 2; top: 70px; right: 62px; width: 130px; transform: rotate(-8deg); mix-blend-mode: multiply; pointer-events: none; }
+  .postcard-mark svg { width: 100%; height: auto; overflow: visible; display: block; }
+  .postcard-mark circle, .postcard-mark .waves path { fill: none; stroke: rgba(118,32,32,.7); stroke-width: 1.4; }
+  .postcard-mark text { fill: rgba(118,32,32,.78); }
+  .postcard-mark .ring { font-family: var(--sans); font-size: 6.6px; letter-spacing: .16em; }
+  .postcard-mark .mid { font-family: var(--serif); font-style: italic; font-size: 10px; letter-spacing: .04em; }
   .postcard-kicker { font-family: var(--sans, 'Inter', sans-serif); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #6b6259; margin-bottom: 16px; }
   .postcard-headline { font-family: var(--serif); font-size: 1.7rem; line-height: 1.2; font-weight: 400; margin-bottom: 10px; }
   .postcard-name { font-family: var(--serif); font-style: italic; font-size: 1rem; color: #4a433c; margin-bottom: 26px; }
@@ -83,8 +93,10 @@
     .postcard { grid-template-columns: 1fr; transform: none; }
     .postcard-img { margin: 14px 14px 0; aspect-ratio: 4 / 3; }
     .postcard-text { border-left: none; border-top: 1px dashed rgba(0,0,0,.25); margin: 14px; padding: 32px 22px 26px; }
-    .postcard-mark { width: 60px; height: 60px; top: 8px; right: 8px; }
-    .postcard-headline { font-size: 1.4rem; padding-right: 50px; }
+    .postcard-stamp { top: 18px; right: 16px; transform: rotate(4deg) scale(.82); transform-origin: top right; }
+    .postcard-mark { top: 58px; right: 50px; width: 110px; }
+    .postcard-headline { font-size: 1.4rem; }
+    .postcard-kicker { margin-top: 70px; }
   }
   /* Welcome-issue sign-up placed inside the post. */
   .mid-signup { text-align: center; margin: 48px auto; padding: 34px 26px; border-top: 1px solid rgba(0,0,0,.15); border-bottom: 1px solid rgba(0,0,0,.15); }

@@ -224,7 +224,8 @@ function postcardCta(row, lang, artRows, blogRows) {
   <a class="postcard${img ? '' : ' no-img'}" href="${link}"${target}>
     ${img ? `<span class="postcard-img"><img src="/images/${img}" alt="" loading="lazy"></span>` : ''}
     <span class="postcard-text">
-      <span class="postcard-mark" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="36"/><path id="pm" d="M50 14 a36 36 0 1 1 -0.1 0" fill="none"/><text><textPath href="#pm" startOffset="2%">MAISON EVIÈVE · ON ART · MAISON EVIÈVE · ON ART ·</textPath></text></svg></span>
+      <span class="postcard-stamp" aria-hidden="true"><span class="stamp-paper"><img src="/images/coffee-soft-pastel-sketches.jpg" alt=""></span></span>
+      <span class="postcard-mark" aria-hidden="true"><svg viewBox="0 0 170 80"><g class="waves"><path d="M0 22 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0"/><path d="M0 34 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0"/><path d="M0 46 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0"/><path d="M0 58 q8 -6 16 0 t16 0 t16 0 t16 0 t16 0"/></g><circle cx="128" cy="40" r="35"/><circle cx="128" cy="40" r="25"/><path id="pmArc" d="M128 9 a31 31 0 1 1 -0.1 0" fill="none" stroke="none"/><text class="ring"><textPath href="#pmArc">MAISON EVIÈVE · LETTERS ·</textPath></text><text class="mid" x="128" y="44" text-anchor="middle">ON ART</text></svg></span>
       <span class="postcard-kicker">${kicker}</span>
       <span class="postcard-headline">${headline}</span>
       ${name && name !== headline ? `<span class="postcard-name">${name}</span>` : ''}
