@@ -1,0 +1,133 @@
+/* ==========================================================================
+   responsive.css -- shared screen-size rules for every page
+   --------------------------------------------------------------------------
+   Loaded last in <head> on every page (build.js adds the link), so it adjusts
+   the per-page styles without rewriting them. Edit sizes here, not page by page.
+
+   Breakpoints used across the site:
+     <= 359px    very narrow: Galaxy Z Fold cover screens, old Fold (280px)
+     360-599px   phones (iPhone SE to Pro Max, Android)
+     600-767px   large foldables open, Surface Duo on one screen, small tablets
+     768-1023px  tablets in portrait (iPad mini/Air/Pro, Galaxy Tab, Surface)
+     1024-1279px tablets in landscape, Surface Duo spanned, small laptops
+     >= 1280px   desktop
+   Plus: phones held sideways (short screens) and dual-screen spanning.
+   ========================================================================== */
+
+/* ---------- Safety net: nothing may push the page sideways ---------- */
+html, body { overflow-x: clip; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+h1, h2, h3, h4, p, li, a, figcaption { overflow-wrap: break-word; }
+.footer-wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+@media (min-width: 900px) { .footer-wrap { padding: 0 64px; } }
+
+/* ---------- Header ---------- */
+/* The logo always sits in the middle column and the language/menu in the right one,
+   even when the desktop links are hidden (before this, the logo slid left on phones and tablets). */
+.nav-row .logo-mark { grid-column: 2; grid-row: 1; }
+.nav-row .header-right { grid-column: 3; grid-row: 1; }
+.nav-row nav.links { grid-column: 1; grid-row: 1; }
+
+/* The logo picture is drawn from its height (42px); the old 200px-wide box was mostly empty and
+   pushed the language switch and menu button off small screens. Same logo, narrower box. */
+@media (max-width: 1023px) { .nav-row .logo-mark, header.scrolled .logo-mark { width: 72px; } }
+
+/* Tablets (up to 1023px): menu button instead of the desktop links, which used to run into the logo. */
+@media (max-width: 1023px) {
+  .nav-row nav.links { display: none; }
+  .menu-toggle { display: block; }
+  .mobile-nav.open { display: flex !important; }
+}
+/* Tablet landscape and small laptops: a slightly tighter desktop header so links and logo never touch. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .nav-row nav.links { gap: 20px; font-size: 13.5px; }
+  .nav-row .logo-mark { width: 170px; }
+  .header-right { gap: 14px; }
+}
+/* Very narrow screens: smaller logo and side margins so the menu button stays on screen. */
+@media (max-width: 359px) {
+  .nav-row { padding-left: 16px; padding-right: 16px; column-gap: 8px; }
+  .header-right { gap: 12px; }
+  .lang-switch { font-size: 12px; gap: 4px; }
+  .mobile-nav { padding-left: 16px; padding-right: 16px; }
+}
+/* Bigger tap area for the menu button on touch screens, without changing how it looks. */
+@media (pointer: coarse) {
+  .menu-toggle { position: relative; }
+  .menu-toggle::after { content: ""; position: absolute; inset: -13px -10px; }
+}
+
+/* ---------- Page margins ---------- */
+@media (max-width: 359px) {
+  .wrap, .footer-wrap { padding-left: 16px; padding-right: 16px; }
+  .top-banner { font-size: 12.5px !important; padding: 8px 34px 8px 10px !important; }
+}
+/* Product pages: the back link lost its side margin (padding shorthand); restore it. */
+.wrap.back-link-row { padding-left: 32px; padding-right: 32px; }
+@media (min-width: 900px) { .wrap.back-link-row { padding-left: 64px; padding-right: 64px; } }
+@media (max-width: 359px) { .wrap.back-link-row { padding-left: 16px; padding-right: 16px; } }
+
+/* ---------- Forms: email fields may shrink so the button stays beside them ---------- */
+.embed-signup-form input, .signup-popup-form input, form input[type="email"] { min-width: 0; }
+
+/* ---------- Contact email on very narrow screens ---------- */
+@media (max-width: 359px) { .contact-email { font-size: 1.25rem; } }
+
+/* ---------- Rows of small links (404 page, links page, contact) wrap instead of running off screen ---------- */
+.quick-links, .social-row { flex-wrap: wrap; justify-content: center; row-gap: 10px; }
+@media (max-width: 359px) { .quick-links, .social-row { column-gap: 18px; } }
+
+/* ---------- Large foldables and tablets in portrait (600-959px) ---------- */
+@media (min-width: 600px) and (max-width: 959px) {
+  /* Home hero: buttons side by side at their own width, frame kept to a calm size */
+  .hero-buttons .hero-cta { flex: 0 1 auto; min-width: 220px; }
+  .frame-stage { max-width: 560px; margin: 0 auto; }
+  /* Subscription buttons: centred row instead of a stretched stack */
+  .sub-buttons .btn { width: auto; min-width: 230px; }
+}
+@media (min-width: 600px) and (max-width: 759px) {
+  /* Art and gift cards: two across instead of one huge card per screen; an odd last card is centred */
+  .art-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .art-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 14px); justify-self: center; }
+}
+@media (min-width: 600px) and (max-width: 899px) {
+  /* Product pages: one centred reading column rather than text hugging the left edge */
+  .product-grid { max-width: 640px; margin-left: auto; margin-right: auto; }
+  .product-desc { max-width: none; }
+  .magazine-image img { height: 440px; }
+}
+
+/* ---------- Phones held sideways and other short screens ---------- */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Full-screen sections keep to their content instead of forcing a tall empty block */
+  .sub-video { min-height: 0; padding: 72px 0; }
+  .about-slideshow { height: auto; min-height: 100vh; min-height: 100svh; }
+  .about-slideshow .slide-overlay { padding-top: calc(84px + var(--banner-h, 0px)); padding-bottom: 32px; }
+  .slide-dots { top: calc(64px + var(--banner-h, 0px)); }
+  .product-hero { min-height: 340px; }
+  .ph-title { padding-bottom: 40px; }
+  .hero-head { padding-top: 76px; }
+  .frame-stage { max-width: 380px; margin: 0 auto; }
+  /* Pop-ups never taller than the screen */
+  .modal-box { max-height: 92vh; }
+  .mobile-nav { max-height: calc(100vh - 60px); overflow-y: auto; }
+  .mobile-nav a { padding: 10px 0; }
+}
+
+/* ---------- Dual screens: Surface Duo and foldables spanning both halves ----------
+   The two halves are kept apart so no text or picture sits across the hinge. */
+@media (horizontal-viewport-segments: 2) {
+  :root { --hinge: calc(env(viewport-segment-left 1 0, 0px) - env(viewport-segment-right 0 0, 0px)); }
+  .hero-scroll .wrap, .magazine-grid, .product-grid {
+    grid-template-columns: 1fr 1fr; column-gap: calc(var(--hinge) + 64px);
+  }
+  .art-grid { grid-template-columns: 1fr 1fr; column-gap: calc(var(--hinge) + 48px); }
+  .art-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 24px - var(--hinge) / 2); justify-self: start; }
+  .nav-row nav.links { display: none; }
+  .menu-toggle { display: block; }
+  .mobile-nav.open { display: flex !important; }
+}
+@media (vertical-viewport-segments: 2) {
+  /* Folded like a small laptop: keep tall sections within the top half */
+  .sub-video, .about-slideshow, .product-hero { min-height: 0; height: auto; }
+}

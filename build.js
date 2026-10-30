@@ -902,6 +902,27 @@ ${urlEntries}
     console.warn('WARNING: could not write image-manifest.json:', err.message);
   }
 
+  // ---- Shared screen-size rules (responsive.css): copied once, linked last in every page's <head> ----
+  // The ?v= hash changes whenever the file changes, so browsers never keep an old copy.
+  try {
+    const css = fs.readFileSync(path.join(__dirname, 'responsive.css'), 'utf-8');
+    fs.writeFileSync(path.join(DIST, 'responsive.css'), css, 'utf-8');
+    const v = require('crypto').createHash('md5').update(css).digest('hex').slice(0, 8);
+    const tag = `<link rel="stylesheet" href="/responsive.css?v=${v}" id="responsiveCss">`;
+    const walkHtml = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(e =>
+      e.isDirectory() ? walkHtml(path.join(dir, e.name)) : (e.name.endsWith('.html') ? [path.join(dir, e.name)] : []));
+    let n = 0;
+    for (const file of walkHtml(DIST)) {
+      const html = fs.readFileSync(file, 'utf-8');
+      if (html.includes('id="responsiveCss"') || !html.includes('</head>')) continue;
+      fs.writeFileSync(file, html.replace('</head>', `${tag}\n</head>`), 'utf-8');
+      n++;
+    }
+    console.log(`Linked responsive.css in ${n} pages`);
+  } catch (err) {
+    console.warn('WARNING: could not add responsive.css:', err.message);
+  }
+
   console.log('Build complete. Output in /dist');
 }
 
