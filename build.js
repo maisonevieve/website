@@ -861,10 +861,20 @@ ${urlEntries}
     ['/en/art/yoga-energy-blogs', '/en/art/yoga-energy-blocks'], // typo fixed, Oct 2026
     ['/fr/art/yoga-energy-blogs', '/fr/art/yoga-energy-blocks'],
   ];
+  // Renamed or merged photos (image-renames.json: [old, new], paths inside /images/), so old links,
+  // pins, emails and Google Images keep finding them.
+  let imageRenames = [];
+  try { imageRenames = JSON.parse(fs.readFileSync(path.join(__dirname, 'image-renames.json'), 'utf8')); }
+  catch (e) { console.warn('No image-renames.json read:', e.message); }
+  const imageLines = imageRenames.flatMap(([from, to]) => {
+    const target = `/images/${encodeURI(to)}`;
+    const forms = new Set([`/images/${from}`, `/images/${encodeURI(from)}`]);
+    return [...forms].map(f => `${f} ${target} 301`);
+  });
   writeFile('_redirects', RENAMED.flatMap(([from, to]) => [
     `${from}.html ${to}.html 301`,
     `${from} ${to} 301`,
-  ]).join('\n') + '\n');
+  ]).concat(imageLines).join('\n') + '\n');
   writeFile('robots.txt', `User-agent: *\nDisallow: /en/members/\nDisallow: /fr/members/\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 
   // ---- Copy shared asset folders straight through ----
