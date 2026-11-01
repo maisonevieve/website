@@ -281,7 +281,7 @@
  ],
  [
   "My_toile_de_jouy_blue_fairy.png",
-  "my-toile-de-jouy-blue-fairy.png"
+  "my-toile-de-jouy-blue-fairy.jpg"
  ],
  [
   "og/My_toile_de_jouy_blue_fairy.jpg",
@@ -289,7 +289,7 @@
  ],
  [
   "My_toile_de_jouy_blue_mirror.png",
-  "my-toile-de-jouy-blue-mirror.png"
+  "my-toile-de-jouy-blue-mirror.jpg"
  ],
  [
   "og/My_toile_de_jouy_blue_mirror.jpg",
@@ -297,7 +297,7 @@
  ],
  [
   "My_toile_de_jouy_blue_statue.png",
-  "my-toile-de-jouy-blue-statue.png"
+  "my-toile-de-jouy-blue-statue.jpg"
  ],
  [
   "og/My_toile_de_jouy_blue_statue.jpg",
@@ -377,7 +377,7 @@
  ],
  [
   "Van_Gogh_-_Starry_Night_-_Google_Art_Project.png",
-  "van-gogh-starry-night.png"
+  "van-gogh-starry-night.jpg"
  ],
  [
   "og/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
@@ -1269,7 +1269,7 @@
  ],
  [
   "tuileries-reference.GIF",
-  "tuileries-reference.gif"
+  "tuileries-reference.webp"
  ],
  [
   "tuileries1_2.jpg",
@@ -1326,5 +1326,25 @@
  [
   "og/yoga-against-blocks-art-print.jpg",
   "og/yoga-against-blocks-2.jpg"
+ ],
+ [
+  "my-toile-de-jouy-blue-fairy.png",
+  "my-toile-de-jouy-blue-fairy.jpg"
+ ],
+ [
+  "my-toile-de-jouy-blue-mirror.png",
+  "my-toile-de-jouy-blue-mirror.jpg"
+ ],
+ [
+  "my-toile-de-jouy-blue-statue.png",
+  "my-toile-de-jouy-blue-statue.jpg"
+ ],
+ [
+  "van-gogh-starry-night.png",
+  "van-gogh-starry-night.jpg"
+ ],
+ [
+  "tuileries-reference.gif",
+  "tuileries-reference.webp"
  ]
 ]
