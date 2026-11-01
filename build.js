@@ -860,6 +860,17 @@ ${urlEntries}
   const RENAMED = [
     ['/en/art/yoga-energy-blogs', '/en/art/yoga-energy-blocks'], // typo fixed, Oct 2026
     ['/fr/art/yoga-energy-blogs', '/fr/art/yoga-energy-blocks'],
+    // Old pins that still point to pages that are gone (pin audit, 1 Nov 2026):
+    ['/en/art/digital-subscription', '/en/art/letter-magazine'], // Digital tier paused until 2027
+    ['/fr/art/digital-subscription', '/fr/art/letter-magazine'],
+    ['/en/art/both-subscription', '/en/art/letter-magazine'],    // Both tier paused until 2027
+    ['/fr/art/both-subscription', '/fr/art/letter-magazine'],
+    ['/blog/meditation-letter-experience', '/en/blog/the-first-letter'],   // old site
+    ['/open-the-letter', '/en/blog/the-first-letter'],                     // old site
+    ['/blog/waiting-for-the-right-moment-to-arrive', '/en/blog/waiting-for-godot-waiting-for-the-post'], // old site
+    ['/gift-shop/letters', '/en/art/letters-on-art-gift'],                 // old site shop
+    ['/gift-shop/p/letter-subscription', '/en/art/letter-magazine'],       // old site shop
+    ['/letters', '/en/art/letter-magazine'],                               // old site
   ];
   // Renamed or merged photos (image-renames.json: [old, new], paths inside /images/), so old links,
   // pins, emails and Google Images keep finding them.
