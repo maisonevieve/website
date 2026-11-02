@@ -370,6 +370,34 @@ async function main() {
     }
   }
 
+  // ---- Thirty Slow Mornings: permanent short links printed as QR codes on the cards ----
+  // /m (the series) and /m/1 ... /m/31 (one per January date). Each sends the reader to the published
+  // Blog post for that morning in her browser's language, else the series post, else a fallback (mornings.json).
+  try {
+    const mornings = JSON.parse(fs.readFileSync(path.join(__dirname, 'mornings.json'), 'utf-8'));
+    const postUrl = (id, lang) => {
+      const g = id && blogGroups[id];
+      return g && g[lang] && g[lang].slug ? `/${lang}/blog/${g[lang].slug}` : null;
+    };
+    const resolve = (id, lang) => postUrl(id, lang) || postUrl(mornings.hub, lang) || mornings.fallback[lang];
+    const page = (en, fr) => `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Thirty Slow Mornings · Maison Eviève</title>
+<script>var l=(navigator.languages||[navigator.language||""]).join(",");location.replace(/(^|,)fr/i.test(l)?${JSON.stringify(fr)}:${JSON.stringify(en)});</script>
+<noscript><meta http-equiv="refresh" content="0;url=${en}"></noscript>
+</head><body style="font-family:serif;text-align:center;padding:64px 16px"><p><a href="${en}">Thirty Slow Mornings</a> · <a href="${fr}">Trente matins lents</a></p></body></html>
+`;
+    const out = (rel, html) => { ensureDir(path.dirname(path.join(DIST, rel))); fs.writeFileSync(path.join(DIST, rel), html, 'utf-8'); };
+    out('m.html', page(resolve(null, 'en'), resolve(null, 'fr')));
+    for (let d = 1; d <= 31; d++) {
+      const id = (mornings.days || {})[String(d)];
+      out(`m/${d}.html`, page(resolve(id, 'en'), resolve(id, 'fr')));
+    }
+    console.log('Wrote Thirty Slow Mornings short links (/m, /m/1-31)');
+  } catch (err) {
+    console.warn('WARNING: could not write the /m short links:', err.message);
+  }
+
   // ---- DigitalPosts (members-only, unlisted -- built, but never listed anywhere or in the sitemap) ----
   const digitalTemplate = readTemplate('digital-post.html');
   const digitalGroups = groupByPostId(digitalRows.filter(r => r.status === 'published'));

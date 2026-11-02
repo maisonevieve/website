@@ -1,0 +1,6 @@
+{
+  "_note": "Thirty Slow Mornings short links (maisonevieve.com/m and /m/1 to /m/31, printed as QR codes on the cards). Never rename these addresses. 'hub' and each day map a January date to a Blog post_id; a link goes to that post once it is published, otherwise to the hub post, otherwise to the fallback.",
+  "hub": "246",
+  "fallback": { "en": "/en/blog/one-painting-a-day-for-a-month", "fr": "/fr/blog/un-tableau-par-jour-pendant-un-mois" },
+  "days": {}
+}
