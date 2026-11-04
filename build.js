@@ -899,6 +899,8 @@ ${urlEntries}
     ['/gift-shop/letters', '/en/art/letters-on-art-gift'],                 // old site shop
     ['/gift-shop/p/letter-subscription', '/en/art/letter-magazine'],       // old site shop
     ['/letters', '/en/art/letter-magazine'],                               // old site
+    ['/en/blog/correspondance', '/en/art/letter-magazine'],  // Correspondance post unpublished, 4 Nov 2026
+    ['/fr/blog/correspondance', '/fr/art/letter-magazine'],
   ];
   // Renamed or merged photos (image-renames.json: [old, new], paths inside /images/), so old links,
   // pins, emails and Google Images keep finding them.
