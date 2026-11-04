@@ -250,10 +250,17 @@ function script(t, lang, slug) {
 </script>`;
 }
 
+// Adds the page language to a Stripe link, so checkout opens in that language and Social Studio can
+// set the buyer's email language in Stripe (French pages -> French receipts and reminders).
+function withLocale(link, lang) {
+  if (!link || link.charAt(0) === '/') return link;
+  return link + (link.indexOf('?') < 0 ? '?' : '&') + 'locale=' + (lang === 'fr' ? 'fr' : 'en');
+}
+
 function giftBlock({ row, lang, isGift, isSubscription, giftable, purchaseLabel, noGiftLine }) {
   const t = T[lang] || T.en;
   if (isSubscription) {
-    return `${CSS}<a href="${esc(row.stripe_link)}" class="btn" target="_blank" rel="noopener" style="margin-top:28px;width:100%;text-align:center">${purchaseLabel}</a>`
+    return `${CSS}<a href="${esc(withLocale(row.stripe_link, lang))}" class="btn" target="_blank" rel="noopener" style="margin-top:28px;width:100%;text-align:center">${purchaseLabel}</a>`
       + (noGiftLine ? '' : `
       <p class="gift-link-line">${t.giving} <a href="/${lang}/art/${GIFT_PAGE_SLUG}.html">${t.seeGift}</a></p>`);
   }
@@ -279,7 +286,7 @@ function giftBlock({ row, lang, isGift, isSubscription, giftable, purchaseLabel,
       <p class="gift-msg" id="giftMsg" role="alert"></p>
     </div>${script(t, lang, row.slug)}`;
   }
-  return `<a href="${esc(row.stripe_link)}" class="btn" target="_blank" rel="noopener">${purchaseLabel}</a>`;
+  return `<a href="${esc(withLocale(row.stripe_link, lang))}" class="btn" target="_blank" rel="noopener">${purchaseLabel}</a>`;
 }
 
 // Wraps a description section whose heading mentions Christmas (or Noël) in the festive box.
@@ -287,4 +294,4 @@ function festiveSections(html) {
   return html.replace(/(<h3[^>]*>[^<]*(?:Christmas|Noël|Mother's Day|Fête des mères|Valentine|Saint-Valentin)[^<]*<\/h3>)([\s\S]*?)(?=<h3|$)/g, '<div class="festive-box">$1$2</div>\n  ');
 }
 
-module.exports = { giftBlock, STANDARD, FOLLOWUP, festiveSections };
+module.exports = { giftBlock, withLocale, STANDARD, FOLLOWUP, festiveSections };

@@ -9,7 +9,7 @@ const path = require('path');
 const { parseCSV } = require('./parse-csv');
 const { blogCategory } = require('./blog-category');
 const { parseBody } = require('./parse-body');
-const { giftBlock, festiveSections } = require('./gift-block');
+const { giftBlock, festiveSections, withLocale } = require('./gift-block');
 const { addBanner } = require('./banner');
 
 // ---------------------------------------------------------------------------
@@ -529,8 +529,8 @@ async function main() {
       const ylTarget = /^\//.test(row.yearly_stripe_link || '') ? '' : ' target="_blank" rel="noopener"';
       const yearlyLine = (isSubscription && !isYearly && row.yearly_price && row.yearly_stripe_link)
         ? (lang === 'fr'
-          ? `<p class="yearly-line">ou <a href="${row.yearly_stripe_link}"${ylTarget}>${row.yearly_price} € par an</a>${row.yearly_bonus ? `, avec ${row.yearly_bonus} en bonus` : ''}</p>`
-          : `<p class="yearly-line">or <a href="${row.yearly_stripe_link}"${ylTarget}>€${row.yearly_price} a year</a>${row.yearly_bonus ? `, with ${row.yearly_bonus} as a bonus` : ''}</p>`)
+          ? `<p class="yearly-line">ou <a href="${withLocale(row.yearly_stripe_link, lang)}"${ylTarget}>${row.yearly_price} € par an</a>${row.yearly_bonus ? `, avec ${row.yearly_bonus} en bonus` : ''}</p>`
+          : `<p class="yearly-line">or <a href="${withLocale(row.yearly_stripe_link, lang)}"${ylTarget}>€${row.yearly_price} a year</a>${row.yearly_bonus ? `, with ${row.yearly_bonus} as a bonus` : ''}</p>`)
         : '';
       const html = localizeTemplate(fillTemplate(productTemplate, {
         LANG: lang,
