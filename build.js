@@ -116,11 +116,6 @@ function writeFile(relPath, content) {
   // loaded mid-fade and the button looked grey and blurred.
   if (/\.html$/.test(relPath) && typeof content === 'string' && !content.includes('id="touchButtons"'))
     content = content.replace('</head>', '<style id="touchButtons">@media (hover: none) { a, button, .btn, .hero-cta, .postcard, .postcard-btn { transition: none !important; } }</style>\n</head>');
-  // French pages send buyers to Stripe in French. Social Studio then saves French on the Stripe customer, so
-  // Stripe's own emails (receipts, renewal reminders) go out in French too. Only plain links: gift checkouts
-  // (data-link) add the language themselves in gift-block.js.
-  if (/\.html$/.test(relPath) && typeof content === 'string' && /^fr[\\/]/.test(relPath))
-    content = content.replace(/href="(https:\/\/buy\.stripe\.com\/[A-Za-z0-9]+)"/g, 'href="$1?locale=fr"');
   const fullPath = path.join(DIST, relPath);
   ensureDir(path.dirname(fullPath));
   fs.writeFileSync(fullPath, content, 'utf-8');
