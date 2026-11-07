@@ -398,41 +398,26 @@ async function main() {
     console.warn('WARNING: could not write the /m short links:', err.message);
   }
 
-  // ---- /members: permanent short link for the members' video (members.json) ----
-  // Sends the reader to the members' page in her browser's language; until one is set, a short "almost ready" page.
+  // ---- Short links (shortlinks.json): maisonevieve.com/<key> -> a page, in the reader's browser language ----
+  // Used on screen in videos. Keys are permanent once a video is published; never rename one.
   try {
-    const members = JSON.parse(fs.readFileSync(path.join(__dirname, 'members.json'), 'utf-8'));
-    let html;
-    if (members.en || members.fr) {
-      const en = members.en || members.fr, fr = members.fr || members.en;
-      html = `<!DOCTYPE html>
+    const links = JSON.parse(fs.readFileSync(path.join(__dirname, 'shortlinks.json'), 'utf-8'));
+    ensureDir(DIST);
+    for (const [key, target] of Object.entries(links)) {
+      if (key.startsWith('_')) continue;
+      const en = target.en || target.fr, fr = target.fr || target.en;
+      const html = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Members · Maison Eviève</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Maison Eviève</title>
 <script>var l=(navigator.languages||[navigator.language||""]).join(",");location.replace(/(^|,)fr/i.test(l)?${JSON.stringify(fr)}:${JSON.stringify(en)});</script>
 <noscript><meta http-equiv="refresh" content="0;url=${en}"></noscript>
-</head><body></body></html>
+</head><body><p><a href="${en}">Continue</a></p></body></html>
 `;
-    } else {
-      html = `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="robots" content="noindex">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Members · Maison Eviève</title>
-<link rel="icon" type="image/png" href="/images/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
-<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F5F1EA;color:#000;font-family:'Fraunces',serif;text-align:center;padding:32px 16px;box-sizing:border-box}
-h1{font-weight:300;font-size:32px;margin:0 0 16px}p{color:#636363;margin:0 0 8px;line-height:1.6}em{font-style:italic}a{color:#000}</style>
-</head><body><main>
-<h1>The members' video is almost ready.</h1>
-<p>Come back in a few days, it will be waiting for you here.</p>
-<p><em>La vidéo des membres est presque prête. Revenez d'ici quelques jours, elle vous attendra ici.</em></p>
-<p style="margin-top:24px"><a href="/">maisonevieve.com</a></p>
-</main></body></html>
-`;
+      fs.writeFileSync(path.join(DIST, `${key}.html`), html, 'utf-8');
     }
-    ensureDir(DIST);
-    fs.writeFileSync(path.join(DIST, 'members.html'), html, 'utf-8');
-    console.log('Wrote /members short link');
+    console.log('Wrote short links:', Object.keys(links).filter(k => !k.startsWith('_')).join(', '));
   } catch (err) {
-    console.warn('WARNING: could not write the /members short link:', err.message);
+    console.warn('WARNING: could not write short links:', err.message);
   }
 
   // ---- DigitalPosts (members-only, unlisted -- built, but never listed anywhere or in the sitemap) ----
